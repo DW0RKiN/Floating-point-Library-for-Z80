@@ -1,48 +1,37 @@
 if not defined @FSQRT
 
-; Square root of a positive floating-point number
+; Square root of floating-point number
 ; In: HL
-; Out: HL = HL^0.5
+; Out: HL = abs(HL)^0.5, reset carry
 ; Pollutes: AF
 
 ; Mantissas of square roots
 ; exp = 2*e
-; (2**exp * mantisa)**0.5 = 2**e * mantisa**0.5
+; (2^exp * mantisa)^0.5 = 2^e * mantisa^0.5
 ; exp = 2*e+1
-; (2**exp * mantisa)**0.5 = 2**e * mantisa**0.5 * 2**0.5
+; (2^exp * mantisa)^0.5 = 2^e * mantisa^0.5 * 2^0.5
+
+; (2^-3 * mantisa)^0.5 = 2^-1 * 2^-0.5 * mantisa^0.5 = 2^-2 * 2^+0.5 ...
+; (2^-2 * mantisa)^0.5 = 2^-1 *          mantisa^0.5 = 2^-1 *        ...
+; (2^-1 * mantisa)^0.5 = 2^+0 * 2^-0.5 * mantisa^0.5 = 2^-1 * 2^+0.5 ...
+; (2^+0 * mantisa)^0.5 = 2^+0 *          mantisa^0.5 = 2^+0 *        ...
+; (2^+1 * mantisa)^0.5 = 2^+0 * 2^+0.5 * mantisa^0.5 = 2^+0 * 2^+0.5 ...
+; (2^+2 * mantisa)^0.5 = 2^+1 *          mantisa^0.5 = 2^+1 *        ...
+; (2^+3 * mantisa)^0.5 = 2^+1 * 2^+0.5 * mantisa^0.5 = 2^+1 * 2^+0.5 ...
 @FSQRT:
 if not defined FSQRT
 ; *****************************************
                     FSQRT                 ; *
 ; *****************************************
 endif
-        LD      A, H            ;  1:4
-        AND     EXP_MASK        ;  2:7  $7C  (delete sign)
-        ADD     A, BIAS         ;  2:7  +$3C = + 0011 1100      (x-bias)/2 + bias = (x-bias+2*bias)/2 = (x+bias)/2
-                                ;  $7C + $3C = $B8 => clear carry
-        
-        PUSH    BC              ;  1:11
-        LD      C, A            ;  1:4         ???? ??00
-        
-        RRA                     ;  1:4
-        AND     EXP_MASK        ;  2:7
-        LD      B, A            ;  1:4
-        
-        LD      A, H            ;  1:4
-        AND     MANT_MASK_HI    ;  2:7
-        ADD     A, C            ;  1:4
-        AND     2*MANT_MASK_HI+1;  2:7       maska nejniziho dale ztraceneho bitu exponentu, 1 => 0.5 or 0 => 0
-        ADD     A, A
-        ADD     A, 1+Tab_Even_Sqrt_lo_0/256     ;  2:7
-        LD      H, A            ;  1:4
-        
-        LD      A, (HL)         ;  1:7   hi
-        DEC     H               ;  1:4
-        LD      L, (HL)         ;  1:7   lo
-        OR      B               ;  1:4
-        LD      H, A            ;  1:4
-        
-        POP     BC              ;  1:10
-        RET
-
+        SLA     L                   ;  2:8      ABS(HL)
+        LD      A, H                ;  1:4
+        ADD     A, BIAS             ;  2:7
+        RRA                         ;  1:4      A = (exp-bias)/2 + bias = (exp+bias)/2
+                                    ;           carry => out = out * 2^0.5
+        RR      L                   ;  2:8      RET with reset carry
+        LD      H, SQR_TAB/256      ;  2:7
+        LD      L, (HL)             ;  1:7
+        LD      H, A                ;  1:4
+        RET                         ;  1:10
 endif
