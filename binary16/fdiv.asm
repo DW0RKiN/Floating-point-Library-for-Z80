@@ -48,7 +48,7 @@ FDIV_EXP_OK:
         LD      H, D                ;  1:4
         LD      E, (HL)             ;  1:7      lo mantisa       
         INC     H                   ;  1:4
-        OR      (HL)                ;  1:7
+        OR      (HL)                ;  1:7      hi mantisa
 FDIV_LD_D_A:
         LD      D, A                ;  1:4      sign & exp & hi mantisa
         ; DE = 1 / HL

@@ -86,21 +86,27 @@ FADDP_EQ_EXP:                       ;           HL exp = DE exp
 ; In: (BIT 7, D) = SIGN
 ; Out: HL = +- infinity
 FADDP_OVERFLOW:
+    if color_flow_warning
+        CALL    OVER_COL_WARNING    ;  3:17
+    endif
         RL      D                   ;  2:8
         JR      nc,  FADDP_OUT_FPMAX;  2:11/7
 
 FADDP_OUT_FMMAX:
         LD      HL, FMMAX           ;  3:10
-        SCF                         ;  1:4
+    if carry_flow_warning
+        SCF                         ;  1:4          carry = error
+    endif
         RET                         ;  1:10
 
 FADDP_OUT_FPMAX:
         LD      HL, FPMAX           ;  3:10
-        SCF                         ;  1:4
+    if carry_flow_warning
+        SCF                         ;  1:4          carry = error
+    endif
         RET                         ;  1:10
 
-if not defined @SRL_DE
     include "srl_de.asm"
-endif
+    include "color_flow_warning.asm"
 
 endif

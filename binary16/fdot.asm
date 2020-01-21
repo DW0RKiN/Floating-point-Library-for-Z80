@@ -30,10 +30,10 @@ endif
         INC     HL                  ;  1:6
         PUSH    HL                  ;  1:11     index DE
         PUSH    AF                  ;  1:11     dimensions
-if defined _printing && (_printing & _register) = _register
+    if defined print_register
         CALL    PRINT_DE
         CALL    PRINT_BC
-endif
+    endif
         CALL    FMUL                ;  3:17     (hl = de * bc)
 FDOT_OLD:
         LD      DE, $0000           ;  3:10

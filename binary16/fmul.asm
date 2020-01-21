@@ -150,10 +150,12 @@ FMUL_NO_CHANCE:
 FMUL_UNDERFLOW:
         LD      H, A                ;  1:4
         LD      L, $00              ;  2:7
-if defined _color_warning
+    if color_flow_warning
         CALL    UNDER_COL_WARNING   ;  3:17
-endif
-        SCF                         ;  1:4      carry = error
+    endif
+    if carry_flow_warning
+        SCF                         ;  1:4          carry = error
+    endif
         RET                         ;  1:10
      
      
@@ -164,12 +166,14 @@ FMUL_OVERFLOW_S:
 FMUL_OVERFLOW:
         LD      H, A                ;  1:4
         LD      L, $FF              ;  2:7
-if defined _color_warning
+    if color_flow_warning
         CALL    OVER_COL_WARNING    ;  3:17
-endif
-        SCF                         ;  1:4      carry = error
+    endif
+    if carry_flow_warning
+        SCF                         ;  1:4          carry = error
+    endif
         RET                         ;  1:10
 
-include "color_flow_warning.asm"
+    include "color_flow_warning.asm"
   
 endif

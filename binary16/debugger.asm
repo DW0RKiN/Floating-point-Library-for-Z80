@@ -1,9 +1,6 @@
 if not defined @DEBUG
 
-if not defined PRINT_XFP
     INCLUDE "print_fp.asm"
-    INCLUDE "print.asm"
-endif
 
 @DEBUG
 

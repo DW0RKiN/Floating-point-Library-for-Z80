@@ -14,10 +14,6 @@ if not defined FDOT_REC
                   FDOT_REC              ; *
 ; *****************************************
 endif
-
-if defined _printing && (_printing & _name_fce) = _name_fce
-        CALL    PRINT_TXT_FDOT
-endif
         PUSH    AF
         LD      C, (HL)
         INC     HL
@@ -28,10 +24,10 @@ endif
         INC     HL
         LD      D, (HL)
         PUSH    HL
-if defined _printing && (_printing & _register) = _register
+    if defined print_register
         CALL    PRINT_DE
         CALL    PRINT_BC
-endif
+    endif
         CALL    FMUL              ; HL = (DE*BC)
         LD      C, L
         LD      B, H

@@ -53,10 +53,12 @@ FDIV_UNDERFLOW:
 
 FDIV_POW2_UNDER:
         LD      L, $00              ;  2:7
-if defined _color_warning
+    if color_flow_warning
         CALL    UNDER_COL_WARNING   ;  3:17
-endif
+    endif
+    if carry_flow_warning
         SCF                         ;  1:4      carry = error
+    endif
         RET                         ;  1:10
 
 FDIV_POW2_OVER:
@@ -64,10 +66,12 @@ FDIV_POW2_OVER:
         LD      A, H                ;  1:4
         OR      $FF - SIGN_MASK     ;  2:7
         LD      H, A                ;  1:4
-if defined _color_warning
+    if color_flow_warning
         CALL    OVER_COL_WARNING   ;  3:17
-endif
+    endif
+    if carry_flow_warning
         SCF                         ;  1:4      carry = error
+    endif
         RET                         ;  1:10
      
 endif

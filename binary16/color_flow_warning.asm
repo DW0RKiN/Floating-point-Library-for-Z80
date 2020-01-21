@@ -1,4 +1,4 @@
-if not defined UNDER_COL_WARNING && defined _color_warning
+if color_flow_warning && not defined UNDER_COL_WARNING
 
 BORDER   EQU     8859               ; ROM border change permanent
 

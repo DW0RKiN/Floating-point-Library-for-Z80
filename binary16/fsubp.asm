@@ -1,9 +1,10 @@
 if not defined @FSUBP
 
+include "color_flow_warning.asm"
 
 ; Subtraction two floating-point numbers with the same signs
 ;  In: HL,DE numbers to add, no restrictions
-; Out: HL = HL + DE, if ( overflow or underflow) set carry
+; Out: HL = HL + DE, if ( carry_flow_warning && underflow ) set carry
 ; Pollutes: AF, C, DE
 ; -------------- HL - DE ---------------
 ; HL = (+HL) - (+DE) = (+HL) + (-DE)
@@ -22,6 +23,9 @@ endif
 ;  In: HL, DE numbers to add, no restrictions
 ; Out: HL = HL + DE
 ; Pollutes: AF, BC, DE
+; -------------- HL + DE ---------------
+; HL = (+HL) + (-DE)
+; HL = (-HL) + (+DE)
 FSUBP_FADD_OP_SGN:
 ;   abs(D)  >   abs(H)
 ; 1100 0000 - 0000 0100 = $0C0 - $04 = $BC = 1011 1100
@@ -123,7 +127,12 @@ FSUBP_UNDERFLOW:
         AND     SIGN_MASK           ;  2:7
         LD      H, A                ;  1:4
         LD      L, $00              ;  2:7
-        SCF                         ;  1:4
+    if color_flow_warning
+        CALL    UNDER_COL_WARNING   ;  3:17
+    endif
+    if carry_flow_warning
+        SCF                         ;  1:4      carry = error
+    endif        
         RET                         ;  1:10
         
 ; $6C00 - $3C12 = $6BFF !!!
