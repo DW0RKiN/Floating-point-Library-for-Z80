@@ -28,115 +28,89 @@ if not defined FMOD
 ; *****************************************
 endif        
 
-        CALL    FCOMP               ;           BC - HL
+        CALL    FCOMP               ;           flag: abs(BC) - abs(HL), BC = abs(BC)
         JP      z, FMOD_UNDERFLOW   ;
         JR      nc, FMOD_BC_GR      ;
         LD      H, B                ;   
         LD      L, C                ;
         RET                         ;   
 FMOD_BC_GR:
-        EX      DE, HL              ;
-        LD      H, B                ;
-        LD      L, C                ;           HL % DE
+        LD      D, B                ;
+        LD      E, C                ;           HL = DE % HL
+
+        LD      A, H                ;
+        AND     EXP_MASK            ;  2:7
+        LD      B, A                ;
 
         LD      A, D                ;
-        AND     EXP_MASK            ;
-        LD      B, A                ;
-
-        LD      A, H                ;
-        AND     EXP_MASK            ;
+        AND     EXP_MASK            ;  2:7
         SUB     B                   ;
-        RRCA                        ;
-        RRCA                        ;
-        LD      C, A                ;
+        LD      C, A                ;           C = ( D_Exp - H_exp )
 
-        LD      A, H                ;
-        AND     SIGN_MASK           ;
-        OR      B                   ;
-        LD      B, A                ;
-        
-        LD      A, $02              ;  2:7
-        RR      H                   ;
-        RR      L                   ;
-        RRA                         ;           reset carry
-        RR      H                   ;
-        RR      L                   ;
-        RRA                         ;           set carry
-        LD      H, L                ;
-        RR      H                   ;
-        RRA                         ;
-        LD      L, A                ;           HL = 1mmm mmmm mmm0 0000
-        
-        LD      A, $02              ;  2:7
-        RR      D                   ;
-        RR      E                   ;
-        RRA                         ;           reset carry
-        RR      D                   ;
-        RR      E                   ;
-        RRA                         ;           set carry
-        LD      D, E                ;
-        RR      D                   ;
-        RRA                         ;
-        LD      E, A                ;           DE = 1mmm mmmm mmm0 0000
-        
-        JR      FMOD_SUB            ;
-FMOD_BACK:
-        ADD     HL, DE              ;
-FMOD_SRL_DE:        
-        SRL     D                   ;
-        RR      E                   ;
+        LD      A, D                ;
+        SUB     C                   ;  1:4
+        AND     $FF - MANT_MASK_HI  ;  2:7
+        LD      B, A                ;  1:4      B = D_sign + H_exp
 
-FMOD_SUB:                           ;           HL - DE
-if 0
-        LD      A, H
-        CP      D
-        JR      c, FMOD_SRL_DE      ;
-else
-        OR      A                   ;
-endif
-        SBC     HL, DE              ;
-        JR      c, FMOD_BACK        ;
-        RET     z                   ;           FPMIN
+        ADD     HL, HL              ;  1:11
+        ADD     HL, HL              ;  1:11
+        ADD     HL, HL              ;  1:11
+        ADD     HL, HL              ;  1:11
+        ADD     HL, HL              ;  1:11
+        SET     7, H                ;  2:8      HL = 0 1mmm mmmm mmm0 0000
 
-FMOD_SHIFT_HL:
-        DEC     C                   ;
-        ADC     HL, HL              ;
-        JP      p, FMOD_SHIFT_HL    ;
-        
-        LD      A, D                ;  1:4
-        ADD     A, A                ;  1:4
-        JR      c, FMOD_DE_OK       ;  2:12/7
-        SLA     E                   ;  2:8
-        RL      D                   ;  2:8
-FMOD_DE_OK:
+        EX      DE, HL              ;  1:4      HL = HL % DE
+
+        XOR     A                   ;  1:4
+        RR      H                   ;  2:8
+        RR      L                   ;  2:8
+        RRA                         ;  1:4
+        RR      H                   ;  2:8
+        RR      L                   ;  2:8
+        RRA                         ;  1:4
+        LD      H, L                ;  1:4
+        LD      L, A                ;  1:4      HL = 1 mmmm mmmm mm00 0000
 
         LD      A, C                ;
+        LD      C, EXP_PLUS_ONE     ;  2:7
         OR      A                   ;
         JP      z, FMOD_SAME_EXP    ;
+FMOD_SUB:                           ;           HL - DE
+        SBC     HL, DE              ;  2:15     HL = HL - DE/2
+        JR      nc, FMOD_SUB        ;  3:10
+        RET     z                   ;  1:5/11   FPMIN
+
+FMOD_SHIFT_HL:
+        SUB     C                   ;  1:4      exp--
+        ADD     HL, HL              ;  1:11
+        JP      nc, FMOD_SHIFT_HL   ;  3:10
+        
+        OR      A                   ;
+        JR      z, FMOD_SAME_EXP    ;  2:7/12
         JP      p, FMOD_SUB         ;
         
-        ADD     A, A                ;           -2x
-        ADD     A, A                ;           -4x
         ADD     A, B                ;
         XOR     B                   ;
         JP      m, FMOD_UNDERFLOW   ;
         XOR     B                   ;
         LD      B, A                ;
 
-FMOD_NORM:                          ;           HL  = 1mmm mmmm mmmm mmmm
-        ADD     HL, HL              ;           HL  = mmmm mmmm mmmm mmm0
-        ADD     HL, HL              ;           HL  = mmmm mmmm mmmm mm00
-        LD      A, $00              ;
-        ADC     A, A                ;           AHL = 0000 000m mmmm mmmm mmmm mm00
-        ADD     HL, HL              ;            HL = mmmm mmmm mmmm m000
-        ADC     A, A                ;           AHL = 0000 00mm mmmm mmmm mmmm m000
-        OR      B                   ;           RET with reset carry
-        LD      L, H                ;
-        LD      H, A                ;
-        RET                         ;
+FMOD_NORM:                          ;           HL = mmmm mmmm mmm0 0000
+        XOR     A                   ;  1:4
+        ADD     HL, HL              ;  1:11     HL = mmmm mmmm mm00 0000
+        ADC     A, A                ;  1:4       A = 0000 000m
+        ADD     HL, HL              ;  1:11     HL = mmmm mmmm m000 0000
+        ADC     A, A                ;  1:4       A = 0000 00mm
+        OR      B                   ;  1:4      RET with reset carry
+        LD      L, H                ;  1:4
+        LD      H, A                ;  1:4
+        RET                         ;  1:10
 
 FMOD_SAME_EXP:
-        SBC     HL, DE              ;
+        SLA     E                   ;  2:8
+        RL      D                   ;  2:8      DE = 1mmm mmmm mmm0 0000
+        OR      A                   ;  1:4
+        SBC     HL, DE              ;  2:15
         RET     z                   ;           FPMIN
 
         JR      nc, FMOD_SHIFT_HL   ;
