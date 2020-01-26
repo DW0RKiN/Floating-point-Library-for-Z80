@@ -51,6 +51,7 @@ Rounding of lost bits is (no matter what the sign):
     
 finit.asm should be included as the first file.
 
-If a math operation needs to include another operation, it will do it itself.  Data files (* .tab) must be included manually. They must be aligned to the address divisible by 256.
+If a math operation needs to include another operation, it will do it itself.  
+Data files ( *.tab ) must be included manually. They must be aligned to the address divisible by 256.
 
 The fdiv operation has lower precision, where the lowest bit of the mantissa may not be valid.
