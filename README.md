@@ -71,7 +71,7 @@ The fdiv operation has lower precision, where the lowest bit of the mantissa may
     call  fsqrt ; HL = HL ^ 0.5
 
     call  fwld  ; HL = unsigned word HL * 1.0
-    call  fbld  ; HL = unsigned char A * 1.0
+    call  fbld  ; DE = unsigned char A * 1.0
 
     Macros:
     
