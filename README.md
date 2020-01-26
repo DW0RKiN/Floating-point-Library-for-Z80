@@ -51,7 +51,29 @@ Rounding of lost bits is (no matter what the sign):
     
 finit.asm should be included as the first file.
 
-If a math operation needs to include another operation, it will do it itself.  
-Data files ( *.tab ) must be included manually. They must be aligned to the address divisible by 256.
+If a math operation needs to include another operation, it will do it itself.
+Data files ( *.tab ) must be included manually. 
+They must be aligned to the address divisible by 256.
 
 The fdiv operation has lower precision, where the lowest bit of the mantissa may not be valid.
+
+    call  fadd  ; HL = HL + DE
+    call  faddp ; HL = HL + DE, HL and DE have the same signs
+    call  fsub  ; HL = HL - DE, HL and DE have the same signs 
+    call  fsubp ; HL = HL - DE
+
+    call  fmul  ; HL = BC * DE
+    call  fdiv  ; HL = BC / HL
+    call  fmod  ; HL = BC % HL
+
+    call  fpow2 ; HL = HL * HL
+    call  frac  ; HL = HL % 1
+    call  fsqrt ; HL = HL ^ 0.5
+
+    call  fwld  ; HL = unsigned word HL * 1.0
+    call  fbld  ; HL = unsigned char A * 1.0
+
+    Macros:
+    
+    ftst  H, L  ; if (HL >= 0) set zero;
+    fmul2 H, L  ; HL = 2 * HL
