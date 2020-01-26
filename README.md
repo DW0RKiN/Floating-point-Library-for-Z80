@@ -59,8 +59,8 @@ The fdiv operation has lower precision, where the lowest bit of the mantissa may
 
     call  fadd  ; HL = HL + DE
     call  faddp ; HL = HL + DE, HL and DE have the same signs
-    call  fsub  ; HL = HL - DE, HL and DE have the same signs 
-    call  fsubp ; HL = HL - DE
+    call  fsub  ; HL = HL - DE
+    call  fsubp ; HL = HL - DE, HL and DE have the same signs
 
     call  fmul  ; HL = BC * DE
     call  fdiv  ; HL = BC / HL
