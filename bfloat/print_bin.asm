@@ -10,10 +10,9 @@ PRINT_BIN:
         PUSH    HL                  ;  1:11
                 
         SLA     L                   ;  2:8      Sign        
-        LD      A, $0B              ;  2:7      11
-        ADC     A, A                ;  1:4      22 ($16), 23 ($17)
-        ADD     A, A                ;  1:4      44 ($2C), 46 ($2E)
-        DEC     A                   ;  1:4      43 ($2B = '+'), 45 ($2D = '-')
+        LD      A, $A1              ;  2:7
+        ADC     A, $80              ;  2:7      $21, $22
+        RLA                         ;  1:4      $43 = '+', $45 = '-'
         LD      (PRINT_BIN_STR), A  ;  3:13
 
 PRINT_BIN_READ_EXP:
@@ -35,14 +34,12 @@ PRINT_BIN_PEXP:
         CALL    A_DIV_B             ;  3:17
         ADD     A, '0'              ;  2:7
         LD      (HL), A             ;  1:7
-        
-        EX      DE, HL              ;  1:4
-        
-        LD      DE, PRINT_BIN_MAN_0 ;  3:10
+                
+        LD      HL, PRINT_BIN_MAN_0 ;  3:10
         LD      B, $04              ;  2:7
         CALL    PRINT_BIN_MANTISSA  ;  3:17
 
-        LD      DE, PRINT_BIN_MAN_4 ;  3:10
+        LD      HL, PRINT_BIN_MAN_4 ;  3:10
         LD      B, MANT_BITS-$04    ;  2:7
         CALL    PRINT_BIN_MANTISSA  ;  3:17
 
@@ -61,14 +58,14 @@ PRINT_BIN_PEXP:
         RET                         ;  1:10
 
 
-; In: DE Address, B number bits, HL source
+; In: HL Address, B number bits, E source
 ; Out: DE += B, B = 0
 PRINT_BIN_MANTISSA:
         XOR     A                   ;  1:4
-        SLA     L                   ;  2:8
+        SLA     E                   ;  2:8
         ADC     A, '0'              ;  2:7
-        LD      (DE), A             ;  3:10
-        INC     DE                  ;  1:6
+        LD      (HL), A             ;  1:7
+        INC     HL                  ;  1:6
         DJNZ    PRINT_BIN_MANTISSA  ;  2:13/8
         RET                         ;  1:10
 

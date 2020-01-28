@@ -10,10 +10,10 @@ MANT_BITS           EQU 7
 MANT_MASK           EQU $007F
 MANT_XOR            EQU $FF - MANT_MASK
 
-BIT_ALWAYS_ONE      EQU 2
+BIT_ALWAYS_ONE      EQU 7
 
-SIGN_MASK           EQU $0080
-SIGN_XOR            EQU $FFFF - SIGN_MASK
+SIGN_MASK           EQU $80
+SIGN_XOR            EQU $FF - SIGN_MASK
 SIGN_BIT            EQU 7
 
 EXP_BITS            EQU 8

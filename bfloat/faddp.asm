@@ -104,9 +104,14 @@ FADDP_OVERFLOW:
         DEC     H                   ;  1:4      $00 => $FF
         OR      SIGN_XOR            ;  2:7
         LD      L, A                ;  1:4
-if defined _test_over
-        SCF                         ;  1:4      set carry = error
-endif
+    if color_flow_warning
+        CALL    OVER_COL_WARNING    ;  3:17
+    endif
+    if defined _test_over
+        SCF                         ;  1:4      carry = error
+    endif
         RET                         ;  1:10
 
+    include "color_flow_warning.asm"
+    
 endif

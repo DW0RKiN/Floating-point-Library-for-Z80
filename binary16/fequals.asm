@@ -18,7 +18,7 @@ FEQUALS:                            ; HL == BC?
         LD      A, COL_GREEN
         RET     z
 
-; HL = seee eemm smmm mmmm
+; HL = seee eemm mmmm mmmm
 FEQUALS_PLUS:                       ;           HL + rounding == BC?
         INC     HL                  ;  1:6
         LD      A, L                ;  1:4       

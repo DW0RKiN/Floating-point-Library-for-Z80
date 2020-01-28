@@ -12,7 +12,7 @@ MANT_MASK_HI        EQU $03
 BIT_ALWAYS_ONE      EQU 2
 
 SIGN_MASK           EQU $80
-SIGN_BIT            EQU 7
+SIGN_BIT            EQU $0F
 
 EXP_BITS            EQU 5
 EXP_MASK            EQU $7C
