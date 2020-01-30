@@ -18,7 +18,7 @@ EXP_BITS            EQU 5
 EXP_MASK            EQU $7C
 EXP_PLUS_ONE        EQU $04
 
-BIAS                EQU $3C     ; 60 = 0011 1100
+BIAS                EQU $3C     ; 60 = 0011 1100  ( BIAS / EXP_PLUS_ONE = $0F )
 
 ; floating point constants
 FM256           EQU $dc00   ; -2.560000e+02 sign(1=$8000) exp(  8=$5C00) mantisa(   0=$000)

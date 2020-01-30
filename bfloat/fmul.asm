@@ -2,7 +2,7 @@ if not defined @FMUL
 
         ; continue from @FDIV (if it was included)
 
-; Floating-point multiplication of positive numbers
+; Floating-point multiplication
 ;  In: DE, BC multiplicands
 ; Out: HL = BC * DE, if ( carry_flow_warning && (overflow || underflow )) set carry;
 ; Pollutes: AF, BC, DE

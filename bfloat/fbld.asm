@@ -11,12 +11,14 @@ if not defined FBLD
 ; *****************************************
 endif
 if 1
-        LD      D, BIAS+7           ;  2:7
+        FBLD_D  EQU     BIAS+7
+        LD      D, FBLD_D           ;  2:7
 FBLD_X:
         ADD     A, A                ;  1:4
         JR      c, FBLD_ALIGNED     ;  2:11/7
 else
-        LD      D, BIAS+8           ;  2:7
+        FBLD_D  EQU     BIAS+8
+        LD      D, FBLD_D           ;  2:7
 FBLD_X:
         OR      A, A                ;  1:4
 endif

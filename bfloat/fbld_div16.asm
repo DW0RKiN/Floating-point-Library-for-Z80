@@ -12,7 +12,7 @@ if not defined FBLD_DIV16
                   FBLD_DIV16              ; *
 ; *****************************************
 endif
-        LD      D, BIAS+7-4
+        LD      D, FBLD_D-4
         JR      FBLD_X        
 
 endif

@@ -10,7 +10,8 @@ if not defined FBLD
                     FBLD                ; *
 ; *****************************************
 endif
-        LD      D, 23               ;  2:7
+        FBLD_D  EQU     BIAS+8
+        LD      D, FBLD_D           ;  2:7
 FBLD_X:
         OR      A                   ;  1:4
         JR      z, FBLD_OUT_ZERO    ;  2:11/7   zero converted to positive epsilon

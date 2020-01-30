@@ -12,7 +12,7 @@ if not defined FBLD_DIV2
                   FBLD_DIV2               ; *
 ; *****************************************
 endif
-        LD      D, 23-1
+        LD      D, FBLD_D-1
         JR      FBLD_X        
 
 endif

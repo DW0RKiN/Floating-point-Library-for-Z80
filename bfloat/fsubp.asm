@@ -201,9 +201,9 @@ FSUBP_TOOBIG:
 
 
         LD      A, L                ;  1:4
-if defined _test_over
+if carry_flow_warning
         AND     MANT_MASK           ;  2:7
-        RET     z                   ;  1:11/5   HL_mant > 1.0           => HL - DE = HL
+        RET     nz                  ;  1:11/5   HL_mant > 1.0           => HL - DE = HL
 
         LD      A, L                ;  1:4
         OR      MANT_MASK           ;  2:7
