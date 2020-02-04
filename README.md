@@ -6,6 +6,8 @@ bfloat
 ======
 https://en.wikipedia.org/wiki/Bfloat16_floating-point_format
 
+![Ray tracing using bfloat](https://github.com/DW0RKiN/Floating-point-Library-for-Z80/blob/master/bfloat.png)
+
     FEDC BA98 7654 3210                  
     eeee eeee Smmm mmmm
 
@@ -25,6 +27,8 @@ danagy
 ======
 https://github.com/nagydani/lpfp
 
+![Ray tracing using danagy](https://github.com/DW0RKiN/Floating-point-Library-for-Z80/blob/master/danagy.png)
+
     FEDC BA98 7654 3210                  
     Seee eeee mmmm mmmm
 
@@ -42,6 +46,8 @@ floating-point number = (-1)^S * 2^(eee eeee - BIAS) * ( 256 + mmmm mmmm) / 256
 binary16
 ========
 https://en.wikipedia.org/wiki/Half-precision_floating-point_format
+
+![Ray tracing using binary16](https://github.com/DW0RKiN/Floating-point-Library-for-Z80/blob/master/binary16.png)
 
     FEDC BA98 7654 3210                  
     Seee eemm mmmm mmmm
