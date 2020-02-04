@@ -57,25 +57,26 @@ They must be aligned to the address divisible by 256.
 
 The fdiv operation has lower precision, where the lowest bit of the mantissa may not be valid.
 
-    call  fadd  ; HL = HL + DE
-    call  faddp ; HL = HL + DE, HL and DE have the same signs
-    call  fsub  ; HL = HL - DE
-    call  fsubp ; HL = HL - DE, HL and DE have the same signs
+    call  fadd          ; HL = HL + DE
+    call  faddp         ; HL = HL + DE, HL and DE have the same signs
+    call  fsub          ; HL = HL - DE
+    call  fsubp         ; HL = HL - DE, HL and DE have the same signs
 
-    call  fmul  ; HL = BC * DE
-    call  fdiv  ; HL = BC / HL
-    call  fmod  ; HL = BC % HL
+    call  fmul          ; HL = BC * DE
+    call  fdiv          ; HL = BC / HL
+    call  fmod          ; HL = BC % HL
 
-    call  fpow2 ; HL = HL * HL
-    call  fsqrt ; HL = HL ^ 0.5
+    call  fpow2         ; HL = HL * HL
+    call  fsqrt         ; HL = HL ^ 0.5
 
-    call  frac  ; HL = HL % 1
-    call  fint  ; HL = truncate(HL) * 1.0 = HL - ( HL % 1 )
+    call  frac          ; HL = HL % 1
+    call  fint          ; HL = truncate(HL) * 1.0 = HL - ( HL % 1 )
 
-    call  fwld  ; HL = unsigned word HL * 1.0
-    call  fbld  ; DE = unsigned char A * 1.0
+    call  fwld          ; HL = unsigned word HL * 1.0
+    call  fbld          ; DE = unsigned char A * 1.0
 
-    Macros:
+    Macros (must be included before first use):
     
-    ftst  H, L  ; if (HL >= 0) set zero;
-    fmul2 H, L  ; HL = 2 * HL
+    ftst  H, L          ; if (HL >= 0) set zero;
+    fmul2 H, L          ; HL = 2 * HL
+    forsgn H, L, D, E   ; (BIT 7, A) = HL_sign or DE_sign
