@@ -4,6 +4,7 @@ Floating-Point Arithmetic Library for Z80
 
 bfloat
 ======
+https://en.wikipedia.org/wiki/Bfloat16_floating-point_format
 
     FEDC BA98 7654 3210                  
     eeee eeee Smmm mmmm
@@ -20,8 +21,27 @@ floating-point number = (-1)^S * 2^(eeee eeee - BIAS) * ( 128 + mmm mmmm) / 128
 
 Sign position is moved from the original.
 
+danagy 
+======
+https://github.com/nagydani/lpfp
+
+    FEDC BA98 7654 3210                  
+    Seee eeee mmmm mmmm
+
+    S (bit[F]):     Sign bit
+    e (bits[E:8]):  Biased exponent
+    m (bits[7:0]):  Fraction
+
+    BIAS = $40 = 64
+    MIN = 2^-64 * 1 = 5.421010862427522170037264×10⁻²⁰
+    MAX = 2^+63 * 1.99609375 = 1.8410715276690587648×10¹⁹
+
+floating-point number = (-1)^S * 2^(eee eeee - BIAS) * ( 256 + mmmm mmmm) / 256
+
+
 binary16
 ========
+https://en.wikipedia.org/wiki/Half-precision_floating-point_format
 
     FEDC BA98 7654 3210                  
     Seee eemm mmmm mmmm
