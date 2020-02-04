@@ -3,26 +3,23 @@ if not defined @FINT
 ; Round towards zero
 ; In: HL any floating-point number
 ; Out: HL same number rounded towards zero
-; Pollutes: AF,B
+; Pollutes: AF, B
 @FINT:
 if not defined FINT
 ; *****************************************
                     FINT                ; *
 ; *****************************************
 endif
-        LD      A, H                ;
-        SUB     BIAS                ;
+        LD      A, H                ;  1:4
+        SUB     BIAS                ;  2:7
 if defined FRAC_ZERO
-        JR      c, FRAC_ZERO        ;           Already integer
+        JR      c, FRAC_ZERO        ;  2:12/7   Completely fractional
 else
-        JR      c, FINT_ZERO        ;           Already integer
+        JR      c, FINT_ZERO        ;  2:12/7   Completely fractional
 endif
-
-        JR      c, FINT_ZERO        ;           Completely fractional
-FINT_NEXT:
-        SUB     MANT_BITS
-        RET     nc                  ;           Already integer
-        NEG                         ;  2:8
+        SUB     MANT_BITS           ;  2:7
+        RET     nc                  ;  1:11/5   Already integer
+        NEG                         ;  2:8      1..7
 
         LD      B, A                ;  1:4
         LD      A, $FF              ;  2:7

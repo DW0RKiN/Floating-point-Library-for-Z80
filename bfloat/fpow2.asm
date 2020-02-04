@@ -40,24 +40,40 @@ endif
         LD      L, (HL)             ;  1:7
         JR      c, FPOW2_HI         ;  2:12/7
 
-        SUB     BIAS
-        LD      H, A
-        RET     nc
+        SUB     BIAS                ;  2:7
+        LD      H, A                ;  1:4
+        RET     nc                  ;  1:11/5
 
 FPOW2_UNDERFLOW:
-        LD      HL, FPMIN
-        RET
+        LD      HL, FPMIN           ;  3:10
+    if color_flow_warning
+        CALL    UNDER_COL_WARNING   ;  3:17
+    endif
+        RET                         ;  1:10
                 
 FPOW2_HI:
-        SUB     BIAS
-        LD      H, A
-        RET     c
+        SUB     BIAS                ;  2:7
+        LD      H, A                ;  1:4
+    if carry_flow_warning
+        CCF                         ;  1:4
+        RET     nc                  ;  1:11/5
+    else
+        RET     c                   ;  1:11/5
+    endif
+
 
 FPOW2_OVERFLOW:
-        LD      HL, FPMAX
-        RET
+        LD      HL, FPMAX           ;  3:10
+    if color_flow_warning
+        CALL    OVER_COL_WARNING    ;  3:17
+    endif
+    if carry_flow_warning
+        SCF                         ;  1:4
+    endif
+        RET                         ;  1:10
 
 
+if defined FMUL
 ; Power 2 of a floating-point number
 ; In: HL = number to square
 ; Out: HL = HL * HL
@@ -72,5 +88,6 @@ FPOW2_USE_FMUL:
         POP     DE                  ;  1:10
         POP     BC                  ;  1:10
         RET
-        
+endif
+
 endif

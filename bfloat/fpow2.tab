@@ -1,10 +1,7 @@
-IF NOT DEFINED _POW2_TAB
+if not defined POW2TAB
 
 ; Align to 256-byte page boundary
 DEFS    (($ + $FF) / $100) * $100 - $
-
-
-_POW2_TAB   EQU 1
 
 ; Mantissas of power 2
 ; e = 2*exp
@@ -30,4 +27,4 @@ PREDEL_POW2      EQU $34
 ; mantisa $35..$7F (53..127)	 --> 2*exp+1
 
 
-ENDIF
+endif

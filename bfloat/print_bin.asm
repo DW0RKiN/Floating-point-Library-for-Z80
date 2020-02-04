@@ -10,9 +10,9 @@ PRINT_BIN:
         PUSH    HL                  ;  1:11
                 
         SLA     L                   ;  2:8      Sign        
-        LD      A, $A1              ;  2:7
-        ADC     A, $80              ;  2:7      $21, $22
-        RLA                         ;  1:4      $43 = '+', $45 = '-'
+        LD      A, $95              ;  2:7
+        ADC     A, $00              ;  2:7      $95, $96
+        RLCA                        ;  1:4      $2B = '+', $2D = '-'
         LD      (PRINT_BIN_STR), A  ;  3:13
 
 PRINT_BIN_READ_EXP:

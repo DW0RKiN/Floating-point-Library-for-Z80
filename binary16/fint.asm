@@ -14,7 +14,7 @@ endif
         AND     EXP_MASK            ;  2:7
         SUB     BIAS                ;  2:7
         JR      c, FINT_ZERO        ;  2:11/7   Completely fractional
-FINT_NEXT:
+
         RRCA                        ;  1:4
         RRCA                        ;  1:4
         SUB     MANT_BITS           ;  2:7      0..16 - 10

@@ -10,7 +10,7 @@ if not defined FBLD
                     FBLD                ; *
 ; *****************************************
 endif
-        FBLD_D  EQU     BIAS+8
+        FBLD_D EQU BIAS/EXP_PLUS_ONE+8 ;
         LD      D, FBLD_D           ;  2:7
 FBLD_X:
         OR      A                   ;  1:4

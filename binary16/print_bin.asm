@@ -10,9 +10,9 @@ PRINT_BIN:
         PUSH    HL                  ;  1:11
                 
         ADD     HL, HL              ;  1:11     Sign        
-        LD      A, $A1              ;  2:7
-        ADC     A, $80              ;  2:7      $21, $22
-        RLA                         ;  1:4      $43 = '+', $45 = '-'
+        LD      A, $95              ;  2:7
+        ADC     A, $00              ;  2:7      $95, $96
+        RLCA                        ;  1:4      $2B = '+', $2D = '-'
         LD      (PRINT_BIN_STR), A  ;  3:13
 
         XOR     A                   ;  1:4
@@ -25,7 +25,7 @@ PRINT_BIN_READ_EXP:
         EX      DE, HL              ;  1:4      Save HL
         LD      HL, PRINT_BIN_EXP   ;  3:10
         LD      (HL), '+'           ;  2:10     $2B
-        SUB     BIAS / $04          ;  2:7
+        SUB     BIAS / EXP_PLUS_ONE ;  2:7
         JR      nc, PRINT_BIN_PEXP  ;  2:12/7
         LD      (HL), '-'           ;  2:10     $2D
         NEG                         ;  2:8

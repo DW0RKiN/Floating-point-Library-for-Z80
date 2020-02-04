@@ -1,8 +1,5 @@
 if not defined @FMOD
 
-    include "fint.asm"
-    include "fdiv.asm"
-
 ;  Input: HL, BC
 ; Output: HL = abs(HL), flag => abs(BC) - abs(HL)
 FCOMP:
@@ -106,5 +103,7 @@ FMOD_UNDERFLOW:
         SCF                         ;  1:4      carry = error
     endif        
         RET
+        
+    include "color_flow_warning.asm"
 
 endif

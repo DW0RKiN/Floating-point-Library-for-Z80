@@ -3,21 +3,21 @@ if not defined @FRAC
 ; Fractional part, remainder after division by 1
 ;  In: HL any floating-point number
 ; Out: HL fractional part, with sign intact
-; Pollutes: AF
+; Pollutes: AF, B
 @FRAC:
 if not defined FRAC
 ; *****************************************
                     FRAC                ; *
 ; *****************************************
 endif
-        LD      A, H
-        CP      BIAS + MANT_BITS
+        LD      A, H                ;
+        CP      BIAS + MANT_BITS    ;
 if defined FINT_ZERO
         JR      nc, FINT_ZERO       ;           Already integer
 else
         JR      nc, FRAC_ZERO       ;           Already integer
 endif
-        SUB     BIAS
+        SUB     BIAS                ;
         RET     c                   ;           Pure fraction
 
         INC     A                   ; 1:4       2^0*1.xxx > 1
@@ -29,11 +29,11 @@ FRAC_LOOP:                          ;           odmazani mantisy pred plovouci r
         ADD     A, A                ; 1:4
         DJNZ    FRAC_LOOP           ; 2:13/8
 
-        JR      c, FRAC_SIGN
+        JR      c, FRAC_SIGN        ;
 if defined FINT_ZERO
-        JR      z, FINT_ZERO
+        JR      z, FINT_ZERO        ;
 else
-        JR      z, FRAC_ZERO
+        JR      z, FRAC_ZERO        ;
 endif
                     
 FRAC_LOOP2:                         ;           normalizace cisla
@@ -50,7 +50,7 @@ FRAC_SIGN:
 if not defined FINT_ZERO        
 FRAC_ZERO:
         LD      HL, FPMIN           ; -0???
-        RET
+        RET                         ;
 endif
 
 endif
