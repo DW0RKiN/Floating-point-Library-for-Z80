@@ -15,18 +15,18 @@ if 1
         LD      D, FBLD_D           ;  2:7
 FBLD_X:
         ADD     A, A                ;  1:4
-        JR      c, FBLD_ALIGNED     ;  2:11/7
+        JR      c, FBLD_ALIGNED     ;  2:12/7
 else
         FBLD_D  EQU     BIAS+8
         LD      D, FBLD_D           ;  2:7
 FBLD_X:
         OR      A, A                ;  1:4
 endif
-        JR      z, FBLD_OUT_ZERO    ;  2:11/7       zero converted to positive epsilon
+        JR      z, FBLD_OUT_ZERO    ;  2:12/7       zero converted to positive epsilon
 FBLD_LOOP:
         DEC     D                   ;  1:4
         ADD     A, A                ;  1:4
-        JR      nc, FBLD_LOOP       ;  2:11/7
+        JR      nc, FBLD_LOOP       ;  2:12/7
 FBLD_ALIGNED:
         RRCA                        ;  1:4
         LD      E, A                ;  1:4

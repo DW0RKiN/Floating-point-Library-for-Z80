@@ -13,7 +13,7 @@ endif
         LD      A, H                ;  1:4
         AND     EXP_MASK            ;  2:7
         SUB     BIAS                ;  2:7
-        JR      c, FINT_ZERO        ;  2:11/7   Completely fractional
+        JR      c, FINT_ZERO        ;  2:12/7   Completely fractional
 
         RRCA                        ;  1:4
         RRCA                        ;  1:4
@@ -22,7 +22,7 @@ endif
         NEG                         ;  2:8      1..9
         
         CP      8                   ;  2:7
-        JR      nc, FINT_LO_ZERO    ;  2:11/7
+        JR      nc, FINT_LO_ZERO    ;  2:12/7
         LD      B, A                ;  1:4      1..7
         LD      A, $FF              ;  2:7
 FINT_LOOP:

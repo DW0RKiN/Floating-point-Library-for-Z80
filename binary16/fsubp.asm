@@ -74,7 +74,7 @@ FSUBP_HL_GR:
         ADD     HL, HL              ;  1:11     HL = 0000 0mmm mmmm mmm0, rounding
         ADD     HL, HL              ;  1:11     HL = 0000 mmmm mmmm mm00, rounding
         SBC     HL, DE              ;  2:15
-        JR      c, FSUBP_NEXT       ;  2:11/7
+        JR      c, FSUBP_NEXT       ;  2:12/7
                                     ;           HL = 0000 mmmm mmmm mmmm
         INC     HL                  ;  1:6      rounding  (...mm00 - DE + 1 =< 1 1111 1111 1100 + 1)
         LD      A, H                ;  1:4

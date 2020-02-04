@@ -45,7 +45,7 @@ FDOT_CALL_FADD:
         POP     AF                  ;  1:10     dimensions
         POP     DE                  ;  1:10     index DE
         DEC     A                   ;  1:4      dimensions--
-        JR      nz, FDOT_LOOP       ;  2:11/7
+        JR      nz, FDOT_LOOP       ;  2:12/7
 
         INC     A                   ;  1:4      opcode ld bc, **
         LD      (FDOT_CALL_FADD), A ;  3:13

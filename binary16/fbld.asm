@@ -14,12 +14,12 @@ endif
         LD      D, FBLD_D           ;  2:7
 FBLD_X:
         OR      A                   ;  1:4
-        JR      z, FBLD_OUT_ZERO    ;  2:11/7   zero converted to positive epsilon
+        JR      z, FBLD_OUT_ZERO    ;  2:12/7   zero converted to positive epsilon
         EX      DE, HL              ;  1:4      save HL
 FBLD_LOOP:
         ADD     A, A                ;  1:4
         DEC     H                   ;  1:4
-        JR      nc, FBLD_LOOP       ;  2:11/7
+        JR      nc, FBLD_LOOP       ;  2:12/7
         LD      L, A                ;  1:4
         ADD     HL, HL              ;  1:11
         ADD     HL, HL              ;  1:11

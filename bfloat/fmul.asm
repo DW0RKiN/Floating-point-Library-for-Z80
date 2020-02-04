@@ -46,7 +46,7 @@ endif
         JR      nc, FMUL_NEXT       ;  2:12/7
         
         INC     A                   ;  1:4          $FF => $00?
-        JR      nz, FMULP_UNDERFLOW ;  2:11/7       no chance        
+        JR      nz, FMULP_UNDERFLOW ;  2:12/7       no chance        
         INC     D                   ;  1:4
         CALL    FMUL                ;  3:17         recursion
         DEC     H                   ;  1:4

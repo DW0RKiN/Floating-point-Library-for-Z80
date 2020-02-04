@@ -90,7 +90,7 @@ FADDP_OVERFLOW:
         CALL    OVER_COL_WARNING    ;  3:17
     endif
         RL      D                   ;  2:8
-        JR      nc,  FADDP_OUT_FPMAX;  2:11/7
+        JR      nc,  FADDP_OUT_FPMAX;  2:12/7
 
 FADDP_OUT_FMMAX:
         LD      HL, FMMAX           ;  3:10

@@ -38,7 +38,7 @@ FADDP_STOP:
         LD      A, L                ;  1:4
         ADD     A, A                ;  1:4      A = 01 mmmm mmm0, kvuli zaokrouhleni potrebujeme znat hodnotu prvniho bitu za desetinou carkou 
         ADD     A, E                ;  1:4      soucet mantis
-        JR      nc, FADDP_SAME_EXP  ;  2:11/7
+        JR      nc, FADDP_SAME_EXP  ;  2:12/7
                                     ;           A = 10 mmmm mmri, r = rounding bit, i = ignored bit, carry = 1 :(
         ADD     A, $02              ;  2:7      rounding
         RRA                         ;  1:4      A = 01 cmmm mmmr
@@ -73,7 +73,7 @@ if 1
         JR      FADDP_OVERFLOW      ;  2:12        
 else
         INC     A                   ;  1:4      rounding
-        JR      z, FADDP_EXP_PLUS   ;  2:11/7   A = 10 0000 0000 && carry = 0
+        JR      z, FADDP_EXP_PLUS   ;  2:12/7   A = 10 0000 0000 && carry = 0
         
         RL      L                   ;  2:8      sign out
         RRA                         ;  1:4      sign in && shift       

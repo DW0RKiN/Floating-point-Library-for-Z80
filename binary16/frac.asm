@@ -34,7 +34,7 @@ FRAC_NORMALIZE:
         AND     MANT_MASK_HI        ;  2:7
         LD      H, A                ;  1:4
         OR      L                   ;  1:7
-        JR      z, FRAC_MANT_ZERO   ;  2:11/7
+        JR      z, FRAC_MANT_ZERO   ;  2:12/7
                  
         LD      A, MANT_MASK_HI     ;  2:7
 FRAC_LOOP:                          ;           normalizace cisla

@@ -29,14 +29,14 @@ endif
 FSUBP_FADD_OP_SGN:
         LD      A, H                ;  1:4
         SUB     D                   ;  1:4
-        JR      z, FSUBP_EQ_EXP     ;  2:11/7
-        JR      nc, FSUBP_HL_GR     ;  2:11/7
+        JR      z, FSUBP_EQ_EXP     ;  2:12/7
+        JR      nc, FSUBP_HL_GR     ;  2:12/7
         EX      DE, HL              ;  1:4
         NEG                         ;  2:8
 FSUBP_HL_GR:
 
         CP      2 + MANT_BITS       ;  2:7      pri posunu vetsim nez o MANT_BITS + NEUKLADANY_BIT + ZAOKROUHLOVACI_BIT uz mantisy nemaji prekryt
-        JR      nc, FSUBP_TOOBIG    ;  2:11/7   HL - DE = HL
+        JR      nc, FSUBP_TOOBIG    ;  2:12/7   HL - DE = HL
         
                                     ;           E = ( E | 1000 0000 ) >> (A-2)
         DEC     A                   ;  1:4      1-2 => DE = 1 mmmm mmm0
@@ -65,7 +65,7 @@ FSUBP_NEXT:
         LD      H, $00              ;  2:7              
         ADD     HL, HL              ;  1:11     HL = 0000 000m mmmm mm00        
         SBC     HL, DE              ;  2:15
-        JR      nc, FSUBP_SAME_EXP  ;  2:11/7
+        JR      nc, FSUBP_SAME_EXP  ;  2:12/7
 
         RR      H                   ;  2:8
         LD      A, L                ;  1:4
