@@ -19,19 +19,19 @@ endif
         JR      z, FWLD_ONLY_LO     ;  2:12/7
 
         CALL    FBLD                ;  3:17     DE = 1.0 * A
-if 1
+    if 1
         LD      A, EXP_PLUS_ONE << 3;  2:7
         ADD     A, D                ;  1:4
         LD      H, A                ;  1:4
         LD      A, L                ;  1:4
         LD      L, E                ;  1:4        
                                     ;  6:23
-else
+    else
         LD      A, L                ;  1:4        
         LD      HL, EXP_PLUS_ONE<<11;  3:10
         ADD     HL, DE              ;  1:11
                                     ;  5:25
-endif
+    endif
         OR      A                   ;  1:4
         JR      z, FWLD_ONLY_HI     ;  2:12/7
         CALL    FBLD                ;  3:17     DE = 1.0 * A

@@ -5,7 +5,7 @@ include "color_flow_warning.asm"
 ; Subtraction two floating-point numbers with the same signs
 ;  In: HL,DE numbers to add, no restrictions
 ; Out: HL = HL + DE, if ( carry_flow_warning && underflow ) set carry
-; Pollutes: AF, BC, DE
+; Pollutes: AF, B, DE
 ; -------------- HL - DE ---------------
 ; HL = (+HL) - (+DE) = (+HL) + (-DE)
 ; HL = (-HL) - (-DE) = (-HL) + (+DE)
@@ -53,9 +53,6 @@ FSUBP_NOLOOP:                       ;
         LD      E, A                ;  1:4
         LD      A, L                ;  1:4
         ADD     A, A                ;  1:4
-        
-;         LD      B, H                ;  1:4      exp
-;         LD      C, L                ;  1:4      sign
         
         SUB     E                   ;  1:4
         JR      nc, FSUBP_SAME_EXP  ;  2:12/7
@@ -139,12 +136,12 @@ FSUBP_UNDERFLOW:
         LD      A, L                ;  1:4
         AND     SIGN_MASK           ;  2:7
         LD      L, A                ;  1:4
-if color_flow_warning
+    if color_flow_warning
         CALL    UNDER_COL_WARNING   ;  3:17
-endif
-if carry_flow_warning
+    endif
+    if carry_flow_warning
         SCF                         ;  1:4      carry = error
-endif
+    endif
         RET                         ;  1:10
 
 
@@ -207,21 +204,21 @@ FSUBP_TOOBIG:
 
 
         LD      A, L                ;  1:4
-if carry_flow_warning
+    if carry_flow_warning
         AND     MANT_MASK           ;  2:7
         RET     nz                  ;  1:11/5   HL_mant > 1.0           => HL - DE = HL
 
         LD      A, L                ;  1:4
         OR      MANT_MASK           ;  2:7
         LD      L, A                ;  1:4
-else
+    else
         ADD     A, A                ;  1:4      sign out
         RET     nz                  ;  1:11/5   HL_mant > 1.0           => HL - DE = HL
 
         DEC     A                   ;  1:4      $00 => $ff
         RRA                         ;  1:4      sign in
         LD      L, A                ;  1:4
-endif
+    endif
         DEC     H                   ;  1:4      HL_exp = 7 + 1 + DE_exp  => HL_exp >= 8 => not underflow
         RET                         ;  1:10
 

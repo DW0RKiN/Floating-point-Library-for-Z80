@@ -5,7 +5,7 @@ if not defined @FADD
 ; Add two floating-point numbers
 ;  In: HL, DE numbers to add, no restrictions
 ; Out: HL = HL + DE
-; Pollutes: AF, BC, DE
+; Pollutes: AF, B, DE
 @FADD:
 if not defined FADD
 ; *****************************************

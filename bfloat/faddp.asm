@@ -3,7 +3,7 @@ if not defined @FADDP
      
 ; Add two floating point numbers with the same sign
 ;  In: HL, DE numbers to add, no restrictions
-; Out: HL = HL + DE,  if ( _test_over && overflow ) set carry
+; Out: HL = HL + DE,  if ( carry_flow_warning && overflow ) set carry
 ; Pollutes: AF, B, DE
 ; -------------- HL + DE ---------------
 ; HL = (+HL) + (+DE)
@@ -46,15 +46,15 @@ FADDP_EXP_PLUS:
         RL      L                   ;  2:8      sign out
         RRA                         ;  1:4      sign in && shift
         LD      L, A                ;  1:4
-if defined _test_over
+    if carry_flow_warning
         OR      A                   ;  1:4      RET with reset carry
-endif
+    endif
         INC     H                   ;  1:4      exp++
         RET     nz                  ;  1:11/5
         JR      FADDP_OVERFLOW      ;  2:12
 
 FADDP_SAME_EXP:                     ;           A = 01 mmmm mmmr, r = rounding bit
-if 1
+    if 1
         RL      L                   ;  2:8      sign out
         RRA                         ;  1:4      sign in && shift       
         LD      L, A                ;  1:4
@@ -71,18 +71,18 @@ if 1
         INC     H                   ;  1:4      exp++
         RET     nz                  ;  1:11/5
         JR      FADDP_OVERFLOW      ;  2:12        
-else
+    else
         INC     A                   ;  1:4      rounding
         JR      z, FADDP_EXP_PLUS   ;  2:12/7   A = 10 0000 0000 && carry = 0
         
         RL      L                   ;  2:8      sign out
         RRA                         ;  1:4      sign in && shift       
         LD      L, A                ;  1:4
-if defined _test_over
+    if carry_flow_warning
         OR      A                   ;  1:4      RET with reset carry
-endif
+    endif
         RET                         ;  1:10
-endif
+    endif
 
 FADDP_EQ_EXP:                       ;           HL exp = DE exp
         LD      A, L                ;  1:4        1mmm mmmm    0mmm mmmm
@@ -91,9 +91,9 @@ FADDP_EQ_EXP:                       ;           HL exp = DE exp
         RRA                         ;  1:4      sign in && shift       
         LD      L, A                ;  1:4
 
-if defined _test_over
+    if carry_flow_warning
         OR      A                   ;  1:4      RET with reset carry
-endif
+    endif
         INC     H                   ;  1:4      exp++
         RET     nz                  ;  1:11/5
         ; fall
@@ -107,7 +107,7 @@ FADDP_OVERFLOW:
     if color_flow_warning
         CALL    OVER_COL_WARNING    ;  3:17
     endif
-    if defined _test_over
+    if carry_flow_warning
         SCF                         ;  1:4      carry = error
     endif
         RET                         ;  1:10
