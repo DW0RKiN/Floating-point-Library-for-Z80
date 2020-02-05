@@ -38,65 +38,71 @@ FSUBP_HL_GR:
         CP      2 + MANT_BITS       ;  2:7      pri posunu vetsim nez o MANT_BITS + NEUKLADANY_BIT + ZAOKROUHLOVACI_BIT uz mantisy nemaji prekryt
         JR      nc, FSUBP_TOOBIG    ;  2:12/7   HL - DE = HL
         
-                                    ;           E = ( E | 1000 0000 ) >> (A-2)
-        DEC     A                   ;  1:4      1-2 => DE = 1 mmmm mmm0
-        JR      nz, FSUBP_A2        ;  2:12/7
-        LD      D, $01              ;  2:7
-        SLA     E                   ;  2:8
-        JP      FSUBP_NEXT          ;  3:10
-FSUBP_A2:
-        SET     7, E                ;  2:8
-        DEC     A                   ;  1:4      2-2 => DE = 0 1mmm mmmm
+                                    ;           Out: E = ( E | 1000 0000 ) >> (A-1)        
         LD      B, A                ;  1:4
-        JR      z, FSUBP_STOP       ;  2:12/7
-FSUBP_SRL_LOOP:     
-        SRL     E                   ;  2:8
-FSUBP_B:
-        DJNZ    FSUBP_SRL_LOOP      ;  2:13/8
-FSUBP_STOP:
-        LD      D, B                ;  1:4      D = 0
-FSUBP_NEXT:
-        LD      B, H                ;  1:4      exp
-        LD      C, L                ;  1:4      sign
-        
-;     -------- HL - DE -------
-
-        ADD     HL, HL              ;  1:11     HL = ???? ???s mmmm mmm0
-        LD      H, $00              ;  2:7              
-        ADD     HL, HL              ;  1:11     HL = 0000 000m mmmm mm00        
-        SBC     HL, DE              ;  2:15
-        JR      nc, FSUBP_SAME_EXP  ;  2:12/7
-
-        RR      H                   ;  2:8
+        LD      A, E                ;  1:4
+        OR      SIGN_MASK           ;  2:7        
+        DEC     B                   ;  1:4
+        JR      z, FSUBP_NOLOOP     ;  2:12/7
+FSUBP_LOOP:
+        OR      A                   ;  1:4
+        RRA                         ;  1:4
+        DJNZ    FSUBP_LOOP          ;  2:13/8
+        RL      B                   ;  2:8      B = rounding 0.25
+FSUBP_NOLOOP:                       ;
+        LD      E, A                ;  1:4
         LD      A, L                ;  1:4
-        RRA                         ;  1:4
-        LD      H, B                ;  1:4      exp
-FSUBP_LOOP2:                        ;           normalizace cisla
-        DEC     H                   ;  1:4      exp--
         ADD     A, A                ;  1:4
-        JR      nc, FSUBP_LOOP2     ;  2:7/12
         
-        RL      C                   ;  2:8      sign
-        RRA                         ;  1:4
+;         LD      B, H                ;  1:4      exp
+;         LD      C, L                ;  1:4      sign
+        
+        SUB     E                   ;  1:4
+        JR      nc, FSUBP_SAME_EXP  ;  2:12/7
+        
+FSUBP_NORM_RESET:
+        OR      A                   ;  1:4
+        LD      D, H                ;  1:4      save exp
+FSUBP_NORM:                         ;           normalizace cisla
+        DEC     H                   ;  1:4      exp--
+        ADC     A, A                ;  1:4
+        JR      nc, FSUBP_NORM      ;  2:7/12
+        
+        SUB     B                   ;  1:4
+        
+        RL      L                   ;  1:4      sign out  
+        RRA                         ;  1:4      sign in
         LD      L, A                ;  1:4
-        
-        LD      A, B                ;  1:4
+        LD      A, D                ;  1:4
         SUB     H                   ;  1:4
-        RET     nc                  ;  1:11/5
+        RET     nc                  ;  1:11/5   RET with reset carry
         JR      FSUBP_UNDERFLOW     ;  2:12
+    
+FSUBP_SAME_EXP:                     ;  2:8      reset carry
+        JR      z, FSUBP_ZERO_MANT  ;  2:12/7
+        RL      L                   ;  2:8      sign out  
+        RRA                         ;  1:4      sign in
+        LD      L, A                ;  1:4
+    if carry_flow_warning
+        OR      A                   ;
+    endif
+        RET                         ;  1:10
 
-FSUBP_SAME_EXP:                     ;           HL = 0000 000m mmmm mmmm
-        INC     HL                  ;  1:6      rounding
-        SRL     H                   ;  2:8
-        RR      L                   ;  2:8      HL = 0000 0000 mmmm mmmm
-        LD      H, B                ;  1:4           eeee eeee
-        RL      C                   ;  2:8      sign
-        RR      L                   ;  2:8      HL = eeee eeee smmm mmmm
-if defined _test_over
-        OR      A                   ;  1:4      clear carry
-endif
-        RET
-
+FSUBP_ZERO_MANT:
+        LD      A, SIGN_MASK        ;  2:7
+        AND     L                   ;  1:4
+        LD      L, A                ;  1:4
+        DEC     B                   ;  1:4
+        RET     nz                  ;  1:11/5
+        
+        OR      MANT_MASK           ;  2:7
+        LD      L, A                ;  1:4
+        LD      A, H                ;  1:4
+        DEC     H                   ;  1:4
+        SUB     H                   ;  1:4
+        RET     nc                  ;  1:11/5   RET with reset carry
+        JR      FSUBP_UNDERFLOW     ;  2:12
+        
 ;   abs(L)  >   abs(E)
 ; 1100 0000 - 0000 0100 = $0C0 - $04 = $BC = 1011 1100
 ; 0100 0000 - 1000 0100 = $140 - $84 = $BC = 1011 1100
