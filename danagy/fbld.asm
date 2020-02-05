@@ -10,18 +10,18 @@ if not defined FBLD
                     FBLD                ; *
 ; *****************************************
 endif
-if 1
+    if 1
         FBLD_D  EQU     BIAS+7
         LD      D, FBLD_D           ;  2:7
 FBLD_X:
         ADD     A, A                ;  1:4
         JR      c, FBLD_ALIGNED     ;  2:12/7
-else
+    else
         FBLD_D  EQU     BIAS+8
         LD      D, FBLD_D           ;  2:7
 FBLD_X:
         OR      A, A                ;  1:4
-endif
+    endif
         JR      z, FBLD_OUT_ZERO    ;  2:12/7       zero converted to positive epsilon
 FBLD_LOOP:
         DEC     D                   ;  1:4

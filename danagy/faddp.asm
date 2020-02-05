@@ -3,7 +3,7 @@ if not defined @FADDP
      
 ; Add two floating point numbers with the same sign
 ;  In: HL, DE numbers to add, no restrictions
-; Out: HL = HL + DE,  if ( _test_over && overflow ) set carry
+; Out: HL = HL + DE,  if ( carry_flow_warning && overflow ) set carry
 ; Pollutes: AF, B, DE
 ; -------------- HL + DE ---------------
 ; HL = (+HL) + (+DE)
@@ -59,7 +59,7 @@ FADDP1:
         JR      c, FADDP_EXP_PLUS   ;  2:12/7
         
 FADDP1_SAME_EXP:                    ;           A = 01 mmmm mmmm 1, reset carry
-if 1
+    if 1
         LD      L, A                ;  1:4
         INC     L                   ;  1:4
         RET     nz                  ;  1:11/5
@@ -68,13 +68,13 @@ if 1
         INC     H                   ;  1:4
         XOR     H                   ;  1:4      RET with reset carry
         RET     p                   ;  1:11/5
-else
+    else
         LD      L, A                ;  1:4
         LD      A, H                ;  1:4        
         INC     HL                  ;  1:6
         XOR     H                   ;  1:4      RET with reset carry
         RET     p                   ;  1:11/5
-endif
+    endif
         JR      FADDP_OVERFLOW      ;  2:12
 
 FADDP_EQ_EXP:                       ;           HL exp = DE exp
@@ -98,7 +98,7 @@ FADDP_OVERFLOW:
     if color_flow_warning
         CALL    OVER_COL_WARNING    ;  3:17
     endif
-    if defined _test_over
+    if carry_flow_warning
         SCF                         ;  1:4      carry = error
     endif
         RET                         ;  1:10
