@@ -22,7 +22,7 @@ endif
 ; Add two floating-point numbers with the opposite signs
 ;  In: HL, DE numbers to add, no restrictions
 ; Out: HL = HL + DE
-; Pollutes: AF, BC, DE
+; Pollutes: AF, B, DE
 ; -------------- HL + DE ---------------
 ; HL = (+HL) + (-DE)
 ; HL = (-HL) + (+DE)
@@ -40,12 +40,10 @@ FSUBP_HL_GR:
         CP      2 + MANT_BITS       ;  2:7      pri posunu vetsim nez o MANT_BITS + NEUKLADANY_BIT + ZAOKROUHLOVACI_BIT uz mantisy nemaji prekryt
         JR      nc, FSUBP_TOOBIG    ;  2:12/7   HL - DE = HL
         
-                                    ;           E = ( E | 1 0000 0000 ) >> A
-                                    ;           Out: A = --( E | 1 0000 0000 ) >> A        
-        
+                                    ;           Out: E = ( E | 1 0000 0000 ) >> A        
         LD      B, A                ;  1:4
         LD      A, E                ;  1:4
-        RRA                         ;  1:4
+        RRA                         ;  1:4      1mmm mmmm m
         DEC     B                   ;  1:4
         JR      z, FSUBP_NOLOOP     ;  2:12/7
         DEC     B                   ;  1:4
@@ -96,10 +94,7 @@ FSUBP0_SAME_EXP:                    ;           reset carry
 
 FSUBP1:
         SBC     A, E                ;  1:4      rounding half down
-
         JR      c, FSUBP_NORM       ;  2:12/7   carry => need half up
-        
-FSUBP1_SAME_EXP:                    ;           reset carry
         LD      L, A                ;  1:4 
         RET                         ;  1:10
    
