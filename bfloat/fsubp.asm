@@ -22,7 +22,7 @@ endif
 ; Add two floating-point numbers with the opposite signs
 ;  In: HL, DE numbers to add, no restrictions
 ; Out: HL = HL + DE
-; Pollutes: AF, BC, DE
+; Pollutes: AF, B, DE
 ; -------------- HL + DE ---------------
 ; HL = (+HL) + (-DE)
 ; HL = (-HL) + (+DE)
@@ -41,7 +41,7 @@ FSUBP_HL_GR:
                                     ;           Out: E = ( E | 1000 0000 ) >> (A-1)        
         LD      B, A                ;  1:4
         LD      A, E                ;  1:4
-        OR      SIGN_MASK           ;  2:7        
+        OR      SIGN_MASK           ;  2:7
         DEC     B                   ;  1:4
         JR      z, FSUBP_NOLOOP     ;  2:12/7
 FSUBP_LOOP:
@@ -57,17 +57,15 @@ FSUBP_NOLOOP:                       ;
         SUB     E                   ;  1:4
         JR      nc, FSUBP_SAME_EXP  ;  2:12/7
         
-FSUBP_NORM_RESET:
-        OR      A                   ;  1:4
         LD      D, H                ;  1:4      save exp
 FSUBP_NORM:                         ;           normalizace cisla
         DEC     H                   ;  1:4      exp--
-        ADC     A, A                ;  1:4
+        ADD     A, A                ;  1:4
         JR      nc, FSUBP_NORM      ;  2:7/12
         
         SUB     B                   ;  1:4
         
-        RL      L                   ;  1:4      sign out  
+        RL      L                   ;  2:8      sign out  
         RRA                         ;  1:4      sign in
         LD      L, A                ;  1:4
         LD      A, D                ;  1:4
@@ -76,15 +74,15 @@ FSUBP_NORM:                         ;           normalizace cisla
         JR      FSUBP_UNDERFLOW     ;  2:12
     
 FSUBP_SAME_EXP:                     ;  2:8      reset carry
+
+    if carry_flow_warning
         JR      z, FSUBP_ZERO_MANT  ;  2:12/7
         RL      L                   ;  2:8      sign out  
         RRA                         ;  1:4      sign in
         LD      L, A                ;  1:4
-    if carry_flow_warning
-        OR      A                   ;
-    endif
+        OR      A                   ;  1:4      RET with reset carry
         RET                         ;  1:10
-
+        
 FSUBP_ZERO_MANT:
         LD      A, SIGN_MASK        ;  2:7
         AND     L                   ;  1:4
@@ -94,6 +92,23 @@ FSUBP_ZERO_MANT:
         
         OR      MANT_MASK           ;  2:7
         LD      L, A                ;  1:4
+
+    else
+        RL      L                   ;  2:8      sign out  
+        RRA                         ;  1:4      sign in
+        LD      L, A                ;  1:4
+        ADD     A, A                ;  1:4      
+        RET     nz                  ;  1:11/5
+        ; fall     
+        DEC     B                   ;  1:4
+        RET     nz                  ;  1:11/5
+        
+        DEC     A                   ;  1:4
+        RRA                         ;  1:4
+        LD      L, A                ;  1:4
+
+    endif
+
         LD      A, H                ;  1:4
         DEC     H                   ;  1:4
         SUB     H                   ;  1:4
@@ -114,7 +129,7 @@ FSUBP_EQ_EXP:
         SUB     E                   ;  1:4
         ADD     A, A                ;  1:4      delete sign
         JR      z, FSUBP_UNDERFLOW  ;  2:12/7   (HL_exp = DE_exp && HL_mant = DE_mant) => HL = -DE
-        JR      c, FSUBP_EQ_LOOP    ;  3:10
+        JR      c, FSUBP_EQ_LOOP    ;  2:12/7
         EX      DE, HL              ;  1:4
         NEG                         ;  2:8
 
