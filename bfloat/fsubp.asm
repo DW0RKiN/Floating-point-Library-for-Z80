@@ -75,40 +75,21 @@ FSUBP_NORM:                         ;           normalizace cisla
     
 FSUBP_SAME_EXP:                     ;  2:8      reset carry
 
-    if carry_flow_warning
-        JR      z, FSUBP_ZERO_MANT  ;  2:12/7
         RL      L                   ;  2:8      sign out  
         RRA                         ;  1:4      sign in
         LD      L, A                ;  1:4
-        OR      A                   ;  1:4      RET with reset carry
-        RET                         ;  1:10
+        ADC     A, A                ;  1:4      
+    if carry_flow_warning
+        OR      A                   ;  1:4
+    endif
+        RET     nz                  ;  1:11/5
         
-FSUBP_ZERO_MANT:
-        LD      A, SIGN_MASK        ;  2:7
-        AND     L                   ;  1:4
-        LD      L, A                ;  1:4
         DEC     B                   ;  1:4
         RET     nz                  ;  1:11/5
         
+        LD      A, L                ;  1:4
         OR      MANT_MASK           ;  2:7
         LD      L, A                ;  1:4
-
-    else
-        RL      L                   ;  2:8      sign out  
-        RRA                         ;  1:4      sign in
-        LD      L, A                ;  1:4
-        ADD     A, A                ;  1:4      
-        RET     nz                  ;  1:11/5
-        ; fall     
-        DEC     B                   ;  1:4
-        RET     nz                  ;  1:11/5
-        
-        DEC     A                   ;  1:4
-        RRA                         ;  1:4
-        LD      L, A                ;  1:4
-
-    endif
-
         LD      A, H                ;  1:4
         DEC     H                   ;  1:4
         SUB     H                   ;  1:4
