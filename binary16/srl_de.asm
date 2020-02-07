@@ -61,8 +61,20 @@ SRLDEC_DE_CASE_8:                   ;           1.. .... .... =>  000 0000 01..
         RET                         ;  1:10
                 
 SRLDEC_DE_CASE_5:                   ;           1.. .... .... =>  000 001. .... 
+    if 1
+        XOR     E                   ;  1:4
+        AND     $1F                 ;  2:7
+        XOR     E                   ;  1:4
+        RLCA                        ;  1:4
+        RLCA                        ;  1:4
+        RLCA                        ;  1:4
+        LD      E, A                ;  1:4
+        LD      D, $00              ;  2:7
+        RET                         ;  1:10    
+    else
         RL      E                   ;  2:8
         ADC     A, A                ;  1:4
+    endif
 SRLDEC_DE_CASE_6:                   ;           1.. .... .... =>  000 0001 ....
         RL      E                   ;  2:8
         ADC     A, A                ;  1:4
@@ -74,15 +86,41 @@ SRLDEC_DE_CASE_7:                   ;           1.. .... .... =>  000 0000 1...
         RET                         ;  1:10
         
 SRLDEC_DE_CASE_4:                   ;           1.. .... .... =>  000 01.. ....
+    if 1
+        XOR     E                   ;  1:4
+        AND     $0F                 ;  2:7
+        XOR     E                   ;  1:4
+        RRCA                        ;  1:4
+        RRCA                        ;  1:4
+        RRCA                        ;  1:4
+        RRCA                        ;  1:4
+        LD      E, A                ;  1:4
+        LD      D, $00              ;  2:7
+        RET                         ;  1:10
+                                    ; 12:52
+    else
         RRA                         ;  1:4
         RR      E                   ;  2:8        
+    endif
 SRLDEC_DE_CASE_3:                   ;           1.. .... .... =>  000 1... ....
+    if 1
+        XOR     E                   ;  1:4
+        AND     $07                 ;  2:7
+        XOR     E                   ;  1:4
+        RRCA                        ;  1:4
+        RRCA                        ;  1:4
+        RRCA                        ;  1:4
+        LD      E, A                ;  1:4
+                                    ;  8:31
+    else
         RRA                         ;  1:4
         RR      E                   ;  2:8        
         RRA                         ;  1:4
         RR      E                   ;  2:8
         RRA                         ;  1:4
         RR      E                   ;  2:8
+                                    ;  9:36
+    endif
         LD      D, $00              ;  2:7
         RET                         ;  1:10        
                 
