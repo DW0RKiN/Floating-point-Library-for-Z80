@@ -11,6 +11,9 @@
     
     ORG     DATA_ADR
 
+    dw FP5, FP3, FP2
+    dw FP4, FP1_5, FP1
+
     INCLUDE "test_fmod.dat"
 
     dw $BABE, $CAFE, $DEAD          ; Stop MARK
@@ -54,18 +57,26 @@ READ_DATA:
 ; HL = HL^0.5
         LD      BC, (OP1)
         LD      HL, (OP2)
+        
+        LD      A, 20
 BREAKPOINT:
 ; FUSE Debugger
-; br 0xE015
-
+; br 0xE017
+        PUSH    AF
         PUSH    BC
         PUSH    HL
         
         SYMBOL_OP  EQU    '%'
         CALL    FMOD                ; HL = BC % HL
         
+        EX      DE, HL
+        POP     HL
         POP     BC
-        POP     BC
+        POP     AF
+        DEC     A
+        JR      nz, BREAKPOINT
+        EX      DE, HL
+        
 ;     kontrola
         LD      BC, (RESULT)
         
@@ -111,8 +122,10 @@ RESULT:
 ; HL = spocitana
 PRINT_DATA:
         LD      (DATA_COL), A
-        PUSH    HL                  ; save HL
         
+        LD      DE, DATA_4
+        CALL    WRITE_HEX        
+
         LD      HL, (OP1)
         LD      DE, DATA_1
         CALL    WRITE_HEX
@@ -124,10 +137,6 @@ PRINT_DATA:
         LD      H, B
         LD      L, C
         LD      DE, DATA_3
-        CALL    WRITE_HEX
-
-        POP     HL                  ; load HL
-        LD      DE, DATA_4
         CALL    WRITE_HEX
 
         CALL    PRINT_TXT

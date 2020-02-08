@@ -109,7 +109,9 @@ RESULT:
 ; HL = spocitana
 PRINT_DATA:
         LD      (DATA_COL), A
-        PUSH    HL                  ; save HL
+        
+        LD      DE, DATA_4
+        CALL    WRITE_HEX
         
         LD      HL, (OP1)
         LD      DE, DATA_1
@@ -122,10 +124,6 @@ PRINT_DATA:
         LD      H, B
         LD      L, C
         LD      DE, DATA_3
-        CALL    WRITE_HEX
-
-        POP     HL                  ; load HL
-        LD      DE, DATA_4
         CALL    WRITE_HEX
 
         CALL    PRINT_TXT
