@@ -2,12 +2,26 @@
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
-// #include <CL/cl.h>
-#include <stdint.h>
 #include <time.h>
 
+// gcc -DTARGET=0
+#ifndef TARGET
+    #define TARGET 0
+#endif
 
-#define MAX_NUMBER 127
+#if TARGET == 0
+    #warning Target: bfloat
+    #define MAX_NUMBER 127
+#elif TARGET == 1
+    #warning Target: danagy
+    #define MAX_NUMBER 255
+#elif TARGET == 2
+    #warning Target: binary16
+    #define MAX_NUMBER 255
+#else
+    #error Byla nalezena neocekavana hodnota v promenne TARGET!
+#endif
+
 #include "../C/float.h"
 
 
@@ -142,7 +156,7 @@ double DMOD(double a, double b)
 
 
 
-double bfloat2double_( uint16_t num16 )
+double bfloat2double_( __uint16_t num16 )
 {
     double res = 2 * (1 + BF_MASK_MANTISA + (num16 & BF_MASK_MANTISA)) / ( 1 + BF_MASK_MANTISA);
     if ( num16 & BF_MASK_SIGN ) res = -res;
@@ -159,7 +173,7 @@ double bfloat2double_( uint16_t num16 )
 }
 
 
-double bfloat2double( uint16_t num16 )
+double bfloat2double( __uint16_t num16 )
 {
     binary64 e = DO_BIAS + ((num16 & 0xff00) >> 8);
     e = e - BF_BIAS;
@@ -314,13 +328,14 @@ for (i = 0; i < MAX_LINE; i++ ) {
 
 int exp = 0;
 
-
-
 #define POS     1
 #define SAME    2
 #define ALL     4
 
-#define VARIANTA 2
+// gcc -DVARIANTA=1
+#ifndef VARIANTA
+    #define VARIANTA 1
+#endif
 
 #if   VARIANTA == 1
     #define RAND SAME
@@ -469,11 +484,11 @@ for (i = 0; i < MAX_LINE; i++ ) {
 // printf("res: %lx = %g\n", *((binary64 *) &dc), dc);    
 
 #if VARIANTA == 7
-    printf("dw $%04x, $%04x\t\t; %+.6e^2 = %+.6e", ba, bc, da, dc);
+    printf("dw $%04x, $%04x\t\t; %+.3e^2 = %+.3e", ba, bc, da, dc);
 #elif VARIANTA == 8
-    printf("dw $%04x, $%04x\t\t; %+.6e^0.5 = %+.6e", ba, bc, da, dc);
+    printf("dw $%04x, $%04x\t\t; %+.3e^0.5 = %+.3e", ba, bc, da, dc);
 #else
-    printf("dw $%04x, $%04x, $%04x\t\t; %+.6e %c %+.6e = %+.6e", ba, bb, bc, da, c, db, dc);
+    printf("dw $%04x, $%04x, $%04x\t\t; %+.3e %c %+.3e = %+.3e", ba, bb, bc, da, c, db, dc);
 #endif
     if ( bc ==  0 ) printf("\t = 0");
     if ( bc ==  MASK_SIGN ) printf("\t =-0");

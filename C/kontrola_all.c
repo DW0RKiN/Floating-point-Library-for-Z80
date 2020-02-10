@@ -2,10 +2,24 @@
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
-// #include <CL/cl.h>
-#include <stdint.h>
 
-#define MAX_NUMBER 1023
+// gcc -DTARGET=0
+#ifndef TARGET
+    #define TARGET 0
+#endif
+
+#if TARGET == 0
+    #warning Target: bfloat
+    #define MAX_NUMBER 127
+#elif TARGET == 1
+    #warning Target: danagy
+    #define MAX_NUMBER 255
+#elif TARGET == 2
+    #warning Target: binary16
+    #define MAX_NUMBER 255
+#else
+    #error Byla nalezena neocekavana hodnota v promenne TARGET!
+#endif
 
 #include "../C/float.h"
 

@@ -2,16 +2,23 @@
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
-// #include <CL/cl.h>
-#include <stdint.h>
 
 #include "float.h"
 
-// #include "orig_tab_mul7_0x80.h"
-// #include "orig_tab_mul11_2.h"
-#include "orig_tab_mul8_3.h"
-// #include "orig_tab_mul7.h"
-// #include "mul7_16tab_1.h"
+
+// gcc ./print_tab.c -DMUL -DSOURCE=\"orig_tab_mul7_0x80.h\" -lm
+
+#ifndef SOURCE
+
+// #define SOURCE "orig_tab_mul7_0x80.h"
+// #define SOURCE "orig_tab_mul11_2.h"
+#define SOURCE "orig_tab_mul8_3.h"
+// #define SOURCE "orig_tab_mul7.h"
+// #define SOURCE "mul7_16tab_1.h"
+
+#endif
+
+#include SOURCE
 
 int const START_LIMIT = MAX_NUMBER+1;
 int const NEJVYSSI = MAX_NUMBER+1;
@@ -219,7 +226,7 @@ void print256_tab(int * tab, int idx, int posun, int stop)
             printf("   " );
             for ( int j = i; j < i + 16 && j < stop; j++ ) {
                 if (j != i ) putchar(',');
-                printf("%02x", (tab[idx+j]));
+                printf("%03x", (tab[idx+j]));
             }
             printf(" %X_", (i >> 4) & 0xF );
         }
@@ -277,6 +284,8 @@ void init()
 }
 
 
+
+
 int main () {
 
 #if MAX_NUMBER == 127
@@ -332,7 +341,8 @@ int main () {
 // min 128*128   =    16 384 =   0x4000 =           0100 0000 0000 0000 =>           0(1)00 0000 0... .... 2**7  x (1)000 0000
 //                                                             ... ....
 
-#if 1
+// gcc -DMUL
+#ifdef MUL
     j = 0;
     int n;
 
@@ -379,7 +389,6 @@ int main () {
         j += 256;
     }
 
-#endif
 
 
     int chyb = 0, sum = 0, neni_presne = 0;
@@ -435,19 +444,17 @@ int main () {
 
     printf("\n; nic nemusi: %i(%f\%%), musi pricitat $%X: %i(%f\%%), pretece pricteni: %i\n", nic, 100.0*nic/(nic+pricti), PRICTI - (PRICTI >> 1), pricti, 100.0*pricti/(nic+pricti),pricti_pretece);
     printf("; neni presne: %i (%f%%), chyb: %i, sum: %i\n", neni_presne, 100.0*neni_presne/sum, chyb, sum);
+#endif
 
 
 
-
-
-#if 1
+// gcc -DSQR_TAB
+#ifdef SQR_TAB
     {
         /****************** SQRTAB ******************/
 
         int tab[256];
 
-        
-        
         printf("\n; Mantissas of square roots\n");
         
         printf("; (2**-3 * mantisa)**0.5 = 2**-1 * mantisa**0.5 * 2**-0.5 = 2**-2 * 2**0.5\n\
@@ -462,7 +469,7 @@ int main () {
         printf("; (2**exp * mantisa)**0.5 = 2**e * mantisa**0.5\n");
         printf("; exp = 2*e+1\n");
         printf("; (2**exp * mantisa)**0.5 = 2**e * mantisa**0.5 * 2**0.5\n");
-        printf("\nSQRTAB:\n");
+        printf("\nSQR_TAB:\n");
 
         j = 0;
         while ( j < MAX_NUMBER ) {
@@ -500,7 +507,8 @@ int main () {
 #endif
 
 
-#if 0
+// gcc -DPOW2TAB
+#ifdef POW2TAB
     {
         /****************** POW2TAB ******************/
 
@@ -538,7 +546,9 @@ int main () {
     }
 #endif
 
-#if 0
+
+// gcc -DPOW2TAB_OLD
+#ifdef POW2TAB_OLD
     {
         /****************** POW2TAB old style ******************/
 
@@ -561,7 +571,9 @@ int main () {
     }
 #endif
 
-#if 0
+
+// gcc -DDIVTAB
+#ifdef DIVTAB
     {
         /****************** DIVTAB ******************/
 
@@ -599,8 +611,8 @@ int main () {
 #endif
 
 
-
-#if 0
+// gcc -DBYTE
+#ifdef BYTE
     /****************** BYTE TABLE ******************/
 
     // byte to float
@@ -619,8 +631,8 @@ int main () {
 #endif
 
 
-#if 0
-
+// gcc -DCONST
+#ifdef CONST
         /****************** KONSTANTY ******************/
 
 // float NAN = 0.0/0.0;
@@ -630,8 +642,8 @@ int main () {
 
 float konst[] = {
 +1.414213562373095, // SQRT(2)
-+0.0/-1.0,      // POS_ZERO
-+0.0/+1.0,      // NEG_ZERO
++0.0/+1.0,      // POS_ZERO
++0.0/-1.0,      // NEG_ZERO
 -1.0/0.0,       // NEG_INF
 +1.0/0.0,       // POS_INF
 
@@ -669,6 +681,7 @@ float konst[] = {
     printf("ROOT2F ");
     PRINT_FP_TO_X(stdout, konst[0]);
     printf(" Square root of 2 (1.41421356)\n");
+    printf("FPMIN           EQU FP0\nFMMIN           EQU FM0\n");
     
     for ( i = 1; i < sum_konst; i++ )
     {

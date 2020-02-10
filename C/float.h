@@ -2,17 +2,17 @@
 
 #define _FLOAT
 
-#define bfloat16 uint16_t
-#define binary16 uint16_t
-#define danagy16 uint16_t
-#define binary64 uint64_t
-#define   single uint32_t
+#define bfloat16 __uint16_t
+#define binary16 __uint16_t
+#define danagy16 __uint16_t
+#define binary64 __uint64_t
+#define   single __uint32_t
 
-#define ibfloat16 int16_t
-#define ibinary16 int16_t
-#define idanagy16 int16_t
-#define ibinary64 int64_t
-#define   isingle int32_t
+#define ibfloat16 __int16_t
+#define ibinary16 __int16_t
+#define idanagy16 __int16_t
+#define ibinary64 __int64_t
+#define   isingle __int32_t
 
 
 //                   6            5    4         4         3         2         1         0
@@ -424,7 +424,7 @@ float make_float( int sign, int exponent, int mantisa )
         mantisa = mantisa & mask_m ;
     }
     
-    uint32_t rlt = sign + exponent + mantisa;
+    single rlt = sign + exponent + mantisa;
     return *((float *)&rlt);    
 }
 
@@ -537,11 +537,11 @@ bfloat16 float_to_bfloat16(float f)
     const int exp_pos  = BF_EXP_POS;
     const int mant_size= BF_MANT_SIZE;
     
-    uint32_t s = ((*(uint32_t *) &f) & FP_MASK_SIGN)    >> (FP_SIGN_POS - sign_pos);   // 1 bit   -> 1 bit
-    uint32_t e = ((*(uint32_t *) &f) & FP_MASK_EXP)     >> (FP_EXP_POS  - exp_pos);    // 8 bitu  -> 8 bitu
-    uint32_t m = ((*(uint32_t *) &f) & FP_MASK_MANTISA) >> (FP_MANT_SIZE- mant_size);  // 23 bitu -> 7 bitu
-    unsigned short ret = s + e + m;
-    return *((bfloat16 *) &ret);
+    single s = ((*(single *) &f) & FP_MASK_SIGN)    >> (FP_SIGN_POS - sign_pos);   // 1 bit   -> 1 bit
+    single e = ((*(single *) &f) & FP_MASK_EXP)     >> (FP_EXP_POS  - exp_pos);    // 8 bitu  -> 8 bitu
+    single m = ((*(single *) &f) & FP_MASK_MANTISA) >> (FP_MANT_SIZE- mant_size);  // 23 bitu -> 7 bitu
+    bfloat16 ret = s + e + m;
+    return ret;
 }
 
 
@@ -557,9 +557,9 @@ binary16 float_to_binary16(float f)
     const int mask_e   = BI_MASK_EXP;
     const int max_e    = ( mask_e >> exp_pos ) - bias;
 
-    uint32_t s = ((*(uint32_t *) &f) & FP_MASK_SIGN) >> (FP_SIGN_POS - sign_pos);   // 1 bit   ->  1 bit
-     int32_t e = GET_FP_EXP( f );                                                   // 8 bitu  ->  5 bitu
-    uint32_t m;
+    single  s = ((*(single *) &f) & FP_MASK_SIGN) >> (FP_SIGN_POS - sign_pos);   // 1 bit   ->  1 bit
+    isingle e = GET_FP_EXP( f );                                                   // 8 bitu  ->  5 bitu
+    single  m;
     
     if ( e > max_e ) {
         e = mask_e;
@@ -577,8 +577,8 @@ binary16 float_to_binary16(float f)
         m = GET_FP_MANTISA( f ) >> ( FP_MANT_SIZE - mant_size);  // 23 bitu -> 10 bitu        
     }
 
-    unsigned short ret = s + e + m;
-    return *((binary16 *) &ret);
+    binary16 ret = s + e + m;
+    return ret;
 }
 
 
@@ -594,9 +594,9 @@ danagy16 float_to_danagy16(float f)
     const int mask_e   = DA_MASK_EXP;
     const int max_e    = ( mask_e >> exp_pos ) - bias;
 
-    uint32_t s = ((*(uint32_t *) &f) & FP_MASK_SIGN) >> (FP_SIGN_POS - sign_pos);   // 1 bit   ->  1 bit
-     int32_t e = GET_FP_EXP( f );                                                   // 8 bitu  ->  7 bitu
-    uint32_t m;
+    single  s = ((*(single *) &f) & FP_MASK_SIGN) >> (FP_SIGN_POS - sign_pos);   // 1 bit   ->  1 bit
+    isingle e = GET_FP_EXP( f );                                                   // 8 bitu  ->  7 bitu
+    single  m;
     
     if ( e > max_e ) {
         e = mask_e;
@@ -614,8 +614,8 @@ danagy16 float_to_danagy16(float f)
         m = GET_FP_MANTISA( f ) >> ( FP_MANT_SIZE - mant_size);  // 23 bitu -> 8 bitu        
     }
 
-    unsigned short ret = s + e + m;
-    return *((danagy16 *) &ret);
+    danagy16 ret = s + e + m;
+    return ret;
 }
 
 
@@ -633,9 +633,9 @@ bfloat16 float_to_bfloat16_opt(float f)
     unsigned 
     const int mask_e   = BF_MASK_EXP;
 
-    uint32_t s = ((*(uint32_t *) &f) & FP_MASK_SIGN) >>   (FP_SIGN_POS - sign_pos);   // 1 bit   ->  1 bit
-    uint32_t e = ((*(uint32_t *) &f) & FP_MASK_EXP) >>    (FP_EXP_POS - exp_pos);     // 8 bitu  ->  8 bitu
-    uint32_t m = ((*(uint32_t *) &f) & FP_MASK_MANTISA) + (FP_MASK_MANTISA >> (mant_size+1));
+    single s = ((*(single *) &f) & FP_MASK_SIGN) >>   (FP_SIGN_POS - sign_pos);   // 1 bit   ->  1 bit
+    single e = ((*(single *) &f) & FP_MASK_EXP) >>    (FP_EXP_POS - exp_pos);     // 8 bitu  ->  8 bitu
+    single m = ((*(single *) &f) & FP_MASK_MANTISA) + (FP_MASK_MANTISA >> (mant_size+1));
     
     if ( m > FP_MASK_MANTISA ) {
         e += 0x100;
@@ -652,8 +652,8 @@ bfloat16 float_to_bfloat16_opt(float f)
         m = m >> ( FP_MANT_SIZE - mant_size);  // 23 bitu -> 10 bitu        
     }
     
-    unsigned short ret = s + e + m;
-    return *((bfloat16 *) &ret);
+    bfloat16 ret = s + e + m;
+    return ret;
 
  }
 
@@ -671,9 +671,9 @@ binary16 float_to_binary16_opt(float f)
     const int mask_e   = BI_MASK_EXP;
     const int max_e    = ( mask_e >> exp_pos ) - bias;
 
-    uint32_t s = ((*(uint32_t *) &f) & FP_MASK_SIGN) >>   (FP_SIGN_POS - sign_pos);   // 1 bit   ->  1 bit
-     int32_t e = GET_FP_EXP( f );                                                     // 8 bitu  ->  5 bitu
-    uint32_t m = ((*(uint32_t *) &f) & FP_MASK_MANTISA) + (FP_MASK_MANTISA >> (mant_size+1));
+    single  s = ((*(single *) &f) & FP_MASK_SIGN) >>   (FP_SIGN_POS - sign_pos);   // 1 bit   ->  1 bit
+    isingle e = GET_FP_EXP( f );                                                     // 8 bitu  ->  5 bitu
+    single  m = ((*(single *) &f) & FP_MASK_MANTISA) + (FP_MASK_MANTISA >> (mant_size+1));
 
     if ( m > FP_MASK_MANTISA ) {
         e++;
@@ -701,8 +701,8 @@ if ( s + e + m != (s | e | m ))
 else
     fprintf(stderr, "[Ok: %f (s:%i e:$%X m:$%X) $%04X]\n", f, GET_FP_SIGN(f), GET_FP_EXP(f), GET_FP_MANTISA(f),s+e+m);
 #endif
-    unsigned short ret = s + e + m;
-    return *((binary16 *) &ret);
+    binary16 ret = s + e + m;
+    return ret;
 }
 
 
@@ -719,9 +719,9 @@ danagy16 float_to_danagy16_opt(float f)
     const int mask_e   = DA_MASK_EXP;
     const int max_e    = ( mask_e >> exp_pos ) - bias;
 
-    uint32_t s = ((*(uint32_t *) &f) & FP_MASK_SIGN) >>   (FP_SIGN_POS - sign_pos);   // 1 bit   ->  1 bit
-     int32_t e = GET_FP_EXP( f );                                                     // 8 bitu  ->  7 bitu
-    uint32_t m = ((*(uint32_t *) &f) & FP_MASK_MANTISA) + (FP_MASK_MANTISA >> (mant_size+1));
+    single  s = ((*(single *) &f) & FP_MASK_SIGN) >>   (FP_SIGN_POS - sign_pos);   // 1 bit   ->  1 bit
+    isingle e = GET_FP_EXP( f );                                                     // 8 bitu  ->  7 bitu
+    single  m = ((*(single *) &f) & FP_MASK_MANTISA) + (FP_MASK_MANTISA >> (mant_size+1));
 // fprintf(stderr, "%s %f s:%X e:%i m:%X\n", __FUNCTION__, f, s, e, m);
 
     if ( m > FP_MASK_MANTISA ) {
@@ -747,8 +747,8 @@ danagy16 float_to_danagy16_opt(float f)
 
     }
 
-    unsigned short ret = s + e + m;
-    return *((danagy16 *) &ret);
+    danagy16 ret = s + e + m;
+    return ret;
 }
 
 
@@ -761,10 +761,10 @@ float bfloat16_to_float(bfloat16 num16)
     const int exp_pos  = BF_EXP_POS;
     const int mant_size= BF_MANT_SIZE;
 
-    uint32_t s = (*((uint32_t *) &num16) << (FP_SIGN_POS - sign_pos)) & FP_MASK_SIGN;      //  1 bit  ->  1 bit
-    uint32_t e = (*((uint32_t *) &num16) << (FP_EXP_POS - exp_pos)) & FP_MASK_EXP;         //  8 bitu ->  8 bitu
-    uint32_t m = (*((uint32_t *) &num16) << (FP_MANT_SIZE - mant_size)) & FP_MASK_MANTISA; //  7 bitu -> 23 bitu
-    uint32_t res = s + e + m;
+    single s = (*((single *) &num16) << (FP_SIGN_POS - sign_pos)) & FP_MASK_SIGN;      //  1 bit  ->  1 bit
+    single e = (*((single *) &num16) << (FP_EXP_POS - exp_pos)) & FP_MASK_EXP;         //  8 bitu ->  8 bitu
+    single m = (*((single *) &num16) << (FP_MANT_SIZE - mant_size)) & FP_MASK_MANTISA; //  7 bitu -> 23 bitu
+    single res = s + e + m;
     return *((float *) &res);
 }
 
@@ -782,18 +782,18 @@ float binary16_to_float(binary16 num16)
 //   16 = $8F  1000 1111 = 1F  1 1111 = $70 + abcde
 //  128 = $FF
 // binary16:                      Sa. ..bc demm mmmm mmmm
-    uint32_t res = *((uint32_t *) &num16);
+    single res = num16;
 //     ( 7F - F ) << 10 = 1C000
     res = ((( res & 0x8000 ) << 3 ) + ( res & 0x7FFF ) + 0x1C000 ) << 13;
 #else
     const int sign_pos = BI_SIGN_POS;
-      int32_t e = GET_BI_EXP( num16 );
+      isingle e = GET_BI_EXP( num16 );
     const int mant_size= BI_MANT_SIZE;
 
-    uint32_t s = (*((uint32_t *) &num16) << (FP_SIGN_POS - sign_pos)) & FP_MASK_SIGN;      //  1 bit  ->  1 bit
+    single s = (*((single *) &num16) << (FP_SIGN_POS - sign_pos)) & FP_MASK_SIGN;      //  1 bit  ->  1 bit
              e = ( e + FP_BIAS )         << FP_EXP_POS;                                    //  5 bitu ->  8 bitu
-    uint32_t m = (*((uint32_t *) &num16) << (FP_MANT_SIZE - mant_size)) & FP_MASK_MANTISA; // 10 bitu -> 23 bitu
-    uint32_t res = s + e + m;
+    single m = (*((single *) &num16) << (FP_MANT_SIZE - mant_size)) & FP_MASK_MANTISA; // 10 bitu -> 23 bitu
+    single res = s + e + m;
 #endif
     return *((float *) &res);
 }
@@ -803,14 +803,14 @@ float binary16_to_float(binary16 num16)
 // binary16:                          Seee eeee mmmm mmmm
 float danagy16_to_float(danagy16 num16)
 {
-    const int sign_pos = DA_SIGN_POS;
-      int32_t e = GET_DA_EXP( num16 );
-    const int mant_size= DA_MANT_SIZE;
+    single sign_pos = DA_SIGN_POS;
+    isingle e = GET_DA_EXP( num16 );
+    single mant_size= DA_MANT_SIZE;
 
-    uint32_t s = (*((uint32_t *) &num16) << (FP_SIGN_POS - sign_pos)) & FP_MASK_SIGN;      //  1 bit  ->  1 bit
+    single s = (*((single *) &num16) << (FP_SIGN_POS - sign_pos)) & FP_MASK_SIGN;      //  1 bit  ->  1 bit
              e = ( e + FP_BIAS )         << FP_EXP_POS;                                    //  7 bitu ->  8 bitu
-    uint32_t m = (*((uint32_t *) &num16) << (FP_MANT_SIZE - mant_size)) & FP_MASK_MANTISA; //  8 bitu  -> 23 bitu
-    uint32_t res = s + e + m;
+    single m = (*((single *) &num16) << (FP_MANT_SIZE - mant_size)) & FP_MASK_MANTISA; //  8 bitu  -> 23 bitu
+    single res = s + e + m;
     return *((float *) &res);
 }
 
@@ -892,8 +892,8 @@ void fprint_bfloat16(FILE *file, bfloat16 num16)
     double d = bfloat16_to_double(num16);
     
     fprintf(file, "$%04x",*((int *) &num16) & mask);
-    fprintf(file, "   ; %e", d);
-    fprintf(file, " sign(%i=$%02X) exp(%3i=$%04X) mantisa(%3i=$%02X)", s, s << sign_pos, e, (e+bias) << exp_pos, m, m);
+    fprintf(file, "   ; %+.3e", d);
+    fprintf(file, " %c($%02X) 2^%3i($%04X) %3i($%02X)", (s)?'-':'+', s << sign_pos, e, (e+bias) << exp_pos, m, m);
 }
 
 
@@ -910,8 +910,8 @@ void fprint_binary16(FILE *file, binary16 num16)
     double d = binary16_to_double(num16);
     
     fprintf(file, "$%04x",*((int *) &num16) & mask);
-    fprintf(file, "   ; %e", d);
-    fprintf(file, " sign(%i=$%04X) exp(%3i=$%04X) mantisa(%4i=$%03X)", s, s << sign_pos, e, (e+bias) << exp_pos, m, m);
+    fprintf(file, "   ; %+.4e", d);
+    fprintf(file, " %c($%04X) 2^%3i($%04X) %4i($%03X)", (s)?'-':'+', s << sign_pos, e, (e+bias) << exp_pos, m, m);
 }
 
 
@@ -928,8 +928,8 @@ void fprint_danagy16(FILE *file, danagy16 num16)
     double d = danagy16_to_double(num16);
     
     fprintf(file, "$%04x",*((int *) &num16) & mask);
-    fprintf(file, "   ; %e", d);
-    fprintf(file, " sign(%i=$%04X) exp(%3i=$%04X) mantisa(%3i=$%02X)", s, s << sign_pos, e, (e+bias) << exp_pos, m, m);
+    fprintf(file, "   ; %+.3e", d);
+    fprintf(file, " %c($%04X) 2^%3i($%04X) %3i($%02X)", (s)?'-':'+', s << sign_pos, e, (e+bias) << exp_pos, m, m);
 }
 
 
@@ -938,7 +938,7 @@ void fprint_double(FILE *file, double f)
 //     fprintf(file, "%f\t", f);
     
     char buf[256];
-    sprintf(buf,"%f", f);
+    sprintf(buf,"%+f", f);
     int i = 0;
     while ( buf[i] ) i++; 
     i--;
@@ -946,18 +946,20 @@ void fprint_double(FILE *file, double f)
     if ( buf[i] == '.' ) buf[i] = 0;
     i = 0;
     while ( buf[i] ) {
+        if ( buf[i] == '+') buf[i] = 'P';        
         if ( buf[i] == '-') buf[i] = 'M';        
         if ( buf[i] == '.') buf[i] = '_';
+        if ( buf[i] == 'i') buf[i] = 'M';
+        if ( buf[i] == 'n') buf[i] = 'A';
+        if ( buf[i] == 'f') buf[i] = 'X';
         i++;
     }
     
-    if (f<0) fprintf(file, "F%s", buf);
-    else fprintf(file, "FP%s", buf);
+    fprintf(file, "F%s", buf);
 
     i = 14 - i;
     if ( i < 1 ) i = 1;
     while (i--) putc(' ', file);
-    if ( f < 0 ) putc(' ', file);
     
     fprintf(file, "EQU ");
 }
