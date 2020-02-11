@@ -26,8 +26,7 @@ FADDP_HL_GR:
         JR      z, FADDP_EQ_EXP     ;  2:12/7   neresime zaokrouhlovani
         CP      4*(2 + MANT_BITS)   ;  2:7      pri posunu vetsim nez o MANT_BITS + NEUKLADANY_BIT + ZAOKROUHLOVACI_BIT uz mantisy nemaji prekryt
         RET     nc                  ;  1:11/5   HL + DE = HL, RET with reset carry
-        RRCA                        ;  1:4
-        CALL    SRLDEC_DE           ;  3:17     DE = --(( DE & 11 1111 1111 ) | 100 0000 0000 ) >> --(A/2)
+        CALL    SRLDEC_DE           ;  3:17     DE = --(( DE & 11 1111 1111 ) | 100 0000 0000 ) >> --(A/4)
         
         LD      C, H                ;  1:4
         LD      A, H                ;  1:4

@@ -63,8 +63,7 @@ FSUBP_HL_GR:
         CP      4*(2 + MANT_BITS)   ;  2:7      pri posunu vetsim nez o MANT_BITS + NEUKLADANY_BIT + ZAOKROUHLOVACI_BIT uz mantisy nemaji prekryt
         JR      nc, FSUBP_TOOBIG    ;  1:11/5   HL - DE = HL
         
-        RRCA                        ;  1:4        
-        CALL    SRL_DE              ;  3:17     Out: DE = (( DE & 11 1111 1111 ) | 100 0000 0000 ) >> --(A/2)
+        CALL    SRL_DE              ;  3:17     Out: DE = (( DE & 11 1111 1111 ) | 100 0000 0000 ) >> (-2+A/4)
         
 ;     -------- HL - DE -------
 

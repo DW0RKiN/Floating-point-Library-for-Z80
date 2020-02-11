@@ -1,109 +1,130 @@
 if not defined @SRL_DE
 
-;  In: DE, A = 2*(SHIFT + 1) = 2..2*(MANT_BITS+1)
-; Out: DE = (( DE & 11 1111 1111 ) | 100 0000 0000 ) >> ((A/2)-2)
+MANT_MASK_HI2   EQU $07
+
+;  In: DE, A = 4..44
+; Out: DE = (( DE & 11 1111 1111 ) | 100 0000 0000 ) >> (-2+A/4)
 @SRL_DE:
 SRL_DE:
-SRL_DE_POSUN    EQU     (SRLDEC_DE_SWITCH - SRL_DE_SWITCH - 2)
+SRL_DE_POSUN    EQU     (SRLDEC_DE_SWITCH - SRL_DE_SWITCH - 4)
 
         ADD     A, SRL_DE_POSUN     ;
         LD      (SRL_DE_SWITCH), A  ;  3:13
         LD      A, D                ;  1:4
-        AND     MANT_MASK_HI        ;  2:7
-        OR      EXP_PLUS_ONE        ;  2:7      clear carry
+        OR      $04                 ;  2:7      pridam NEUKLADANY_BIT
       
 SRL_DE_SWITCH   EQU     $+1
         JR      SRLDEC_DE_CASE_0    ;  2:12
         
 
-;  In: DE, A = 2*(SHIFT + 1) = 2..2*(MANT_BITS+1)
-; Out: DE = --(( DE & 11 1111 1111 ) | 100 0000 0000 ) >> ((A/2)-1)
+;  In: DE, A = 4..44
+; Out: DE = --(( DE & 11 1111 1111 ) | 100 0000 0000 ) >> ((A/4)-1)
 @SRLDEC_DE:
 SRLDEC_DE:
         LD     (SRLDEC_DE_SWITCH), A;  3:13        
         SET     2, D                ;  2:8      pridam NEUKLADANY_BIT
         DEC     DE                  ;  1:6      down(0 .. 0.5) => down(0 .. 0.4999), takze pri zaokrouhlovani resime jen prvni bit za desetinou carkou 
         LD      A, D                ;  1:4
-        AND     2*MANT_MASK_HI+1    ;  2:7      clear carry
+
 SRLDEC_DE_SWITCH EQU     $+1
-        JR      SRLDEC_DE_CASE_0    ;  2:12
-        JR      SRLDEC_DE_CASEm1    ;  2:12 
+        JR      SRLDEC_DE_CASE_0    ;  2:12     first jump
+        
+        JP      SRLDEC_DE_CASEm1    ;  3:10     second jump
+        NOP                         ;  1:4
 SRLDEC_DE_CASE_0:
+        AND     MANT_MASK_HI2       ;  2:7
         LD      D, A                ;  1:4
-        RET                         ;  1:10
-        JR      SRLDEC_DE_CASE_1    ;  1:12
-        JR      SRLDEC_DE_CASE_2    ;  1:12
-        JR      SRLDEC_DE_CASE_3    ;  1:12
-        JR      SRLDEC_DE_CASE_4    ;  1:12
-        JR      SRLDEC_DE_CASE_5    ;  1:12
-        JR      SRLDEC_DE_CASE_6    ;  1:12
-        JR      SRLDEC_DE_CASE_7    ;  1:12
-        JR      SRLDEC_DE_CASE_8    ;  1:12
-        JR      SRLDEC_DE_CASE_9    ;  1:12
+        RET                         ;  1:10        
+        
+        JP      SRLDEC_DE_CASE_1    ;  3:10     second jump
+        NOP                         ;  1:4        
+        JP      SRLDEC_DE_CASE_2    ;  3:10     second jump
+        NOP                         ;  1:4
+        JP      SRLDEC_DE_CASE_3    ;  3:10     second jump
+        NOP                         ;  1:4
+        JP      SRLDEC_DE_CASE_4    ;  3:10     second jump
+        NOP                         ;  1:4
+        JP      SRLDEC_DE_CASE_5    ;  3:10     second jump
+        NOP                         ;  1:4
+        JP      SRLDEC_DE_CASE_6    ;  3:10     second jump
+        NOP                         ;  1:4
+        JP      SRLDEC_DE_CASE_7    ;  3:10     second jump
+        NOP                         ;  1:4
+        JP      SRLDEC_DE_CASE_8    ;  3:10     second jump
+        NOP                         ;  1:4
+        JP      SRLDEC_DE_CASE_9    ;  3:10     second jump
+        NOP                         ;  1:4
 SRLDEC_DE_CASE_10:                  ;           1.. .... .... =>  000 0000 0001
+        AND     $04                 ;  2:7      
         LD      DE, $0001           ;  3:10
-        AND     $04                 ;  2:7
         RET     nz                  ;  1:11/5   99%
         DEC     E                   ;  1:4
         RET                         ;  1:10
 
-SRLDEC_DE_CASEm1:                   ;           1.. .... .... => 1... .... ...0 
-        RL      E                   ;  2:8
+SRLDEC_DE_CASEm1:                   ;           1.. .... .... => 1... .... ...0
+        AND     MANT_MASK_HI2       ;  2:7
+        SLA     E                   ;  2:8
         ADC     A, A                ;  1:4
         LD      D, A                ;  1:4
         RET                         ;  1:10
         
 SRLDEC_DE_CASE_9:                   ;           1.. .... .... =>  000 0000 001. 
         RRA                         ;  1:4
-SRLDEC_DE_CASE_8:                   ;           1.. .... .... =>  000 0000 01..
+        AND     MANT_MASK_HI        ;  2:7
         LD      E, A                ;  1:4
         LD      D, $00              ;  2:7
         RET                         ;  1:10
-                
-SRLDEC_DE_CASE_5:                   ;           1.. .... .... =>  000 001. .... 
-    if 1
-        XOR     E                   ;  1:4
-        AND     $1F                 ;  2:7
-        XOR     E                   ;  1:4
-        RLCA                        ;  1:4
-        RLCA                        ;  1:4
-        RLCA                        ;  1:4
-        LD      E, A                ;  1:4
-        LD      D, $00              ;  2:7
-        RET                         ;  1:10    
-    else
-        RL      E                   ;  2:8
-        ADC     A, A                ;  1:4
-    endif
-SRLDEC_DE_CASE_6:                   ;           1.. .... .... =>  000 0001 ....
-        RL      E                   ;  2:8
-        ADC     A, A                ;  1:4
-SRLDEC_DE_CASE_7:                   ;           1.. .... .... =>  000 0000 1... 
-        RL      E                   ;  2:8
-        ADC     A, A                ;  1:4
+
+SRLDEC_DE_CASE_8:                   ;           1.. .... .... =>  000 0000 01..
+        AND     MANT_MASK_HI2       ;  2:7
         LD      E, A                ;  1:4
         LD      D, $00              ;  2:7
         RET                         ;  1:10
         
-SRLDEC_DE_CASE_4:                   ;           1.. .... .... =>  000 01.. ....
-    if 1
+SRLDEC_DE_CASE_5:                   ;           1.. .... .... =>  000 001. .... 
         XOR     E                   ;  1:4
-        AND     $0F                 ;  2:7
+        AND     $07                 ;  2:7
         XOR     E                   ;  1:4
-        RRCA                        ;  1:4
-        RRCA                        ;  1:4
-        RRCA                        ;  1:4
-        RRCA                        ;  1:4
+        RLCA                        ;  1:4
+        RLCA                        ;  1:4
+        RLCA                        ;  1:4
+        AND     $3F                 ;  2:7
+        LD      E, A                ;  1:4
+        LD      D, $00              ;  2:7
+        RET                         ;  1:10    
+
+SRLDEC_DE_CASE_6:                   ;           1.. .... .... =>  000 0001 ....
+        XOR     E                   ;  1:4
+        AND     $07                 ;  2:7
+        XOR     E                   ;  1:4
+        RLCA                        ;  1:4
+        RLCA                        ;  1:4
+        AND     $1F                 ;  2:7
         LD      E, A                ;  1:4
         LD      D, $00              ;  2:7
         RET                         ;  1:10
-                                    ; 12:52
-    else
-        RRA                         ;  1:4
-        RR      E                   ;  2:8        
-    endif
+
+SRLDEC_DE_CASE_7:                   ;           1.. .... .... =>  000 0000 1... 
+        AND     MANT_MASK_HI2       ;  2:7
+        RL      E                   ;  2:8
+        ADC     A, A                ;  1:4
+        LD      E, A                ;  1:4
+        LD      D, $00              ;  2:7
+        RET                         ;  1:10
+
+SRLDEC_DE_CASE_4:                   ;           1.. .... .... =>  000 01.. ....
+        XOR     E                   ;  1:4
+        AND     $07                 ;  2:7
+        XOR     E                   ;  1:4      eeee eddd
+        RRCA                        ;  1:4      deee eedd
+        RRCA                        ;  1:4      ddee eeed
+        RRCA                        ;  1:4      ddde eeee
+        SRL     A                   ;  2:8      0ddd eeee
+        LD      E, A                ;  1:4
+        LD      D, $00              ;  2:7
+        RET                         ;  1:10
+        
 SRLDEC_DE_CASE_3:                   ;           1.. .... .... =>  000 1... ....
-    if 1
         XOR     E                   ;  1:4
         AND     $07                 ;  2:7
         XOR     E                   ;  1:4
@@ -111,27 +132,23 @@ SRLDEC_DE_CASE_3:                   ;           1.. .... .... =>  000 1... ....
         RRCA                        ;  1:4
         RRCA                        ;  1:4
         LD      E, A                ;  1:4
-                                    ;  8:31
-    else
-        RRA                         ;  1:4
-        RR      E                   ;  2:8        
-        RRA                         ;  1:4
-        RR      E                   ;  2:8
-        RRA                         ;  1:4
-        RR      E                   ;  2:8
-                                    ;  9:36
-    endif
         LD      D, $00              ;  2:7
         RET                         ;  1:10        
                 
 SRLDEC_DE_CASE_2:                   ;           1.. .... .... =>  001 .... ....
         RRA                         ;  1:4
         RR      E                   ;  2:8
-        OR      A                   ;  1:4      clear carry
-SRLDEC_DE_CASE_1:                   ;           1.. .... .... =>  01. .... ....
         RRA                         ;  1:4
-        LD      D, A                ;  1:4
         RR      E                   ;  2:8
+        AND     $01                 ;  2:7
+        LD      D, A                ;  1:4
+        RET                         ;  1:10        
+        
+SRLDEC_DE_CASE_1:                   ;           1.. .... .... =>  01. .... ....
+        AND     MANT_MASK_HI2       ;  2:7
+        RRA                         ;  1:4
+        RR      E                   ;  2:8
+        LD      D, A                ;  1:4
         RET                         ;  1:10        
 
 endif
