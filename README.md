@@ -43,7 +43,7 @@ https://github.com/nagydani/lpfp
 floating-point number = (-1)^S * 2^(eee eeee - BIAS) * ( 256 + mmmm mmmm) / 256
 
 
-binary16
+binary16 (half)
 ========
 https://en.wikipedia.org/wiki/Half-precision_floating-point_format
 
