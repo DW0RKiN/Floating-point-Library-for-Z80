@@ -61,7 +61,7 @@ int main( int argc, const char* argv[] )
     double fa, fb, fc;
     char veta[1024];
     
-    if ( argv[1][0] == '0' ) {
+    if ((argv[1][1] & 0xDF) == 'X' ) {
         sscanf(argv[1], "%hi", &ba);  //ba &= BI_MASK;        
         fa = X_TO_DOUBLE( ba );
     } else {
@@ -73,7 +73,7 @@ int main( int argc, const char* argv[] )
     
     if ( argc == 3 ) {
 
-        if ( argv[2][0] == '0' ) {
+        if ((argv[2][1] & 0xDF) == 'X' ) {
             sscanf(argv[2], "%hi", &bb);  //bb &= BI_MASK;        
             fb = X_TO_DOUBLE( bb );
         } else {
