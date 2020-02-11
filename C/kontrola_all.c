@@ -16,12 +16,28 @@
     #define MAX_NUMBER 255
 #elif TARGET == 2
     #warning Target: binary16
-    #define MAX_NUMBER 255
+    #define MAX_NUMBER 1023
 #else
     #error Byla nalezena neocekavana hodnota v promenne TARGET!
 #endif
 
 #include "../C/float.h"
+
+
+void zarovnej(char * veta)
+{
+    int i = 0, j = 0;
+    while ( veta[j] ) {
+        veta[i] = veta[j];
+        if (veta[j] != ' ' || veta[j+1] != ' ') i++;
+        j++;
+    }
+    do 
+        veta[i++] = ' ';
+    while ( i < 40 );
+    veta[i] = 0;
+    printf("%s", veta);
+}
 
 
 int main( int argc, const char* argv[] ) 
@@ -35,6 +51,7 @@ int main( int argc, const char* argv[] )
     
     unsigned short ba, bb, bc;
     double fa, fb, fc;
+    char veta[1024];
     
     sscanf(argv[1], "%hi", &ba);  //ba &= BI_MASK;        
     fa = X_TO_DOUBLE( ba );
@@ -48,76 +65,91 @@ int main( int argc, const char* argv[] )
     putchar('\n');  //----------------------------------------
     
     fc = fa * fa;
-    printf("A * A = %f = %f^2\t\t\t", fc, fa);
+    sprintf(veta, "A * A = %17.f = %17.f^2", fc, fa);
+    zarovnej(veta);
     PRINT_FP_TO_X(stdout, fc);
 
     if ( fa >= 0 ) {    
         fc = sqrt(fa);
-        printf("%f = sqrt(%f)\t\t\t", fc, fa);
+        sprintf(veta, "%17.f = sqrt(%17.f)", fc, fa);
+        zarovnej(veta);
         PRINT_FP_TO_X(stdout, fc);
     }
     
     if ( fa != 0 ) {
         fc = 1 / fa;
-        printf("1 / A = %f = 1 / %f  \t\t", fc, fa);
+        sprintf(veta,"1 / A = %17.f = 1 / %17.f", fc, fa);
+        zarovnej(veta);
         PRINT_FP_TO_X(stdout, fc);
     }
 
     fc = (int) fa;
-    printf("INT(A) = %f = INT(%f)\t\t", fc, fa);
+    sprintf(veta,"INT(A) = %17.f = INT(%17.f)", fc, fa);
+    zarovnej(veta);
     PRINT_FP_TO_X(stdout, fc);
 
     fc = fa - (int) fa;
-    printf("A - INT(A) = %f = %f - INT(A)\t", fc, fa);
+    sprintf(veta,"A - INT(A) = %17.f = %17.f - INT(A)", fc, fa);
+    zarovnej(veta);
     PRINT_FP_TO_X(stdout, fc);
 
     putchar('\n');  //-----------------------------------------
      
     if ( argc == 3 ) {
         fc = fb * fb;
-        printf("B * B = %f = %f^2\t\t\t", fc, fb);
+        sprintf(veta,"B * B = %17.f = %17.f^2", fc, fb);
+        zarovnej(veta);
         PRINT_FP_TO_X(stdout, fc);
 
         if ( fb >= 0 ) {    
             fc = sqrt(fb);
-            printf("%f = sqrt(%f)\t\t\t", fc, fb);
+            sprintf(veta,"%17.f = sqrt(%17.f)", fc, fb);
+            zarovnej(veta);
             PRINT_FP_TO_X(stdout, fc);
         }
     
         if ( fb != 0 ) {
             fc = 1 / fb;
-            printf("1 / B = %f = 1 / %f  \t\t", fc, fb);
+            sprintf(veta,"1 / B = %17.f = 1 / %17.f", fc, fb);
+            zarovnej(veta);
             PRINT_FP_TO_X(stdout, fc);
         }
         
         fc = (int) fb;
-        printf("INT(B) = %f = INT(%f)\t\t", fc, fb);
+        sprintf(veta,"INT(B) = %17.f = INT(%17.f)", fc, fb);
+        zarovnej(veta);
         PRINT_FP_TO_X(stdout, fc);
 
         fc = fb - (int) fb;
-        printf("B - INT(B) = %f = %f - INT(B)\t", fc, fb);
+        sprintf(veta,"B - INT(B) = %17.f = %17.f - INT(B)", fc, fb);
+        zarovnej(veta);
         PRINT_FP_TO_X(stdout, fc);
     
         putchar('\n');  //------------------------------------
 
         fc = fa + fb;
-        printf("A + B = %f = %f + %f\t", fc, fa, fb);
+        sprintf(veta,"A + B = %17.f = %17.f + %17.f", fc, fa, fb);
+        zarovnej(veta);
         PRINT_FP_TO_X(stdout, fc);
 
         fc = fa - fb;
-        printf("A - B = %f = %f - %f\t", fc, fa, fb);
+        sprintf(veta,"A - B = %17.f = %17.f - %17.f", fc, fa, fb);
+        zarovnej(veta);
         PRINT_FP_TO_X(stdout, fc);
         
         fc = fa * fb;
-        printf("A * B = %f = %f * %f\t", fc, fa, fb);
+        sprintf(veta,"A * B = %17.f = %17.f * %17.f", fc, fa, fb);
+        zarovnej(veta);
         PRINT_FP_TO_X(stdout, fc);
 
         fc = fa / fb;
-        printf("A / B = %f = %f / %f\t", fc, fa, fb);
+        sprintf(veta,"A / B = %17.f = %17.f / %17.f", fc, fa, fb);
+        zarovnej(veta);
         PRINT_FP_TO_X(stdout, fc);
         
         fc = fmod(fa, fb);
-        printf("A %% B = %f = %f %% %f\t", fc, fa, fb);
+        sprintf(veta,"A %% B = %17.f = %17.f %% %17.f", fc, fa, fb);
+        zarovnej(veta);
         PRINT_FP_TO_X(stdout, fc);
 
     }      
