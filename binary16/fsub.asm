@@ -5,7 +5,7 @@ if not defined @FSUB
 ; Subtract two floating-point numbers
 ;  In: HL, DE numbers to subtract, no restrictions
 ; Out: HL = HL - DE
-; Pollutes: AF, BC, DE
+; Pollutes: AF, B, DE
 @FSUB:
 if not defined FSUB
 ; *****************************************

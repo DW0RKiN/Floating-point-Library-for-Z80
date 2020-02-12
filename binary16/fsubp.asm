@@ -5,7 +5,7 @@ include "color_flow_warning.asm"
 ; Subtraction two floating-point numbers with the same signs
 ;  In: HL,DE numbers to add, no restrictions
 ; Out: HL = HL + DE, if ( carry_flow_warning && underflow ) set carry
-; Pollutes: AF, C, DE
+; Pollutes: AF, B, DE
 ; -------------- HL - DE ---------------
 ; HL = (+HL) - (+DE) = (+HL) + (-DE)
 ; HL = (-HL) - (-DE) = (-HL) + (+DE)
@@ -22,7 +22,7 @@ endif
 ; Add two floating-point numbers with the opposite signs
 ;  In: HL, DE numbers to add, no restrictions
 ; Out: HL = HL + DE
-; Pollutes: AF, BC, DE
+; Pollutes: AF, B, DE
 ; -------------- HL + DE ---------------
 ; HL = (+HL) + (-DE)
 ; HL = (-HL) + (+DE)
@@ -53,7 +53,7 @@ FSUBP_HL_GR:
 
         LD      A, H                ;  1:4
         AND     $FF - MANT_MASK_HI  ;  2:7      
-        LD      C, A                ;  1:4      seee ee00
+        LD      B, A                ;  1:4      seee ee00
         
         OR      MANT_MASK_HI        ;  2:7
         SUB     D                   ;  1:4
@@ -82,7 +82,7 @@ FSUBP_HL_GR:
         OR      A                   ;  1:4      reset carry
         RRA                         ;  1:4
         RR      L                   ;  2:8      AL = 0000 00mm mmmm mmmm
-        OR      C                   ;  1:4      reset carry
+        OR      B                   ;  1:4      reset carry
         LD      H, A                ;  1:4
         RET                         ;  1:10
 
@@ -114,13 +114,13 @@ FSUBP_NORM_OK:
         ADD     A, A                ;  1:4      -(exp+1) << 1
         ADD     A, A                ;  1:4      -(exp+1) << 2
         ADD     A, H                ;  1:4      +0000 01mm
-        ADD     A, C                ;  1:4      +seee ee00
+        ADD     A, B                ;  1:4      +seee ee00
         LD      H, A                ;  1:4
 
-        XOR     C                   ;  1:4      reset carry
+        XOR     B                   ;  1:4      reset carry
         RET     p                   ;  1:11/5
         
-        LD      H, C                ;  1:4
+        LD      H, B                ;  1:4
 FSUBP_UNDERFLOW:
         LD      A, H                ;  1:4
         AND     SIGN_MASK           ;  2:7
@@ -146,7 +146,7 @@ FSUBP_UNDERFLOW:
 FSUBP_TOOBIG:
         RET     nz                  ;  1:11/5   HL_exp - DE_exp > 10+1+1 => HL - DE = HL
         LD      A, H                ;  1:4      seee eemm
-        SUB     C                   ;  1:4     -seee ee00
+        SUB     B                   ;  1:4     -seee ee00
         OR      L                   ;  1:4      mmmm mmmm
         RET     nz                  ;  1:11/5   HL_mant  > 1.0            => HL - DE = HL
 

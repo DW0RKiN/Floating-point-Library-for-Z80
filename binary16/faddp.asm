@@ -4,7 +4,7 @@ if not defined @FADDP
 ; Add two floating point numbers with the same sign
 ;  In: HL, DE numbers to add, no restrictions
 ; Out: HL = HL + DE,  if ( overflow ) set carry
-; Pollutes: AF, C, DE
+; Pollutes: AF, B, DE
 ; -------------- HL + DE ---------------
 ; HL = (+HL) + (+DE)
 ; HL = (-HL) + (-DE)
@@ -28,11 +28,11 @@ FADDP_HL_GR:
         RET     nc                  ;  1:11/5   HL + DE = HL, RET with reset carry
         CALL    SRLDEC_DE           ;  3:17     DE = --(( DE & 11 1111 1111 ) | 100 0000 0000 ) >> --(A/4)
         
-        LD      C, H                ;  1:4
+        LD      B, H                ;  1:4
         LD      A, H                ;  1:4
         OR      SIGN_MASK + EXP_MASK;  2:7
         LD      H, A                ;  1:4      HL = 1111 11?? ???? ????      
-        LD      A, C                ;  1:4
+        LD      A, B                ;  1:4
         OR      MANT_MASK_HI        ;  2:7      A = ???? ??11 = sign + exp
         
         ADD     HL, HL              ;  1:11     HL = 1111 1??? ???? ???0, kvuli zaokrouhleni potrebujeme znat hodnotu prvniho bitu za desetinou carkou 
@@ -49,10 +49,10 @@ FADDP_EXP_PLUS:
         INC     A                   ;  1:4      A = seee ee11 + 1 = sign + ++exp        
         ADD     A, H                ;  1:4      ???? ??00 + H
         LD      H, A                ;  1:4
-        XOR     C                   ;  1:4      RET with reset carry
+        XOR     B                   ;  1:4      RET with reset carry
         RET     p                   ;  1:11/5
         
-        LD      D, C                ;  1:4
+        LD      D, B                ;  1:4
         JR      FADDP_OVERFLOW      ;  2:12
 
 

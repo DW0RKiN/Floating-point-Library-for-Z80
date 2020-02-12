@@ -2,8 +2,8 @@ if not defined @SRL_DE
 
 MANT_MASK_HI2   EQU $07
 
-;  In: DE, A = 4..44
-; Out: DE = (( DE & 11 1111 1111 ) | 100 0000 0000 ) >> (-2+A/4)
+;  In: DE, A = 4*(SHIFT + 1) = 4..4*(MANT_BITS+1)
+; Out: DE = (( DE & 11 1111 1111 ) | 100 0000 0000 ) >> ((A/4)-2)
 @SRL_DE:
 SRL_DE:
 SRL_DE_POSUN    EQU     (SRLDEC_DE_SWITCH - SRL_DE_SWITCH - 4)
@@ -17,7 +17,7 @@ SRL_DE_SWITCH   EQU     $+1
         JR      SRLDEC_DE_CASE_0    ;  2:12
         
 
-;  In: DE, A = 4..44
+;  In: DE, A = 4*(SHIFT + 1) = 4..4*(MANT_BITS+1)
 ; Out: DE = --(( DE & 11 1111 1111 ) | 100 0000 0000 ) >> ((A/4)-1)
 @SRLDEC_DE:
 SRLDEC_DE:
@@ -138,9 +138,9 @@ SRLDEC_DE_CASE_3:                   ;           1.. .... .... =>  000 1... ....
 SRLDEC_DE_CASE_2:                   ;           1.. .... .... =>  001 .... ....
         RRA                         ;  1:4
         RR      E                   ;  2:8
+        AND     $03                 ;  2:7
         RRA                         ;  1:4
         RR      E                   ;  2:8
-        AND     $01                 ;  2:7
         LD      D, A                ;  1:4
         RET                         ;  1:10        
         
