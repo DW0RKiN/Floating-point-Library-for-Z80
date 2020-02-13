@@ -12,13 +12,11 @@ if not defined FINT
 endif
         LD      A, H                ;
         SUB     BIAS                ;
-if defined FRAC_ZERO
-        JR      c, FRAC_ZERO        ;           Already integer
-else
-        JR      c, FINT_ZERO        ;           Already integer
-endif
-
-        JR      c, FINT_ZERO        ;           Completely fractional
+    if defined FRAC_ZERO
+        JR      c, FRAC_ZERO        ;  2:12/7   Completely fractional
+    else
+        JR      c, FINT_ZERO        ;  2:12/7   Completely fractional
+    endif
 FINT_NEXT:
         SUB     MANT_BITS
         RET     nc                  ;           Already integer
@@ -32,10 +30,10 @@ FINT_LOOP:                          ;           odmazani mantisy za plovouci rad
         AND     L                   ;  1:4
         LD      L, A                ;  1:4
         RET
-if not defined FRAC_ZERO
+    if not defined FRAC_ZERO
 FINT_ZERO:
         LD      HL, FPMIN           ; -0???
         RET
-endif
+    endif
         
 endif
