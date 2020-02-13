@@ -106,3 +106,29 @@ The fdiv operation has lower precision, where the lowest bit of the mantissa may
     ftst  H, L          ; if (HL >= 0) set zero;
     fmul2 H, L          ; HL = 2 * HL
     forsgn H, L, D, E   ; (BIT 7, A) = HL_sign or DE_sign
+
+
+Size in bytes:
+
+                        binary16    danagy      bfloat
+                        --------    ------      ------
+     fadd+fsub:         369         177         188  
+     fadd:              365         173         184
+     fsub:              369         177         188
+     
+     fmul+fdiv:         10496       2048        1536
+     fmul:              8448        1792        1280
+     fdiv:              10496       2048        1536
+     
+     fmod:              118         68          77
+     
+     fpow2:             8448        512         384
+     fsqrt:             4352        768         512
+     
+     frac:              55          31          33
+     fint:              38          23          23
+     
+     fwld (fbld+faddp): 301         115         120
+     fbld:              18          16          17
+     
+     all:               15360       3328        2432
