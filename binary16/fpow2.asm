@@ -20,4 +20,5 @@ endif
         POP     BC              ;  1:10
         RET
 
+    include "fmul.asm"
 endif
