@@ -108,7 +108,10 @@ The fdiv operation has lower precision, where the lowest bit of the mantissa may
     forsgn H, L, D, E   ; (BIT 7, A) = HL_sign or DE_sign
 
 
-Size in bytes:
+Size in bytes
+
+     color_flow_warning  EQU     0
+     carry_flow_warning  EQU     1
 
                         binary16    danagy      bfloat
                         --------    ------      ------
