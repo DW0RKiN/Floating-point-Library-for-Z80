@@ -113,25 +113,25 @@ Size in bytes
      color_flow_warning  EQU     0
      carry_flow_warning  EQU     1
 
-                        binary16    danagy      bfloat
-                        --------    ------      ------
-     fadd+fsub:         369         177         188  
-     fadd:              365         173         184
-     fsub:              369         177         188
+                    binary16    danagy      bfloat
+                    --------    ------      ------
+     fadd+fsub:     369         177         188 
+     fadd:          365         173         184
+     fsub:          369         177         188
      
-     fmul+fdiv:         10496       2048        1536
-     fmul:              8448        1792        1280
-     fdiv:              10496       2048        1536
+     fmul+fdiv:     10496       2048        1536
+     fmul:          8448        1792        1280
+     fdiv:          10496       2048        1536
      
-     fmod:              118         68          77
+     fmod:          118         68          77
      
-     fpow2:             8448        512         384
-     fsqrt:             4352        768         512
+     fpow2:         8448        512         384
+     fsqrt:         4352        768         512
      
-     frac:              55          31          33
-     fint:              38          23          23
+     frac:          55          31          33
+     fint:          38          23          23
      
-     fwld (fbld+faddp): 301         115         120
-     fbld:              18          16          17
+     fwld:          58          32          37
+     fbld:          18          16          17
      
-     all:               15360       3328        2432
+     all:           15240       3091        2231
