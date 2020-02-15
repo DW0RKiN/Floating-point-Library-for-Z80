@@ -1,7 +1,5 @@
 if not defined @SRL_DE
 
-MANT_MASK_HI2   EQU $07
-
 ;  In: DE, A = 4*(SHIFT + 1) = 4..4*(MANT_BITS+1)
 ; Out: DE = (( DE & 11 1111 1111 ) | 100 0000 0000 ) >> ((A/4)-2)
 @SRL_DE:
@@ -33,7 +31,7 @@ SRLDEC_DE_SWITCH EQU     $+1
         NOP                         ;  1:4
         
 SRLDEC_DE_CASE_0:
-        AND     MANT_MASK_HI2       ;  2:7
+        AND     MANT_MASK_IMP_HI    ;  2:7
         LD      D, A                ;  1:4
         RET                         ;  1:10        
 
@@ -72,7 +70,7 @@ SRLDEC_DE_CASE_10:                  ;           1.. .... .... =>  000 0000 0001
         RET                         ;  1:10
 
 SRLDEC_DE_CASEm1:                   ;           1.. .... .... => 1... .... ...0
-        AND     MANT_MASK_HI2       ;  2:7
+        AND     MANT_MASK_IMP_HI    ;  2:7
         SLA     E                   ;  2:8
         ADC     A, A                ;  1:4
         LD      D, A                ;  1:4
@@ -135,7 +133,7 @@ SRLDEC_DE_CASE_6:                   ;           1.. .... .... =>  000 0001 ....
         RET                         ;  1:10
 
 SRLDEC_DE_CASE_7:                   ;           1.. .... .... =>  000 0000 1... 
-        AND     MANT_MASK_HI2       ;  2:7
+        AND     MANT_MASK_IMP_HI    ;  2:7
         RL      E                   ;  2:8
         ADC     A, A                ;  1:4
         LD      E, A                ;  1:4
@@ -143,7 +141,7 @@ SRLDEC_DE_CASE_7:                   ;           1.. .... .... =>  000 0000 1...
         RET                         ;  1:10
 
 SRLDEC_DE_CASE_8:                   ;           1.. .... .... =>  000 0000 01..
-        AND     MANT_MASK_HI2       ;  2:7
+        AND     MANT_MASK_IMP_HI    ;  2:7
         LD      E, A                ;  1:4
         LD      D, $00              ;  2:7
         RET                         ;  1:10

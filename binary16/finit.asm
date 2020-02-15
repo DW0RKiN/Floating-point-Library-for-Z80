@@ -8,6 +8,8 @@ if not defined BIAS
 
 MANT_BITS           EQU 10
 MANT_MASK_HI        EQU $03
+IMPBIT_MASK         EQU $04     ; implicit(hidden) bit 
+MANT_MASK_IMP_HI    EQU IMPBIT_MASK+MANT_MASK_HI
 
 BIT_ALWAYS_ONE      EQU 2
 
