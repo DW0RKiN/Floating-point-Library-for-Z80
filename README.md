@@ -115,18 +115,18 @@ Size in bytes
 
                     binary16    danagy      bfloat
                     --------    ------      ------
-     fadd+fsub:     369         177         188 
+     fadd+fsub:     369         177         188
      fadd:          365         173         184
      fsub:          369         177         188
      
-     fmul+fdiv:     10496       2048        1536
-     fmul:          8448        1792        1280
-     fdiv:          10496       2048        1536
+     fmul+fdiv:     10453       1931        1422
+     fmul:          8322        1629        1108
+     fdiv:          10453       1931        1422
      
      fmod:          118         68          77
      
-     fpow2:         8448        512         384
-     fsqrt:         4352        768         512
+     fpow2:         8333        279         158
+     fsqrt:         4120        527         269
      
      frac:          55          31          33
      fint:          38          23          23
