@@ -131,7 +131,7 @@ Size in bytes
      frac:          55          31          33
      fint:          38          23          23
      
-     fwld:          58          32          37
+     fwld:          57          32          37
      fbld:          18          16          17
      
-     all:           15240       3091        2231
+     all:           15239       3091        2231
