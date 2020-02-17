@@ -10,7 +10,7 @@ include "faddp.asm"
 ; B = 2: HL =                                    [HL+2]*[HL+2] + ([HL]*[HL])
 ; B = 3: HL =                   [HL+4]*[HL+4] + ([HL+2]*[HL+2] + ([HL]*[HL]))
 ; B = 4: HL = [HL+6]*[HL+6] + (([HL+4]*[HL+4] + ([HL+2]*[HL+2] + ([HL]*[HL])))
-; Pollutes: AF, BC, DE
+; Pollutes: AF, B, DE
 @FLEN:
 if not defined FLEN
 ; *****************************************
