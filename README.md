@@ -102,9 +102,11 @@ The fdiv operation has lower precision, where the lowest bit of the mantissa may
     call  fbld          ; DE = unsigned char A * 1.0
 
     Macros (must be included before first use):
-    
+
+    fabs  H, L          ; HL = abs(HL)
     ftst  H, L          ; if (HL >= 0) set zero;
-    fmul2 H, L          ; HL = 2 * HL
+    fmul2 H, L          ; HL = HL * 2
+    fdiv2 H, L          ; HL = HL / 2
     forsgn H, L, D, E   ; (BIT 7, A) = HL_sign or DE_sign
 
 

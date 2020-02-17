@@ -49,9 +49,9 @@ LP2:
         XOR     H                   ;           x1 x0 y5 y4 y3 y2 y1 y0
         LD      B, A
         LD      A, H
-        add     A, A
-        add     A, A
-        add     A, A                ;           y7 y6 y2 y1 y0 0 0
+        ADD     A, A
+        ADD     A, A
+        ADD     A, A                ;           y7 y6 y2 y1 y0 0 0
         XOR     B
         AND     $C0                 ;           ? ? 0 0 0 0 0 0
         XOR     B

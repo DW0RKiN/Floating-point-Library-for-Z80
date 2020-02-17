@@ -2,13 +2,12 @@
 ; Pollutes: AF, AF', BC, DE, HL
 HITRAY:        
         LD      A, (POS)
-        LD      B, A
+        LD      C, A
         LD      HL, GC
     if defined print_name_fce
         CALL    PRINT_HITRAY
     endif
-HRL:       
-        PUSH    BC
+HITRAY_LOOP:       
         LD      E, (HL)
         INC     HL
         LD      D, (HL)
@@ -26,7 +25,7 @@ HRL:
         POP     HL
         LD      (HL), D
         DEC     HL
-        LD      (HL), E             ;           [GC|B1C|B2C] = [GC|B1C|B2C] - [DZ]
+        LD      (HL), E             ;           [GC.x|B1C.x|B2C.x] = [GC.x|B1C.x|B2C.x] - [DX]
         INC     HL
         INC     HL
         LD      E, (HL)
@@ -46,7 +45,7 @@ HRL:
         POP     HL
         LD      (HL), D
         DEC     HL
-        LD      (HL), E             ;           [GC|B1C|B2C+2] = [GC|B1C|B2C+2] - [DZ]
+        LD      (HL), E             ;           [GC.y|B1C.y|B2C.y] = [GC.y|B1C.y|B2C.y] - [DY]
         INC     HL
         INC     HL
         LD      E, (HL)
@@ -56,7 +55,7 @@ HRL:
         LD      HL, (DZ)
     if defined print_variables
         CALL    PRINT_DZ
-endif
+    endif
         EX      DE, HL
     if defined print_variables
         CALL    PRINT_HL
@@ -66,11 +65,12 @@ endif
         POP     HL
         LD      (HL), D
         DEC     HL
-        LD      (HL), E             ;           [GC|B1C|B2C+4] = [GC|B1C|B2C+4] - [DZ]                  
+        LD      (HL), E             ;           [GC.z|B1C.z|B2C.z] = [GC.z|B1C.z|B2C.z] - [DZ]                  
         INC     HL
         INC     HL                  ;           HL = GC=>B1C=>B2C         
-        POP     BC
-        DJNZ    HRL
+        DEC     C
+        JR      nz, HITRAY_LOOP
+        
         LD      HL, (GC)
     if defined print_variables
         CALL    PRINT_GX
