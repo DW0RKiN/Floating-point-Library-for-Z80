@@ -104,8 +104,6 @@ The fdiv operation has lower precision, where the lowest bit of the mantissa may
     call  fcmp          ; set flag for HL - DE
     call  fcmpa         ; set flag for abs(HL) - abs(DE)
     call  fcmps         ; set flag for HL - DE, HL and DE have the same signs
-    
-    call  fabs          ; HL = abs(HL)
 
     Macros (must be included before first use):
 
