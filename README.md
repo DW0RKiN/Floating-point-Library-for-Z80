@@ -100,6 +100,10 @@ The fdiv operation has lower precision, where the lowest bit of the mantissa may
 
     call  fwld          ; HL = unsigned word HL * 1.0
     call  fbld          ; DE = unsigned char A * 1.0
+    
+    call  fcmp          ; set flag for HL - DE
+    call  fcmpa         ; set flag for abs(HL) - abs(DE)
+    call  fcmps         ; set flag for HL - DE, HL and DE have the same signs
 
     Macros (must be included before first use):
 
