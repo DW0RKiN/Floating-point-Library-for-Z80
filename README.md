@@ -107,6 +107,8 @@ The fdiv operation has lower precision, where the lowest bit of the mantissa may
 
     Macros (must be included before first use):
 
+    mcmpa H, L, D, E    ; set flag for abs(HL) - abs(DE)
+    mcmps H, L, D, E    ; set flag for HL - DE, HL and DE have the same signs
     mneg  H, L          ; HL = -HL
     mabs  H, L          ; HL = abs(HL)
     mge0  H, L          ; if (HL >= 0) set zero;
