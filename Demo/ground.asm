@@ -138,7 +138,7 @@ GROUNDI:
     endif
         LD      BC, (GC+2)
         LD      HL, (DY)
-        FORSGN  B,C,H,L         ;           sign or sign
+        MSOR    B,C,H,L         ;           sign or sign
         ADD     A, A
         CCF                     ;           carry = not (sign or sign)
         RET     nc              ;           ani jeden neni zaporny

@@ -14,9 +14,9 @@ endif
         INCLUDE "finit.asm"
         
         ; MACROS
-        INCLUDE "fmul2.asm"
-        INCLUDE "ftst.asm"
-        INCLUDE "forsgn.asm"
+        INCLUDE "mmul2.asm"
+        INCLUDE "mge0.asm"
+        INCLUDE "msor.asm"
 
 ; This code is ZX Spectrum specific
         ORG     $8000               ;           Use uncontended memory (32768)

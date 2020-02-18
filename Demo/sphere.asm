@@ -16,7 +16,7 @@ SPHEREL:
         LD      DE, DX              ;
         LD      A, $03              ;
         CALL    FDOT                ;           BC = BnC.x*DX + BnC.y*DY + BnC.z*DZ = skalarni soucin = SS
-        FMUL2   B, C                ;           BC = 2 * SS
+        MMUL2   B, C                ;           BC = 2 * SS
 
         DEC     HL                  ;
         LD      D, (HL)             ;
@@ -107,7 +107,7 @@ SPHEREI:
         LD      A, 3
         CALL    FDOT                ;           D * P  ; (BC=sc=px*dx+py*dy+pz*dz)
         AND     A                   ;           clear carry
-        FTST        B, C            ;           zero flag if BC is positive
+        MGE0    B, C                ;           zero flag if BC is positive
     if defined print_name_fce
         CALL    z, PRINT_TXT_CONTINUE
         CALL    nz, PRINT_TXT_EXIT
