@@ -107,11 +107,12 @@ The fdiv operation has lower precision, where the lowest bit of the mantissa may
 
     Macros (must be included before first use):
 
-    fabs  H, L          ; HL = abs(HL)
-    ftst  H, L          ; if (HL >= 0) set zero;
-    fmul2 H, L          ; HL = HL * 2
-    fdiv2 H, L          ; HL = HL / 2
-    forsgn H, L, D, E   ; (BIT 7, A) = HL_sign or DE_sign
+    mneg  H, L          ; HL = -HL
+    mabs  H, L          ; HL = abs(HL)
+    mge0  H, L          ; if (HL >= 0) set zero;
+    msor  H, L, D, E    ; (BIT 7, A) = HL_sign or DE_sign
+    mmul2 H, L          ; HL = HL * 2
+    mdiv2 H, L          ; HL = HL / 2
 
 
 Size in bytes
