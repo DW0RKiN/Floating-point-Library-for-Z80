@@ -2,7 +2,7 @@ if not defined @FCMP
 
     include "fcmps.asm"
     
-; Compare two numbers
+; Compare two numbers.
 ;    Input: HL, DE 
 ;   Output: set flags for HL-DE
 ;           HL < DE set carry

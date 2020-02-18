@@ -11,24 +11,21 @@ if not defined FMOD
                     FMOD                ; *
 ; *****************************************
 endif
-        RES     7, H                ;  2:8
+
+        RES     7, H                ;  2:8      HL = abs(HL), exp HL will be used for the result
         LD      A, B                ;  1:4
-        AND     SIGN_MASK           ;
-        LD      D, A                ;           sign only
-        XOR     B                   ;           
-        SUB     H                   ;
-        JR      nc, FMOD_BC_GR_EXP  ;
-FMOD_HL_GR:
-        LD      H, B                ;   
-        LD      L, C                ;
-        RET                         ;   
-FMOD_BC_GR_EXP:
-        LD      E, A                ;           diff exp        
+        AND     SIGN_MASK           ;  2:7
+        LD      D, A                ;  1:4      Result sign only
+        XOR     B                   ;  1:4
+        SUB     H                   ;  1:4
+        JR      c, FMOD_HL_GR       ;  2:12/7
+        LD      E, A                ;  1:4      diff exp        
         LD      A, C                ;  1:4 
-        JR      nz, FMOD_SUB        ;
+        JR      nz, FMOD_SUB        ;  2:12/7
+        
         CP      L                   ;  1:4
-        JR      z, FMOD_FPMIN       ;
-        JR      c, FMOD_HL_GR       ;
+        JR      z, FMOD_FPMIN       ;  2:12/7
+        JR      c, FMOD_HL_GR       ;  2:12/7
 
 FMOD_SUB:                           ;           BC_mantis - HL_mantis
         SUB     L                   ;
@@ -83,6 +80,14 @@ FMOD_STOP:
         LD      H, A                ;
         RET                         ;
         
+FMOD_HL_GR:
+    if carry_flow_warning
+        OR      A                   ;
+    endif
+        LD      H, B                ;   
+        LD      L, C                ;
+        RET                         ;   
+
 FMOD_FPMIN:                         ;           RET with reset carry
         LD      L, $00              ;
         LD      H, D                ;
