@@ -1,18 +1,6 @@
 if not defined @FMOD
-
-;  Input: HL, BC
-; Output: HL = abs(HL), flag => abs(BC) - abs(HL)
-FCOMP:
-        RES     7, L            ;  2:8
-        LD      A, B            ;  1:4
-        SUB     H               ;  1:4
-        RET     nz              ;  1:11/5       if ( carry ) { H > B } else { H < B }
-        LD      A, C            ;  1:4
-        AND     MANT_MASK       ;  2:7
-        SUB     L               ;  1:4
-        RET                     ;  1:10
         
-; Remainder after division
+; Remainder after division.
 ;  In: BC dividend, HL modulus
 ; Out: HL = BC % HL = BC - int(BC/HL) * HL = frac(BC/HL) * HL  => does not return correct results with larger exponent difference
 ; Pollutes: AF, BC, DE
@@ -22,23 +10,30 @@ if not defined FMOD
                     FMOD                ; *
 ; *****************************************
 endif
-        CALL    FCOMP               ;           abs(BC) - abs(HL), HL = abs(HL)
-        JP      z, FMOD_FPMIN       ;
-        JR      nc, FMOD_BC_GR      ;
-        LD      H, B                ;   
-        LD      L, C                ;
-        RET                         ;   
+        include "mcmpa.asm"
+        MCMPA   H, L, B, C          ;           flag: abs(HL) - abs(BC)
+        JP      c, FMOD_BC_GR       ;  3:10
+        
+        LD      H, B                ;  1:4
+        LD      L, C                ;  1:4
+        RET     nz                  ;  1:11/5
+        LD      H, A                ;  1:4
+        LD      A, C                ;  1:4
+        AND     SIGN_MASK           ;  2:7
+        LD      L, A                ;  1:4      FPMIN or FMMIN   
+        RET                         ;  1:10
+        
 FMOD_BC_GR:
         LD      D, H                ;           D = old H exp
-        LD      H, B                ;           D = new H exp
+        LD      H, B                ;           H = new B exp
 
         LD      A, L                ;  1:4
         OR      SIGN_MASK           ;  2:7
-        LD      E, A                ;  1:4      E = 0 1mmm mmmm = HL_mantis >> 1
+        LD      E, A                ;  1:4      E = 0 1mmm mmmm
 
         LD      A, C                ;
         AND     SIGN_MASK           ;
-        LD      L, A                ;           sign only
+        LD      L, A                ;           L = sign only
         
         LD      A, C                ;
         ADD     A, A                ;
@@ -51,7 +46,6 @@ FMOD_BC_GR:
 FMOD_SUB:                           ;           BC_mantis - HL_mantis/2
         SUB     E                   ;
         JR      nc, FMOD_SUB        ;
-        JR      z, FMOD_FPMIN       ;           FPMIN
 
 FMOD_NORM:
         INC     H
@@ -77,6 +71,9 @@ FMOD_NORM_LOOP:
 FMOD_EXIT:
         RL      L                   ;  2:8      sign out
         RRA                         ;           A = smmm mmmm
+    if carry_flow_warning
+        OR      A                   ;
+    endif
         LD      L, A                ;
         RET                         ;
                 
@@ -87,13 +84,10 @@ FMOD_SAME_EXP:
 
         SUB     E                   ;
         JR      nz, FMOD_NORM       ;
-        ; fall
-        
-FMOD_FPMIN:                         ;           RET with reset carry
-        LD      H, A                ;
-        RET
+                                    ;           BC = 2^n * HL a bohuzel jsme odcitali stale poloviny (BC-HL/2) az jsme se dostali sem...
+        LD      H, A                ;           FPMIN or FMMIN
+        RET                         ;
 
-        
 ; Input: H = 0, L = sign only        
 FMOD_UNDERFLOW:
     if color_flow_warning

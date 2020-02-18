@@ -1,6 +1,6 @@
 if not defined @FCMPA
 
-; Compare two numbers in absolute value
+; Compare two numbers in absolute value.
 ;    Input: HL, DE 
 ;   Output: set flags for abs(HL)-abs(DE)
 ;           abs(HL) < abs(DE) set carry

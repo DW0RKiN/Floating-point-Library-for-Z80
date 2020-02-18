@@ -1,6 +1,6 @@
 if not defined @FCMPS
 
-; Compare two numbers with the same sign
+; Compare two numbers with the same sign.
 ;    Input: HL >= 0, DE >= 0
 ;           HL <  0, DE <  0
 ;   Output: set flags for HL-DE
