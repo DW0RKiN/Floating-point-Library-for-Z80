@@ -2,20 +2,7 @@ if not defined @FMOD
 
     include "color_flow_warning.asm"
     
-;  Input: HL, BC
-; Output: abs(HL), flag => abs(BC) - abs(HL)
-FCOMP:
-        RES     7, H            ;  2:8  
-        LD      A, B            ;  1:4
-        AND     $FF - SIGN_MASK ;  2:7
-        SUB     H               ;  1:4
-        RET     nz              ;  1:11/5       if ( carry ) { H > B } else { H < B }
-        LD      A, C            ;  1:4
-        SUB     L               ;  1:4
-        RET                     ;  1:10
-    
-    
-; Remainder after division
+; Remainder after division.
 ;  In: BC dividend, HL modulus
 ; Out: HL remainder, HL = BC % HL       
 ; BC % HL = BC - int(BC/HL) * HL = frac(BC/HL) * HL  => does not return correct results with larger exponent difference
@@ -27,13 +14,19 @@ if not defined FMOD
                     FMOD                ; *
 ; *****************************************
 endif        
+        include "mcmpa.asm"
+        MCMPA   H, L, B, C          ;           flag: abs(HL) - abs(BC)
+        JP      c, FMOD_BC_GR       ;  3:10
+        
+        LD      H, B                ;  1:4
+        LD      L, C                ;  1:4
+        RET     nz                  ;  1:11/5
+        LD      L, A                ;  1:4
+        LD      A, B                ;  1:4
+        AND     SIGN_MASK           ;  2:7
+        LD      H, A                ;  1:4
+        RET                         ;  1:11/5   FPMIN or FMMIN   
 
-        CALL    FCOMP               ;           flag: abs(BC) - abs(HL), BC = abs(BC)
-        JP      z, FMOD_UNDERFLOW   ;
-        JR      nc, FMOD_BC_GR      ;
-        LD      H, B                ;   
-        LD      L, C                ;
-        RET                         ;   
 FMOD_BC_GR:
         LD      D, B                ;
         LD      E, C                ;           HL = DE % HL
@@ -78,7 +71,6 @@ FMOD_BC_GR:
 FMOD_SUB:                           ;           HL - DE
         SBC     HL, DE              ;  2:15     HL = HL - DE/2
         JR      nc, FMOD_SUB        ;  3:10
-        RET     z                   ;  1:5/11   FPMIN
 
 FMOD_SHIFT_HL:
         SUB     C                   ;  1:4      exp--
