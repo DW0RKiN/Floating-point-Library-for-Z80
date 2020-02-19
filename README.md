@@ -3,7 +3,7 @@ Floating-Point Arithmetic Library for Z80
 
 
 ## bfloat
-======
+
 https://en.wikipedia.org/wiki/Bfloat16_floating-point_format
 
 ![Ray tracing using bfloat](https://github.com/DW0RKiN/Floating-point-Library-for-Z80/blob/master/bfloat.png)
@@ -24,7 +24,7 @@ floating-point number = (-1)^S * 2^(eeee eeee - BIAS) * ( 128 + mmm mmmm) / 128
 Sign position is moved from the original.
 
 ## danagy 
-======
+
 https://github.com/nagydani/lpfp
 
 ![Ray tracing using danagy](https://github.com/DW0RKiN/Floating-point-Library-for-Z80/blob/master/danagy.png)
@@ -44,7 +44,7 @@ floating-point number = (-1)^S * 2^(eee eeee - BIAS) * ( 256 + mmmm mmmm) / 256
 
 
 ## binary16 (half)
-========
+
 https://en.wikipedia.org/wiki/Half-precision_floating-point_format
 
 ![Ray tracing using binary16](https://github.com/DW0RKiN/Floating-point-Library-for-Z80/blob/master/binary16.png)
@@ -63,7 +63,6 @@ https://en.wikipedia.org/wiki/Half-precision_floating-point_format
 floating-point number = (-1)^S * 2^(ee eee - BIAS) * ( 1024 + mm mmmm mmmm) / 1024 
 
 ## applies to everything
-=====================
 
 Without support for infinity, zero, and NaN.
 
