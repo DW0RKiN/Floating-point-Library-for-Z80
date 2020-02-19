@@ -1,34 +1,29 @@
-; pasmo -I ../danagy -d test_fmod.asm 24576.bin > test.asm ; grep "BREAKPOINT" test.asm
+; pasmo -I ../danagy -d test_fwld.asm 24576.bin > test.asm ; grep "BREAKPOINT" test.asm
 ; randomize usr 57344
 
     INCLUDE "finit.asm"
 
     color_flow_warning  EQU     1
     carry_flow_warning  EQU     1
-    DATA_ADR    EQU     $6000       ; 24576
-    TEXT_ADR    EQU     $E000       ; 57344
+    DATA_ADR            EQU     $6000       ; 24576
+    TEXT_ADR            EQU     $E000       ; 57344
 
     ORG     DATA_ADR
 
-    dw  FP7, FP3, FP1
-    dw  FP1_5, FP1, FP0_5
-    dw  FP4, FM4, FPMIN
-    dw  FM4, FP4, FMMIN
-    dw  FP256, FM4, FPMIN
-    dw  FM256, FP4, FMMIN
+    dw $0005, FP5
+    dw $0040, FP64
     
-    INCLUDE "test_fmod.dat"
+    INCLUDE "test_fwld.dat"
 
-    dw $BABE, $CAFE, $DEAD          ; Stop MARK
+    dw $BABE, $DEAD                 ; Stop MARK
 
 ; Subroutines
-    INCLUDE "fmod.asm"
+    INCLUDE "fwld.asm"
     INCLUDE "fequals.asm"
     INCLUDE "print_txt.asm"
     INCLUDE "print_hex.asm"
 
 ; Lookup tables
-
     
     if ( $ > TEXT_ADR ) 
         .ERROR "Prilis dlouha data!"        
@@ -40,11 +35,11 @@
         PUSH    HL
 READ_DATA:
         POP     HL
-        LD      BC, $0006
+        LD      BC, $0004
         LD      DE, OP1
         LDIR
         PUSH    HL
-        
+
 ; HL = HL + DE
 ; HL = HL - DE
 
@@ -56,19 +51,15 @@ READ_DATA:
 ; HL = HL * HL
 ; HL = HL % 1
 ; HL = HL^0.5
-
-        LD      BC, (OP1)
-        LD      HL, (OP2)
+        LD      HL, (OP1)
 BREAKPOINT:
 ; FUSE Debugger
-; br 0xE015
+; br 0xE011
 
-        PUSH    BC
-        PUSH    HL
-        CALL    FMOD                    ; HL = BC % HL
-        POP     BC
-        POP     BC
+        PUSH    HL        
+        CALL    FWLD                ; HL = HL*1.0
         
+        POP     BC
 ;     kontrola
         LD      BC, (RESULT)
         
@@ -104,8 +95,6 @@ PRINT_OK:
         
 OP1:
         defs    2
-OP2:
-        defs    2
 RESULT:
         defs    2
 
@@ -122,10 +111,6 @@ PRINT_DATA:
         LD      DE, DATA_1
         CALL    WRITE_HEX
 
-        LD      HL, (OP2)
-        LD      DE, DATA_2
-        CALL    WRITE_HEX
-        
         LD      H, B
         LD      L, C
         LD      DE, DATA_3
@@ -136,10 +121,7 @@ PRINT_DATA:
         defb    INK, COL_WHITE, '$'
 DATA_1:
         defs     4
-        defb    ' % $'
-DATA_2:
-        defs     4
-        defb    ' = $'
+        defb    ' * 1.0 = $'
 DATA_3:
         defs     4
         defb    ' ? ', INK
