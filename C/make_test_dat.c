@@ -17,7 +17,7 @@
     #define MAX_NUMBER 255
 #elif TARGET == 2
     #warning Target: binary16
-    #define MAX_NUMBER 255
+    #define MAX_NUMBER 1023
 #else
     #error Byla nalezena neocekavana hodnota v promenne TARGET!
 #endif
@@ -223,6 +223,7 @@ srand(time(NULL)); // randomize seed
     #define TABLE_DIV           ((8+32)*256)    // DIV+MUL 10240
     #define TABLE_MUL           (32*256)        // MUL      8192
     #define TABLE_SQRT          (16*256)        // FSQRT    4096
+    #define TABLE_LN            (9*256)         // LN       2112
 
     #define SPACE           30000
 
@@ -231,7 +232,8 @@ srand(time(NULL)); // randomize seed
     #define TABLE_DIV           ((2+8)*256)     // DIV+MUL  2560
     #define TABLE_MUL           (8*256)         // MUL      2048
     #define TABLE_SQRT          (1*256)         // FSQRT     256
-    
+    #define TABLE_LN            (3*256)         // LN        768
+
     #define SPACE           30000
 
 #elif MAX_NUMBER == 127
@@ -239,7 +241,8 @@ srand(time(NULL)); // randomize seed
     #define TABLE_DIV           ((1+4)*256)     // DIV+MUL  1280
     #define TABLE_MUL           (4*256)         // MUL      1024
     #define TABLE_SQRT          (1*256)         // FSQRT     256
-    
+    #define TABLE_LN            (3*256)         // LN        768
+
     #define SPACE           30000
 
 #else
@@ -368,7 +371,7 @@ int exp = 0;
     #define MAX_LINE        (SPACE/BYTE_PER_LINE)
     char c = '/';       // * x / 2^x
 #elif VARIANTA == 7
-    // pow2
+    // pow2()
     #define RAND ALL
     #define BYTE_PER_LINE   (2*2)
     #define MAX_LINE        ((SPACE-TABLE_SQRT)/BYTE_PER_LINE)
@@ -377,6 +380,17 @@ int exp = 0;
     #define RAND POS
     #define BYTE_PER_LINE   (2*2)
     #define MAX_LINE        ((SPACE-TABLE_SQRT)/BYTE_PER_LINE)
+#elif VARIANTA == 9
+    // load world
+    #define RAND POS
+    #define BYTE_PER_LINE   (2*2)
+    #define MAX_LINE        (SPACE/BYTE_PER_LINE)
+#elif VARIANTA == 10
+    // ln()
+    #define RAND POS
+    #define BYTE_PER_LINE   (2*2)
+    #define MAX_LINE        ((SPACE-TABLE_LN)/BYTE_PER_LINE)
+
 #else
     #error Necekana hodnota VARIANTY!
 #endif
@@ -472,6 +486,13 @@ for (i = 0; i < MAX_LINE; i++ ) {
 #elif VARIANTA == 8
     bc   = _sqrt(ba);   // *
     dc = X_TO_DOUBLE( bc );
+    
+#elif VARIANTA == 9
+    ba = rand() & 0xFFFF; 
+    dc = 1.0 * ba;
+#elif VARIANTA == 10
+    dc  = log(da);     // *
+
 #else
     #error Necekana hodnota VARIANTY!
 #endif
@@ -487,6 +508,10 @@ for (i = 0; i < MAX_LINE; i++ ) {
     printf("dw $%04x, $%04x\t\t; %+.3e^2 = %+.3e", ba, bc, da, dc);
 #elif VARIANTA == 8
     printf("dw $%04x, $%04x\t\t; %+.3e^0.5 = %+.3e", ba, bc, da, dc);
+#elif VARIANTA == 9
+    printf("dw $%04x, $%04x\t\t; %i * 1.0 = %+.3e", ba, bc, ba, dc);
+#elif VARIANTA == 10
+    printf("dw $%04x, $%04x\t\t; ln(%+.3e) = %+.3e", ba, bc, da, dc);
 #else
     printf("dw $%04x, $%04x, $%04x\t\t; %+.3e %c %+.3e = %+.3e", ba, bb, bc, da, c, db, dc);
 #endif

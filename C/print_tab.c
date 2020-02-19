@@ -3,22 +3,21 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "float.h"
-
-
 // gcc ./print_tab.c -DMUL -DSOURCE=\"orig_tab_mul7_0x80.h\" -lm
 
 #ifndef SOURCE
 
 // #define SOURCE "orig_tab_mul7_0x80.h"
-// #define SOURCE "orig_tab_mul11_2.h"
-#define SOURCE "orig_tab_mul8_3.h"
+#define SOURCE "orig_tab_mul11_2.h"
+// #define SOURCE "orig_tab_mul8_3.h"
 // #define SOURCE "orig_tab_mul7.h"
 // #define SOURCE "mul7_16tab_1.h"
 
 #endif
 
 #include SOURCE
+
+#include "float.h"
 
 int const START_LIMIT = MAX_NUMBER+1;
 int const NEJVYSSI = MAX_NUMBER+1;
@@ -691,7 +690,92 @@ float konst[] = {
 #endif
 
 
+// gcc -DBYTE
+#ifdef LN
+    /****************** LN TABLE ******************/
 
+    {
+        printf("; ln(2^exp*man) = ln(2^exp) + ln(man) = ln(2)*exp + ln(man) = ln2_exp[e] + ln_m[m]\n");
+        printf("LN_M:\n");
+
+        
+    #if MAX_NUMBER == 127
+        for ( i = 0; i <= MAX_NUMBER; i++ )
+        {
+            double f = make_double(0,0,((binary64) i) << (DO_EXP_POS-POCET_BITU));
+            double ln = log(f);
+            printf("dw $%04x\t; ln(%1.4f) = %f\n", ((unsigned int) DOUBLE_TO_X_OPT(ln)), f, ln);
+        }
+        
+        printf("\n\n; LN(2)*(-1) = $7eb1 => but $7eb2 is sometimes better...\nLN2_EXP:\n");
+        
+        int tab[256];
+        for ( i = 0; i <= 255; i++ )
+        {
+            double f = (i - BIAS) * log((double) 2.0);
+            tab[i] = ((unsigned int) DOUBLE_TO_X_OPT(f));
+            
+//             if ( i == 0x7E ) tab[i]++;
+        }
+        
+        printf("; lo\n");
+        print256_tab(tab, 0, 0, 256 );
+        printf("; hi\n");
+        print256_tab(tab, 0, 8, 256 );
+    #elif MAX_NUMBER == 255
+        int tab[256];
+        for ( i = 0; i <= 255; i++ )
+        {
+            double f = make_double(0,0,((binary64) i) << (DO_EXP_POS-POCET_BITU));
+            double ln = log(f);
+            tab[i] = ((unsigned int) DOUBLE_TO_X_OPT(ln));
+        }
+        
+        printf("; lo\n");
+        print256_tab(tab, 0, 0, 256 );
+        printf("; hi\n");
+        print256_tab(tab, 0, 8, 256 );
+
+        printf("\n\n; Numbers with exponent -1 ($3f) have lower result accuracy\nLN2_EXP:\n");
+
+        for ( i = 0; i < 128; i++ )
+        {
+            double f = (i - BIAS) * log((double) 2.0);
+            printf("dw $%04x\t; %i*ln(2) = %1.4f\n", ((unsigned int) DOUBLE_TO_X_OPT(f)), i-BIAS, f);
+        }
+    #elif MAX_NUMBER == 1023
+    
+        int tab[1024];
+        for ( i = 0; i <= MAX_NUMBER; i++ )
+        {
+            double f = make_double(0,0,((binary64) i) << (DO_EXP_POS-POCET_BITU));
+            double ln = log(f);
+            tab[i] = ((unsigned int) DOUBLE_TO_X_OPT(ln));
+        }
+
+        j = 0;
+        while ( j <= MAX_NUMBER ) {
+            printf("; lo\n");
+            print256_tab(tab, j, 0, STOP );
+            printf("; hi\n");
+            print256_tab(tab, j, 8, STOP );
+            j += 256;
+        }
+
+        printf("\n\n; Numbers with exponent -1 ($3c) have lower result accuracy\nLN2_EXP:\n");
+
+        for ( i = 0; i < 32; i++ )
+        {
+            double f = (i - BIAS) * log((double) 2.0);
+            printf("dw $%04x\t; %i*ln(2) = %1.4f\n", ((unsigned int) DOUBLE_TO_X_OPT(f)), i-BIAS, f);
+        }
+
+    #else    
+        #error Neocekacana hodnota MAX_NUMBER!        
+    #endif    
+    }
+
+#endif
 
 
 }
