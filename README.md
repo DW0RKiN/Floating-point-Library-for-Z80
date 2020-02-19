@@ -81,7 +81,8 @@ If a math operation needs to include another operation, it will do it itself.
 Data files ( *.tab ) must be included manually. 
 They must be aligned to the address divisible by 256.
 
-The fdiv operation has lower precision, where the lowest bit of the mantissa may not be valid.
+The __FDIV__ operation has lower precision, where the lowest bit of the mantissa may not be valid.
+The __FLN__ function has lower accuracy, where the lowest bit of the mantissa may not be valid bit. When input with exponent -1, the result gets even worse.
 
     call  fadd          ; HL = HL + DE
     call  faddp         ; HL = HL + DE, HL and DE have the same signs
@@ -92,6 +93,7 @@ The fdiv operation has lower precision, where the lowest bit of the mantissa may
     call  fdiv          ; HL = BC / HL
     call  fmod          ; HL = BC % HL
 
+    call  fln           ; HL = ln(abs(HL))
     call  fpow2         ; HL = HL * HL
     call  fsqrt         ; HL = HL ^ 0.5
 
@@ -132,6 +134,8 @@ Size in bytes
      fmul:          8322        1629        1108        
      fdiv:          10453       1931        1422        
 
+     fln:           2511        966         976         
+
      fmod:          118         69          77          
 
      fpow2:         8333        279         158         
@@ -143,4 +147,4 @@ Size in bytes
      fwld:          57          32          37          
      fbld:          18          16          17          
 
-     all:           15239       3092        2231
+     all:           17385       3885        3151 
