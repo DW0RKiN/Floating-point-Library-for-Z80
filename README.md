@@ -81,8 +81,9 @@ If a math operation needs to include another operation, it will do it itself.
 Data files ( *.tab ) must be included manually. 
 They must be aligned to the address divisible by 256.
 
-The __FDIV__ operation has lower precision, where the lowest bit of the mantissa may not be valid.
-The __FLN__ function has lower accuracy, where the lowest bit of the mantissa may not be valid bit. When input with exponent -1, the result gets even worse.
+The `FDIV` operation has lower precision, where the lowest bit of the mantissa may not be valid.
+
+The `FLN` function has lower accuracy, where the lowest bit of the mantissa may not be valid bit. When input with exponent -1, the result gets even worse. The natural logarithmic auxiliary tables (`fln.tab`) do not have a size divisible by 256. It is best to include them last.
 
     call  fadd          ; HL = HL + DE
     call  faddp         ; HL = HL + DE, HL and DE have the same signs
