@@ -1,4 +1,4 @@
-# Floating-point-Library-for-Z80
+# Floating-point library for Z80
 Floating-Point Arithmetic Library for Z80
 
 
