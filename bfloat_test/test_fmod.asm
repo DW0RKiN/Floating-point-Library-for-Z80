@@ -13,6 +13,10 @@
     
     dw FP5, FP3, FP2
     dw FP4, FP1_5, FP1
+    dw FP4, FM4, FPMIN
+    dw FM4, FP4, FMMIN
+    dw FP256, FM4, FPMIN
+    dw FM256, FP4, FMMIN
 
     INCLUDE "test_fmod.dat"
 
