@@ -174,4 +174,54 @@ db $84,$84,$84,$84,$84,$84,$84,$84,$84,$84,$84,$84,$85,$85,$85,$85   ; D_
 db $85,$85,$85,$85,$85,$85,$85,$85,$85,$85,$85,$85,$85,$85,$85,$85   ; E_  
 db $85,$85,$85,$85,$85,$85,$85,$85,$85,$85,$85,$85,$85,$85,$85,$85   ; F_ 
 
+
+; log($7d45) = $7ef5, e: -2, m: $0045, má být: $7ef5, jest: $7ef3, rozdíl: 2
+; log($7d4c) = $7eec, e: -2, m: $004c, má být: $7eec, jest: $7eea, rozdíl: 2
+; log($7d50) = $7ee7, e: -2, m: $0050, má být: $7ee7, jest: $7ee5, rozdíl: 2
+; log($7e1c) = $7dfe, e: -1, m: $001c, má být: $7dfe, jest: $7dfc, rozdíl: 2
+; log($7e49) = $7cf8, e: -1, m: $0049, má být: $7cf8, jest: $7cf6, rozdíl: 2
+; log($7e4a) = $7cf3, e: -1, m: $004a, má být: $7cf3, jest: $7cf0, rozdíl: 3
+; log($7e4b) = $7cee, e: -1, m: $004b, má být: $7cee, jest: $7cec, rozdíl: 2
+; log($7e4c) = $7ce9, e: -1, m: $004c, má být: $7ce9, jest: $7ce6, rozdíl: 3
+; log($7e4e) = $7cdf, e: -1, m: $004e, má být: $7cdf, jest: $7cdc, rozdíl: 3
+; log($7e4f) = $7cda, e: -1, m: $004f, má být: $7cda, jest: $7cd8, rozdíl: 2
+; log($7e50) = $7cd5, e: -1, m: $0050, má být: $7cd5, jest: $7cd2, rozdíl: 3
+; log($7e51) = $7cd0, e: -1, m: $0051, má být: $7cd0, jest: $7cce, rozdíl: 2
+; log($7e53) = $7cc6, e: -1, m: $0053, má být: $7cc6, jest: $7cc4, rozdíl: 2
+; log($7e56) = $7cb8, e: -1, m: $0056, má být: $7cb8, jest: $7cb4, rozdíl: 4
+; log($7e57) = $7cb3, e: -1, m: $0057, má být: $7cb3, jest: $7cb0, rozdíl: 3
+; log($7e58) = $7cae, e: -1, m: $0058, má být: $7cae, jest: $7cac, rozdíl: 2
+; log($7e5c) = $7c9b, e: -1, m: $005c, má být: $7c9b, jest: $7c98, rozdíl: 3
+; log($7e5d) = $7c97, e: -1, m: $005d, má být: $7c97, jest: $7c94, rozdíl: 3
+; log($7e5e) = $7c92, e: -1, m: $005e, má být: $7c92, jest: $7c90, rozdíl: 2
+; log($7e62) = $7bff, e: -1, m: $0062, má být: $7bff, jest: $7bf8, rozdíl: 7
+; log($7e63) = $7bf6, e: -1, m: $0063, má být: $7bf6, jest: $7bf0, rozdíl: 6
+; log($7e64) = $7bed, e: -1, m: $0064, má být: $7bed, jest: $7be8, rozdíl: 5
+; log($7e65) = $7be4, e: -1, m: $0065, má být: $7be4, jest: $7be0, rozdíl: 4
+; log($7e66) = $7bdb, e: -1, m: $0066, má být: $7bdb, jest: $7bd8, rozdíl: 3
+; log($7e67) = $7bd2, e: -1, m: $0067, má být: $7bd2, jest: $7bd0, rozdíl: 2
+; log($7e68) = $7bca, e: -1, m: $0068, má být: $7bca, jest: $7bc8, rozdíl: 2
+; log($7e6b) = $7baf, e: -1, m: $006b, má být: $7baf, jest: $7ba8, rozdíl: 7
+; log($7e6c) = $7ba7, e: -1, m: $006c, má být: $7ba7, jest: $7ba0, rozdíl: 7
+; log($7e6d) = $7b9e, e: -1, m: $006d, má být: $7b9e, jest: $7b98, rozdíl: 6
+; log($7e6e) = $7b95, e: -1, m: $006e, má být: $7b95, jest: $7b90, rozdíl: 5
+; log($7e6f) = $7b8d, e: -1, m: $006f, má být: $7b8d, jest: $7b88, rozdíl: 5
+; log($7e70) = $7b84, e: -1, m: $0070, má být: $7b84, jest: $7b80, rozdíl: 4
+; log($7e71) = $7af7, e: -1, m: $0071, má být: $7af7, jest: $7af0, rozdíl: 7
+; log($7e72) = $7ae6, e: -1, m: $0072, má být: $7ae6, jest: $7ae0, rozdíl: 6
+; log($7e73) = $7ad5, e: -1, m: $0073, má být: $7ad5, jest: $7ad0, rozdíl: 5
+; log($7e74) = $7ac5, e: -1, m: $0074, má být: $7ac5, jest: $7ac0, rozdíl: 5
+; log($7e75) = $7ab4, e: -1, m: $0075, má být: $7ab4, jest: $7ab0, rozdíl: 4
+; log($7e76) = $7aa3, e: -1, m: $0076, má být: $7aa3, jest: $7aa0, rozdíl: 3
+; log($7e77) = $7a93, e: -1, m: $0077, má být: $7a93, jest: $7a90, rozdíl: 3
+; log($7e78) = $7a82, e: -1, m: $0078, má být: $7a82, jest: $7a80, rozdíl: 2
+; log($7e79) = $79e3, e: -1, m: $0079, má být: $79e3, jest: $79e0, rozdíl: 3
+; log($7e7a) = $79c2, e: -1, m: $007a, má být: $79c2, jest: $79c0, rozdíl: 2
+; log($7e7b) = $79a2, e: -1, m: $007b, má být: $79a2, jest: $79a0, rozdíl: 2
+
+; rozdíl: má být mínus jest, nemohu se splést...
+; nepřesnost: 8222 (0.250916 %)
+;       chyb: 43 (0.001312 %)
+
+
 endif
