@@ -126,29 +126,29 @@ Size in bytes
      color_flow_warning  EQU     0
      carry_flow_warning  EQU     1
 
-                    binary16    danagy      bfloat      use
-                    --------    --------    --------    --------
-     fadd+fsub:     369         177         188         
-     fadd:          365         173         184         
-     fsub:          369         177         188         
+                          binary16  danagy    bfloat    use
+                          --------  --------  --------  --------
+     fadd+fsub:           369       177       188       
+     fadd:                365       173       184       
+     fsub:                369       177       188       
 
-     fmul+fdiv:     10453       1931        1422        fmul.tab + fdiv.tab
-     fmul:          8322        1629        1108        fmul.tab
-     fdiv:          10453       1931        1422        fdiv.tab (include itself fmul.tab)
+     fmul+fdiv:           10453     1931      1422      fmul.tab + fdiv.tab
+     fmul:                8322      1629      1108      fmul.tab
+     fdiv:                10453     1931      1422      fdiv.tab (include itself fmul.tab)
 
-     fln:           2511        966         976         fln.tab (fix_ln  EQU 0)
-     fln_fix:       3551        1489        1504        fln.tab (fix_ln  EQU 1)
+     fln (fix_ln EQU 0):  2511      966       976       fln.tab
+     fln (fix_ln EQU 1):  3551      1489      1504      fln.tab
 
-     fmod:          118         69          77          
+     fmod:                118       69        77        
 
-     fpow2:         8333        279         158         fpow2.tab
-     fsqrt:         4120        527         269         fsqrt.tab
+     fpow2:               8333      279       158       fpow2.tab
+     fsqrt:               4120      527       269       fsqrt.tab
 
-     frac:          55          31          33          
-     fint:          38          23          23          
+     frac:                55        31        33        
+     fint:                38        23        23        
 
-     fwld:          57          32          37          
-     fwst:          53          49          46          
-     fbld:          18          16          17          
+     fwld:                57        32        37        
+     fwst:                53        49        46        
+     fbld:                18        16        17        
 
-     all:           18478       4457        3725 
+     all:                 18478     4457      3725
