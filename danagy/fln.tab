@@ -173,4 +173,59 @@ dw $4552	; 61*ln(2) = 42.2820
 dw $4558	; 62*ln(2) = 42.9751
 dw $455d	; 63*ln(2) = 43.6683
 
+; log($3fa8) = $bd82, e: -1, m: $00a8, má být: $bd82, jest: $bd84, rozdíl: -2
+; log($3fad) = $bd6a, e: -1, m: $00ad, má být: $bd6a, jest: $bd6c, rozdíl: -2
+; log($3fb2) = $bd52, e: -1, m: $00b2, má být: $bd52, jest: $bd54, rozdíl: -2
+; log($3fb3) = $bd4e, e: -1, m: $00b3, má být: $bd4e, jest: $bd50, rozdíl: -2
+; log($3fb8) = $bd36, e: -1, m: $00b8, má být: $bd36, jest: $bd38, rozdíl: -2
+; log($3fb9) = $bd32, e: -1, m: $00b9, má být: $bd32, jest: $bd34, rozdíl: -2
+; log($3fbf) = $bd16, e: -1, m: $00bf, má být: $bd16, jest: $bd18, rozdíl: -2
+; log($3fc5) = $bcf5, e: -1, m: $00c5, má být: $bcf5, jest: $bcf8, rozdíl: -3
+; log($3fc6) = $bcec, e: -1, m: $00c6, má být: $bcec, jest: $bcf0, rozdíl: -4
+; log($3fc7) = $bce3, e: -1, m: $00c7, má být: $bce3, jest: $bce8, rozdíl: -5
+; log($3fc8) = $bcda, e: -1, m: $00c8, má být: $bcda, jest: $bcd8, rozdíl: 2
+; log($3fcd) = $bcae, e: -1, m: $00cd, má být: $bcae, jest: $bcb0, rozdíl: -2
+; log($3fce) = $bca5, e: -1, m: $00ce, má být: $bca5, jest: $bca8, rozdíl: -3
+; log($3fcf) = $bc9c, e: -1, m: $00cf, má být: $bc9c, jest: $bca0, rozdíl: -4
+; log($3fd0) = $bc93, e: -1, m: $00d0, má být: $bc93, jest: $bc98, rozdíl: -5
+; log($3fd1) = $bc8a, e: -1, m: $00d1, má být: $bc8a, jest: $bc88, rozdíl: 2
+; log($3fd2) = $bc82, e: -1, m: $00d2, má být: $bc82, jest: $bc80, rozdíl: 2
+; log($3fd7) = $bc56, e: -1, m: $00d7, má být: $bc56, jest: $bc58, rozdíl: -2
+; log($3fd8) = $bc4d, e: -1, m: $00d8, má být: $bc4d, jest: $bc50, rozdíl: -3
+; log($3fd9) = $bc45, e: -1, m: $00d9, má být: $bc45, jest: $bc48, rozdíl: -3
+; log($3fda) = $bc3c, e: -1, m: $00da, má být: $bc3c, jest: $bc40, rozdíl: -4
+; log($3fdb) = $bc33, e: -1, m: $00db, má být: $bc33, jest: $bc38, rozdíl: -5
+; log($3fdc) = $bc2b, e: -1, m: $00dc, má být: $bc2b, jest: $bc28, rozdíl: 3
+; log($3fdd) = $bc22, e: -1, m: $00dd, má být: $bc22, jest: $bc20, rozdíl: 2
+; log($3fe3) = $bbde, e: -1, m: $00e3, má být: $bbde, jest: $bbe0, rozdíl: -2
+; log($3fe4) = $bbcd, e: -1, m: $00e4, má být: $bbcd, jest: $bbd0, rozdíl: -3
+; log($3fe5) = $bbbc, e: -1, m: $00e5, má být: $bbbc, jest: $bbc0, rozdíl: -4
+; log($3fe6) = $bbab, e: -1, m: $00e6, má být: $bbab, jest: $bbb0, rozdíl: -5
+; log($3fe7) = $bb9a, e: -1, m: $00e7, má být: $bb9a, jest: $bba0, rozdíl: -6
+; log($3fe8) = $bb89, e: -1, m: $00e8, má být: $bb89, jest: $bb90, rozdíl: -7
+; log($3fe9) = $bb79, e: -1, m: $00e9, má být: $bb79, jest: $bb80, rozdíl: -7
+; log($3fea) = $bb68, e: -1, m: $00ea, má být: $bb68, jest: $bb70, rozdíl: -8
+; log($3feb) = $bb57, e: -1, m: $00eb, má být: $bb57, jest: $bb60, rozdíl: -9
+; log($3fec) = $bb46, e: -1, m: $00ec, má být: $bb46, jest: $bb50, rozdíl: -10
+; log($3fed) = $bb36, e: -1, m: $00ed, má být: $bb36, jest: $bb30, rozdíl: 6
+; log($3fee) = $bb25, e: -1, m: $00ee, má být: $bb25, jest: $bb20, rozdíl: 5
+; log($3fef) = $bb15, e: -1, m: $00ef, má být: $bb15, jest: $bb10, rozdíl: 5
+; log($3ff0) = $bb04, e: -1, m: $00f0, má být: $bb04, jest: $bb00, rozdíl: 4
+; log($3ff1) = $bae7, e: -1, m: $00f1, má být: $bae7, jest: $bae0, rozdíl: 7
+; log($3ff2) = $bac6, e: -1, m: $00f2, má být: $bac6, jest: $bac0, rozdíl: 6
+; log($3ff3) = $baa5, e: -1, m: $00f3, má být: $baa5, jest: $baa0, rozdíl: 5
+; log($3ff4) = $ba85, e: -1, m: $00f4, má být: $ba85, jest: $ba80, rozdíl: 5
+; log($3ff5) = $ba64, e: -1, m: $00f5, má být: $ba64, jest: $ba60, rozdíl: 4
+; log($3ff6) = $ba43, e: -1, m: $00f6, má být: $ba43, jest: $ba40, rozdíl: 3
+; log($3ff7) = $ba23, e: -1, m: $00f7, má být: $ba23, jest: $ba20, rozdíl: 3
+; log($3ff8) = $ba02, e: -1, m: $00f8, má být: $ba02, jest: $ba00, rozdíl: 2
+; log($3ff9) = $b9c3, e: -1, m: $00f9, má být: $b9c3, jest: $b9c0, rozdíl: 3
+; log($3ffa) = $b982, e: -1, m: $00fa, má být: $b982, jest: $b980, rozdíl: 2
+; log($3ffb) = $b942, e: -1, m: $00fb, má být: $b942, jest: $b940, rozdíl: 2
+
+; rozdíl: má být mínus jest, nemohu se splést...
+; nepřesnost: 7888 (0.240723 %)
+;       chyb: 49 (0.001495 %)
+
+
 endif
