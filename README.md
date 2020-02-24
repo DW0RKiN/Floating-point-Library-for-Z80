@@ -101,6 +101,7 @@ The `FLN` function has lower accuracy, where the lowest bit of the mantissa may 
     call  fint          ; HL = truncate(HL) * 1.0 = HL - ( HL % 1 )
 
     call  fwld          ; HL = unsigned word HL * 1.0
+    call  fwst          ; HL = (int) abs(HL)
     call  fbld          ; DE = unsigned char A * 1.0
     
     call  fcmp          ; set flag for HL - DE
@@ -146,6 +147,7 @@ Size in bytes
      fint:          38          23          23          
 
      fwld:          57          32          37          
+     fwst:          53          49          46          
      fbld:          18          16          17          
 
-     all:           17385       3885        3151 
+     all:           17438       3934        3197  
