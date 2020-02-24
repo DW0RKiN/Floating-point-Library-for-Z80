@@ -13,6 +13,15 @@ if not defined FLN
                      FLN                ; *
 ; *****************************************
 endif
+    if fix_ln
+                                    ;           fixes input errors with exponent equal to -1 
+        LD      A, H                ;  1:4       
+        SUB     $7D                 ;  2:7
+        RR      A                   ;  2:8
+        JR      z, FLN_FIX          ;  2:12/7 
+
+    endif
+    
         LD      A, L                ;           save
         
         LD      L, H                ;
@@ -35,6 +44,21 @@ endif
         OR      E                   ;
         JP      nz, FADD            ;           HL = HL + DE = LN_M[] + (+-LN2_EXP[])
         RET                         ;
+        
+    if fix_ln 
+FLN_FIX:
+        ADC     A, high LN_FIX      ;
+        LD      H, A                ;
+        SLA     L                   ;
+        LD      E, (HL)             ;
+        INC     L                   ;
+        LD      D, (HL)             ;
+    if carry_flow_warning
+        OR      A                   ;
+    endif
+    
+    endif
+
 FLN_NO_ADD:
         EX      DE, HL              ;
         RET                         ;

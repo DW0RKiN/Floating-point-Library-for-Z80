@@ -220,8 +220,32 @@ db $85,$85,$85,$85,$85,$85,$85,$85,$85,$85,$85,$85,$85,$85,$85,$85   ; F_
 ; log($7e7b) = $79a2, e: -1, m: $007b, má být: $79a2, jest: $79a0, rozdíl: 2
 
 ; rozdíl: má být mínus jest, nemohu se splést...
-; nepřesnost: 8222 (0.250916 %)
-;       chyb: 43 (0.001312 %)
+; nepřesnost: 8222 (25.0916 %)
+;       chyb: 43 (0.1312 %)
 
+if fix_ln
+
+LN_FIX:
+;   _0    _1    _2    _3    _4    _5    _6    _7    _8    _9    _A    _B    _C    _D    _E    _F
+dw $7fb1,$7fb0,$7faf,$7fae,$7fae,$7fad,$7fac,$7fab,$7faa,$7fa9,$7fa8,$7fa7,$7fa6,$7fa5,$7fa4,$7fa3   ; 0_  
+dw $7fa2,$7fa1,$7fa1,$7fa0,$7f9f,$7f9e,$7f9d,$7f9c,$7f9b,$7f9b,$7f9a,$7f99,$7f98,$7f97,$7f96,$7f96   ; 1_  
+dw $7f95,$7f94,$7f93,$7f93,$7f92,$7f91,$7f90,$7f8f,$7f8f,$7f8e,$7f8d,$7f8c,$7f8c,$7f8b,$7f8a,$7f89   ; 2_  
+dw $7f89,$7f88,$7f87,$7f87,$7f86,$7f85,$7f84,$7f84,$7f83,$7f82,$7f82,$7f81,$7f80,$7eff,$7efe,$7efc   ; 3_  
+dw $7efb,$7efa,$7ef8,$7ef7,$7ef6,$7ef5,$7ef3,$7ef2,$7ef1,$7eef,$7eee,$7eed,$7eec,$7eea,$7ee9,$7ee8   ; 4_  
+dw $7ee7,$7ee5,$7ee4,$7ee3,$7ee2,$7ee1,$7edf,$7ede,$7edd,$7edc,$7edb,$7ed9,$7ed8,$7ed7,$7ed6,$7ed5   ; 5_  
+dw $7ed4,$7ed2,$7ed1,$7ed0,$7ecf,$7ece,$7ecd,$7ecc,$7ecb,$7eca,$7ec8,$7ec7,$7ec6,$7ec5,$7ec4,$7ec3   ; 6_  
+dw $7ec2,$7ec1,$7ec0,$7ebf,$7ebe,$7ebd,$7ebc,$7ebb,$7eba,$7eb9,$7eb8,$7eb6,$7eb5,$7eb4,$7eb3,$7eb2   ; 7_  
+;
+;   _0    _1    _2    _3    _4    _5    _6    _7    _8    _9    _A    _B    _C    _D    _E    _F
+dw $7eb1,$7eaf,$7ead,$7eac,$7eaa,$7ea8,$7ea6,$7ea4,$7ea2,$7ea0,$7e9e,$7e9c,$7e9b,$7e99,$7e97,$7e95   ; 0_  
+dw $7e93,$7e92,$7e90,$7e8e,$7e8c,$7e8b,$7e89,$7e87,$7e85,$7e84,$7e82,$7e80,$7dfe,$7dfa,$7df7,$7df4   ; 1_  
+dw $7df1,$7ded,$7dea,$7de7,$7de4,$7de1,$7dde,$7ddb,$7dd8,$7dd5,$7dd2,$7dcf,$7dcc,$7dc9,$7dc6,$7dc3   ; 2_  
+dw $7dc0,$7dbd,$7dba,$7db7,$7db4,$7db2,$7daf,$7dac,$7da9,$7da6,$7da4,$7da1,$7d9e,$7d9b,$7d99,$7d96   ; 3_  
+dw $7d93,$7d91,$7d8e,$7d8b,$7d89,$7d86,$7d84,$7d81,$7cfd,$7cf8,$7cf3,$7cee,$7ce9,$7ce3,$7cdf,$7cda   ; 4_  
+dw $7cd5,$7cd0,$7ccb,$7cc6,$7cc1,$7cbc,$7cb8,$7cb3,$7cae,$7ca9,$7ca5,$7ca0,$7c9b,$7c97,$7c92,$7c8d   ; 5_  
+dw $7c89,$7c84,$7bff,$7bf6,$7bed,$7be4,$7bdb,$7bd2,$7bca,$7bc1,$7bb8,$7baf,$7ba7,$7b9e,$7b95,$7b8d   ; 6_  
+dw $7b84,$7af7,$7ae6,$7ad5,$7ac5,$7ab4,$7aa3,$7a93,$7a82,$79e3,$79c2,$79a2,$7981,$78c1,$7881,$7780   ; 7_ 
+
+endif
 
 endif
