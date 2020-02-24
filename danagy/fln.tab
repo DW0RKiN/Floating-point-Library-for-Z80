@@ -224,8 +224,8 @@ dw $455d	; 63*ln(2) = 43.6683
 ; log($3ffb) = $b942, e: -1, m: $00fb, má být: $b942, jest: $b940, rozdíl: 2
 
 ; rozdíl: má být mínus jest, nemohu se splést...
-; nepřesnost: 7888 (0.240723 %)
-;       chyb: 49 (0.001495 %)
+; nepřesnost: 7888 (24.0723 %)
+;       chyb: 49 (0.1495 %)
 
 if fix_ln
 
