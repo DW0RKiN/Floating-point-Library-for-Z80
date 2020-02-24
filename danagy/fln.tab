@@ -227,5 +227,47 @@ dw $455d	; 63*ln(2) = 43.6683
 ; nepřesnost: 7888 (0.240723 %)
 ;       chyb: 49 (0.001495 %)
 
+if fix_ln
+
+LN_FIX:
+; lo
+;   _0  _1  _2  _3  _4  _5  _6  _7  _8  _9  _A  _B  _C  _D  _E  _F
+db $63,$61,$5f,$5d,$5b,$59,$57,$55,$53,$51,$4f,$4d,$4b,$4a,$48,$46   ; 0_     bf63,bf61,bf5f,bf5d,bf5b,bf59,bf57,bf55,bf53,bf51,bf4f,bf4d,bf4b,bf4a,bf48,bf46 0_
+db $44,$42,$40,$3e,$3c,$3b,$39,$37,$35,$33,$31,$30,$2e,$2c,$2a,$28   ; 1_     bf44,bf42,bf40,bf3e,bf3c,bf3b,bf39,bf37,bf35,bf33,bf31,bf30,bf2e,bf2c,bf2a,bf28 1_
+db $27,$25,$23,$21,$20,$1e,$1c,$1a,$19,$17,$15,$13,$12,$10,$0e,$0d   ; 2_     bf27,bf25,bf23,bf21,bf20,bf1e,bf1c,bf1a,bf19,bf17,bf15,bf13,bf12,bf10,bf0e,bf0d 2_
+db $0b,$09,$08,$06,$04,$03,$01,$fe,$fb,$f8,$f5,$f1,$ee,$eb,$e8,$e4   ; 3_     bf0b,bf09,bf08,bf06,bf04,bf03,bf01,befe,befb,bef8,bef5,bef1,beee,beeb,bee8,bee4 3_
+db $e1,$de,$db,$d8,$d5,$d1,$ce,$cb,$c8,$c5,$c2,$bf,$bc,$b9,$b5,$b2   ; 4_     bee1,bede,bedb,bed8,bed5,bed1,bece,becb,bec8,bec5,bec2,bebf,bebc,beb9,beb5,beb2 4_
+db $af,$ac,$a9,$a6,$a3,$a0,$9d,$9a,$97,$94,$91,$8e,$8b,$88,$86,$83   ; 5_     beaf,beac,bea9,bea6,bea3,bea0,be9d,be9a,be97,be94,be91,be8e,be8b,be88,be86,be83 5_
+db $80,$7d,$7a,$77,$74,$71,$6e,$6c,$69,$66,$63,$60,$5d,$5b,$58,$55   ; 6_     be80,be7d,be7a,be77,be74,be71,be6e,be6c,be69,be66,be63,be60,be5d,be5b,be58,be55 6_
+db $52,$4f,$4d,$4a,$47,$44,$42,$3f,$3c,$39,$37,$34,$31,$2f,$2c,$29   ; 7_     be52,be4f,be4d,be4a,be47,be44,be42,be3f,be3c,be39,be37,be34,be31,be2f,be2c,be29 7_
+db $27,$24,$21,$1f,$1c,$19,$17,$14,$11,$0f,$0c,$0a,$07,$04,$02,$ff   ; 8_     be27,be24,be21,be1f,be1c,be19,be17,be14,be11,be0f,be0c,be0a,be07,be04,be02,bdff 8_
+db $fa,$f4,$ef,$ea,$e5,$e0,$db,$d6,$d1,$cc,$c7,$c2,$bd,$b8,$b3,$ae   ; 9_     bdfa,bdf4,bdef,bdea,bde5,bde0,bddb,bdd6,bdd1,bdcc,bdc7,bdc2,bdbd,bdb8,bdb3,bdae 9_
+db $a9,$a4,$9f,$9b,$96,$91,$8c,$87,$82,$7d,$79,$74,$6f,$6a,$65,$61   ; A_     bda9,bda4,bd9f,bd9b,bd96,bd91,bd8c,bd87,bd82,bd7d,bd79,bd74,bd6f,bd6a,bd65,bd61 A_
+db $5c,$57,$52,$4e,$49,$44,$40,$3b,$36,$32,$2d,$28,$24,$1f,$1b,$16   ; B_     bd5c,bd57,bd52,bd4e,bd49,bd44,bd40,bd3b,bd36,bd32,bd2d,bd28,bd24,bd1f,bd1b,bd16 B_
+db $11,$0d,$08,$04,$ff,$f5,$ec,$e3,$da,$d1,$c9,$c0,$b7,$ae,$a5,$9c   ; C_     bd11,bd0d,bd08,bd04,bcff,bcf5,bcec,bce3,bcda,bcd1,bcc9,bcc0,bcb7,bcae,bca5,bc9c C_
+db $93,$8a,$82,$79,$70,$67,$5f,$56,$4d,$45,$3c,$33,$2b,$22,$19,$11   ; D_     bc93,bc8a,bc82,bc79,bc70,bc67,bc5f,bc56,bc4d,bc45,bc3c,bc33,bc2b,bc22,bc19,bc11 D_
+db $08,$00,$ef,$de,$cd,$bc,$ab,$9a,$89,$79,$68,$57,$46,$36,$25,$15   ; E_     bc08,bc00,bbef,bbde,bbcd,bbbc,bbab,bb9a,bb89,bb79,bb68,bb57,bb46,bb36,bb25,bb15 E_
+db $04,$e7,$c6,$a5,$85,$64,$43,$23,$02,$c3,$82,$42,$01,$81,$01,$00   ; F_     bb04,bae7,bac6,baa5,ba85,ba64,ba43,ba23,ba02,b9c3,b982,b942,b901,b881,b801,b700 F_
+; hi
+;   _0  _1  _2  _3  _4  _5  _6  _7  _8  _9  _A  _B  _C  _D  _E  _F
+db $bf,$bf,$bf,$bf,$bf,$bf,$bf,$bf,$bf,$bf,$bf,$bf,$bf,$bf,$bf,$bf   ; 0_  
+db $bf,$bf,$bf,$bf,$bf,$bf,$bf,$bf,$bf,$bf,$bf,$bf,$bf,$bf,$bf,$bf   ; 1_  
+db $bf,$bf,$bf,$bf,$bf,$bf,$bf,$bf,$bf,$bf,$bf,$bf,$bf,$bf,$bf,$bf   ; 2_  
+db $bf,$bf,$bf,$bf,$bf,$bf,$bf,$be,$be,$be,$be,$be,$be,$be,$be,$be   ; 3_  
+db $be,$be,$be,$be,$be,$be,$be,$be,$be,$be,$be,$be,$be,$be,$be,$be   ; 4_  
+db $be,$be,$be,$be,$be,$be,$be,$be,$be,$be,$be,$be,$be,$be,$be,$be   ; 5_  
+db $be,$be,$be,$be,$be,$be,$be,$be,$be,$be,$be,$be,$be,$be,$be,$be   ; 6_  
+db $be,$be,$be,$be,$be,$be,$be,$be,$be,$be,$be,$be,$be,$be,$be,$be   ; 7_  
+db $be,$be,$be,$be,$be,$be,$be,$be,$be,$be,$be,$be,$be,$be,$be,$bd   ; 8_  
+db $bd,$bd,$bd,$bd,$bd,$bd,$bd,$bd,$bd,$bd,$bd,$bd,$bd,$bd,$bd,$bd   ; 9_  
+db $bd,$bd,$bd,$bd,$bd,$bd,$bd,$bd,$bd,$bd,$bd,$bd,$bd,$bd,$bd,$bd   ; A_  
+db $bd,$bd,$bd,$bd,$bd,$bd,$bd,$bd,$bd,$bd,$bd,$bd,$bd,$bd,$bd,$bd   ; B_  
+db $bd,$bd,$bd,$bd,$bc,$bc,$bc,$bc,$bc,$bc,$bc,$bc,$bc,$bc,$bc,$bc   ; C_  
+db $bc,$bc,$bc,$bc,$bc,$bc,$bc,$bc,$bc,$bc,$bc,$bc,$bc,$bc,$bc,$bc   ; D_  
+db $bc,$bc,$bb,$bb,$bb,$bb,$bb,$bb,$bb,$bb,$bb,$bb,$bb,$bb,$bb,$bb   ; E_  
+db $bb,$ba,$ba,$ba,$ba,$ba,$ba,$ba,$ba,$b9,$b9,$b9,$b9,$b8,$b8,$b7   ; F_
+
+endif
+
 
 endif
