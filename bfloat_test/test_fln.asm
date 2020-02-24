@@ -5,6 +5,8 @@
 
     color_flow_warning  EQU     1
     carry_flow_warning  EQU     1
+    fix_ln              EQU     1
+    
     DATA_ADR            EQU     $6000       ; 24576
     TEXT_ADR            EQU     $E000       ; 57344
 
