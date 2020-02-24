@@ -390,7 +390,12 @@ int exp = 0;
     #define RAND POS
     #define BYTE_PER_LINE   (2*2)
     #define MAX_LINE        ((SPACE-TABLE_LN)/BYTE_PER_LINE)
-
+    
+#elif VARIANTA == 11
+    // store world
+    #define RAND ALL
+    #define BYTE_PER_LINE   (2*2)
+    #define MAX_LINE        (SPACE/BYTE_PER_LINE)
 #else
     #error Necekana hodnota VARIANTY!
 #endif
@@ -492,7 +497,40 @@ for (i = 0; i < MAX_LINE; i++ ) {
     dc = 1.0 * ba;
 #elif VARIANTA == 10
     dc  = log(da);     // *
+    
+#elif VARIANTA == 11
 
+    while (1) 
+    {
+        ba = rand() & 0xFFFF;
+        da = X_TO_DOUBLE( ba );
+        db = da; 
+        if ( db < 0 ) db = -db;
+
+        if ( db == 0 ) {
+            bb = 0;
+            break;
+        }
+        else if ( db <= 0.5 ) {
+            bb = 0;
+            if ((rand() & 0x7F) == 0) break;
+        }
+        else if ( db < 1 ) {
+            bb = 1;
+            break;
+        }
+        else if ( db > 65535 ) { 
+            bb = 65535;
+            if ((rand() & 0x7F) == 0) break;
+        }
+        else {
+            dc = (int) db;
+            bb = (int) db;
+            if ( db - dc > 0.5 ) bb++;
+            break;
+        }
+    }
+    dc = 1;
 #else
     #error Necekana hodnota VARIANTY!
 #endif
@@ -512,6 +550,9 @@ for (i = 0; i < MAX_LINE; i++ ) {
     printf("dw $%04x, $%04x\t\t; %i * 1.0 = %+.3e", ba, bc, ba, dc);
 #elif VARIANTA == 10
     printf("dw $%04x, $%04x\t\t; ln(%+.3e) = %+.3e", ba, bc, da, dc);
+#elif VARIANTA == 11
+    printf("dw $%04x, $%04x\t\t; abs(%+.3e) => %i", ba, bb, da, bb);
+
 #else
     printf("dw $%04x, $%04x, $%04x\t\t; %+.3e %c %+.3e = %+.3e", ba, bb, bc, da, c, db, dc);
 #endif
