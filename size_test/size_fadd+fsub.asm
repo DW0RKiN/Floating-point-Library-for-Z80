@@ -4,4 +4,5 @@
 ; Lookup tables
 
 ; Subroutines
-    INCLUDE "fwst.asm"
+    INCLUDE "fsub.asm"
+    INCLUDE "fadd.asm"

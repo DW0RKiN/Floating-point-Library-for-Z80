@@ -2,6 +2,10 @@
     INCLUDE "size_settings.asm"
 
 ; Lookup tables
+    INCLUDE "fdiv.tab"
 
 ; Subroutines
-    INCLUDE "fwst.asm"
+    INCLUDE "fdiv.asm"
+    INCLUDE "fmul.asm"
+
+
