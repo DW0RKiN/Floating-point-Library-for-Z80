@@ -13,6 +13,14 @@ if not defined FLN
                      FLN                ; *
 ; *****************************************
 endif
+    if fix_ln
+                                    ;           fixes input errors with exponent equal to -1 
+        LD      A, H                ;  1:4       
+        AND     $FF - SIGN_MASK     ;  2:7
+        XOR     $3A                 ;  2:7
+        RR      A                   ;  2:8      RRA unaffected zero flag
+        JR      z, FLN_FIX          ;  2:12/7 
+    endif
         LD      B, H                ;           save exp
         
         LD      A, H                ;           
@@ -41,7 +49,17 @@ endif
         OR      E                   ;
         JP      nz, FADD            ;           HL = HL + DE = +-LN2_EXP[] + LN_M[]
         RET                         ;
+    if fix_ln 
+FLN_FIX:
+        ADC     A, high LN_FIX      ;
+        LD      H, A                ;
+        LD      E, (HL)             ;
+        INC     H                   ;
+        INC     H                   ;
+        LD      D, (HL)             ;
+    endif
 FLN_NO_ADD:
         EX      DE, HL              ;
         RET                         ;
+        
 endif
