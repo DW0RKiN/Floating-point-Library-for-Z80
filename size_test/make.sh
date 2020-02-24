@@ -26,7 +26,7 @@ do
         done
     done
     
-    test ${b} = "fmulfdiv" && printf "fmul.tab + fdiv.tab"
+    test ${b} = "fmul+fdiv" && printf "fmul.tab + fdiv.tab"
     test ${b} = "fmul" && printf "${b}.tab"
     test ${b} = "fdiv" && printf "${b}.tab (include itself fmul.tab)"
 
