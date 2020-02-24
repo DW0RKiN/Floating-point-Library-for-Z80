@@ -132,7 +132,7 @@ Size in bytes
      fadd:          365         173         184         
      fsub:          369         177         188         
 
-     fmul+fdiv:     10453       1931        1422        
+     fmul+fdiv:     10453       1931        1422        fmul.tab + fdiv.tab
      fmul:          8322        1629        1108        fmul.tab
      fdiv:          10453       1931        1422        fdiv.tab (include itself fmul.tab)
 
@@ -151,4 +151,4 @@ Size in bytes
      fwst:          53          49          46          
      fbld:          18          16          17          
 
-     all:           18478       4457        3725  
+     all:           18478       4457        3725 
