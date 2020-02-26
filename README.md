@@ -86,38 +86,36 @@ The natural exponential function auxiliary tables (`fexp.tab`) do not have a siz
 
 Inaccuracy of least significant bit in floating point operations. More information in *.dat files.
 
-|  `FDIV`  | binary16 |  danagy  |  bfloat  |  comment                                                  |
-| :------: | :------: | :------: | :------: | :---                                                      |
-|   ± 1    |          |          |          |  BC / HL counted as BC * (1 / HL)                         | 
-|   ± 2    | accurate | accurate | accurate |                                                           |
-
-`fix_ln  EQU     0`
-
-|  `FLN`   | binary16 |  danagy  |  bfloat  |  comment                                                  |
-| :------: | :------: | :------: | :------: | :---                                                      |
-|   ± 1    |  29.93%  |  24.07%  |  24.09%  |  When input with exponent -1, the result gets even worse. |
-|   ± 2    |   0.30%  |   0.05%  |   0.05%  |                                                           |
-|   ± 3    |   0.19%  |   0.03%  |   0.03%  |                                                           |
-|  ± more  |   0.48%  |   0.07%  |   0.05%  |                                                           |
-| min, max | -59, 6   | -10, 7   |   4, 7   |  Correctly - Result                                       |
-
-`fix_ln  EQU     1`
-
-|  `FLN`   | binary16 |  danagy  |  bfloat  |  comment                                                  |
-| :------: | :------: | :------: | :------: | :---                                                      |
-|   ± 1    |  28.53%  |  23.90%  |  24.60%  |  Input with exponent -1, is corrected.                    |
-|   ± 2    | accurate | accurate | accurate |                                                           |
+|        `FDIV`        | binary16 |  danagy  |  bfloat  |  comment                               |
+| :------------------: | :------: | :------: | :------: | :---                                   |
+|         ± 1          |          |          |          |  BC / HL counted as BC * (1 / HL)      | 
+|         ± 2          | accurate | accurate | accurate |                                        |
 
 
-|  `FEXP`  | binary16 |  danagy  |  bfloat  |  comment                                                  |
-| :------: | :------: | :------: | :------: | :---                                                      |
-|       ± 1|  16.73%  |   4.52%  |   2.40%  |                                                           |
-|       ± 2|   0.91%  |   0.56%  |   0.34%  |                                                           |
-|       ± 3|   0.05%  |   0.05%  |   0.02%  |                                                           |
+| `FLN` `fix_ln EQU 0` | binary16 |  danagy  |  bfloat  |  comment                               |
+| :------------------: | :------: | :------: | :------: | :---                                   |
+|         ± 1          |  29.93%  |  24.07%  |  24.09%  |                                        |
+|         ± 2          |   0.30%  |   0.05%  |   0.05%  |  When input exponent = -1              |
+|         ± 3          |   0.19%  |   0.03%  |   0.03%  |  When input exponent = -1              |
+|         ± more       |   0.48%  |   0.07%  |   0.05%  |  When input exponent = -1              |
+|       min, max       | -59, 6   | -10, 7   |   4, 7   |  Correctly - Result                    |
 
-|   Other  | binary16 |  danagy  |  bfloat  |  comment                                                  |
-| :------: | :------: | :------: | :------: | :---                                                      |
-|          | accurate | accurate | accurate |                                                           |
+
+| `FLN` `fix_ln EQU 1` | binary16 |  danagy  |  bfloat  |  comment                               |
+| :------------------: | :------: | :------: | :------: | :---                                   |
+|         ± 1          |  28.53%  |  23.90%  |  24.60%  |  Input with exponent -1, is corrected. |
+|         ± 2          | accurate | accurate | accurate |                                        |
+
+
+|        `FEXP`        | binary16 |  danagy  |  bfloat  |  comment                               |
+| :------------------: | :------: | :------: | :------: | :---                                   |
+|         ± 1          |  16.73%  |   4.52%  |   2.40%  |                                        |
+|         ± 2          |   0.91%  |   0.56%  |   0.34%  |                                        |
+|         ± 3          |   0.05%  |   0.05%  |   0.02%  |                                        |
+
+|         Other        | binary16 |  danagy  |  bfloat  |  comment                               |
+| :------------------: | :------: | :------: | :------: | :---                                   |
+|                      | accurate | accurate | accurate |                                        |
 
 
     call  fadd          ; HL = HL + DE
