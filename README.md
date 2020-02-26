@@ -84,7 +84,7 @@ The natural logarithmic auxiliary tables (`fln.tab`) do not have a size divisibl
 The natural exponential function auxiliary tables (`fexp.tab`) do not have a size divisible by 256. It is best to include them last.
 
 
-Inaccuracy of least significant bit in floating point functions(operations). More information in *.dat files.
+**Inaccuracy of least significant bit** in floating point functions(operations). More information in *.dat files.
 
 |        `FDIV`        | binary16 |  danagy  |  bfloat  |  comment                               |
 | :------------------: | :------: | :------: | :------: | :------------------------------------- |
