@@ -137,7 +137,7 @@ The natural exponential function auxiliary tables (`fexp.tab`) do not have a siz
     call  fpow2         ; HL = HL * HL
     call  fsqrt         ; HL = abs(HL) ^ 0.5
 
-    call  frac          ; HL = HL % 1
+    call  frac          ; HL = HL % 1, -MIN => +MIN
     call  fint          ; HL = truncate(HL) * 1.0 = HL - ( HL % 1 )
 
     call  fwld          ; HL = unsigned word HL * 1.0
