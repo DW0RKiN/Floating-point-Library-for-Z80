@@ -156,3 +156,9 @@ db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00   ; F_
 include "fmul.tab"
 
 endif
+
+; sum: 4294967296, rozdíl: má být mínus jest, nemohu se splést...
+; nepřesnost o 1: 882964656 (20.558%)
+; nepřesnost o 2: 0 (0.000%)
+; nepřesnost o 3: 0 (0.000%)
+;       chyb: 0 (0.000%)
