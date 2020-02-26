@@ -113,6 +113,11 @@ Inaccuracy of least significant bit in floating point operations. More informati
 |         ± 2          |   0.91%  |   0.56%  |   0.34%  |                                        |
 |         ± 3          |   0.05%  |   0.05%  |   0.02%  |                                        |
 
+    e^(ln(2)) = e^0.6931471805599453094172321 = 2
+    2^(log₂(e)) = 2^1.4426950408889634073599247 = e
+    e^x = 2^(x*1.4426950408889634073599247)
+    Learn more about algorithms (natural) exponential function http://guihaire.com/code/?p=1107
+
 |         Other        | binary16 |  danagy  |  bfloat  |  comment                               |
 | :------------------: | :------: | :------: | :------: | :---                                   |
 |                      | accurate | accurate | accurate |                                        |
