@@ -77,12 +77,48 @@ Rounding of lost bits is (no matter what the sign):
 finit.asm should be included as the first file.
 
 If a math operation needs to include another operation, it will do it itself.
-Data files ( *.tab ) must be included manually. 
+But data files ( *.tab ) must be included manually! 
 They must be aligned to the address divisible by 256.
 
-The `FDIV` operation has lower precision, where the lowest bit of the mantissa may not be valid.
+The natural logarithmic auxiliary tables (`fln.tab`) do not have a size divisible by 256. It is best to include them last.
+The natural exponential function auxiliary tables (`fexp.tab`) do not have a size divisible by 256. It is best to include them last.
 
-The `FLN` function has lower accuracy, where the lowest bit of the mantissa may not be valid bit. When input with exponent -1, the result gets even worse. The natural logarithmic auxiliary tables (`fln.tab`) do not have a size divisible by 256. It is best to include them last.
+
+Inaccuracy of least significant bit in floating point operations. More information in *.dat files.
+
+|  `FDIV`  | binary16 |  danagy  |  bfloat  |  comment                                                  |
+| :------: | :------: | :------: | :------: | :---                                                      |
+|   ± 1    |          |          |          |  BC / HL counted as BC * (1 / HL)                         | 
+|   ± 2    | accurate | accurate | accurate |                                                           |
+
+`fix_ln  EQU     0`
+
+|  `FLN`   | binary16 |  danagy  |  bfloat  |  comment                                                  |
+| :------: | :------: | :------: | :------: | :---                                                      |
+|   ± 1    |  29.93%  |  24.07%  |  24.09%  |  When input with exponent -1, the result gets even worse. |
+|   ± 2    |   0.30%  |   0.05%  |   0.05%  |                                                           |
+|   ± 3    |   0.19%  |   0.03%  |   0.03%  |                                                           |
+|  ± more  |   0.48%  |   0.07%  |   0.05%  |                                                           |
+| min, max | -59, 6   | -10, 7   |   4, 7   |  Correctly - Result                                       |
+
+`fix_ln  EQU     1`
+
+|  `FLN`   | binary16 |  danagy  |  bfloat  |  comment                                                  |
+| :------: | :------: | :------: | :------: | :---                                                      |
+|   ± 1    |  28.53%  |  23.90%  |  24.60%  |  Input with exponent -1, is corrected.                    |
+|   ± 2    | accurate | accurate | accurate |                                                           |
+
+
+|  `FEXP`  | binary16 |  danagy  |  bfloat  |  comment                                                  |
+| :------: | :------: | :------: | :------: | :---                                                      |
+|       ± 1|  16.73%  |   4.52%  |   2.40%  |                                                           |
+|       ± 2|   0.91%  |   0.56%  |   0.34%  |                                                           |
+|       ± 3|   0.05%  |   0.05%  |   0.02%  |                                                           |
+
+|   Other  | binary16 |  danagy  |  bfloat  |  comment                                                  |
+| :------: | :------: | :------: | :------: | :---                                                      |
+|          | accurate | accurate | accurate |                                                           |
+
 
     call  fadd          ; HL = HL + DE
     call  faddp         ; HL = HL + DE, HL and DE have the same signs
@@ -94,6 +130,7 @@ The `FLN` function has lower accuracy, where the lowest bit of the mantissa may 
     call  fmod          ; HL = BC % HL
 
     call  fln           ; HL = ln(abs(HL))
+    call  fexp          ; HL = e^HL
     call  fpow2         ; HL = HL * HL
     call  fsqrt         ; HL = abs(HL) ^ 0.5
 
@@ -138,6 +175,7 @@ Size in bytes
 
      fln (fix_ln EQU 0):  2511      966       976       fln.tab
      fln (fix_ln EQU 1):  3551      1489      1504      fln.tab
+     fexp:                8525      2201      1683      fexp.tab (include itself fmul.tab)
 
      fmod:                118       69        77        
 
@@ -151,4 +189,4 @@ Size in bytes
      fwst:                53        49        46        
      fbld:                18        16        17        
 
-     all:                 18478     4457      3725
+     all:                 18873     5029      4300 
