@@ -1521,6 +1521,211 @@ PREDEL_POW2	EQU 0034
 		ENDIF
 		ENDIF
 		End of INCLUDE
+		INCLUDE fexp.tab
+		IF (true)
+		INCLUDE fmul.tab
+		IF (false)
+- DEFS    (($ + $FF) / $100) * $100 - $
+- Tab_AmB_lo:	; $FC0 - tab_minus[i]
+- db $c0,$c0,$be,$be,$bb,$ba,$b6,$b4,$af,$ac,$a6,$a2,$9c,$96,$8e,$88   ; 0_     fc0,fc0,fbe,fbe,fbb,fba,fb6,fb4,faf,fac,fa6,fa2,f9c,f96,f8e,f88 0_
+- db $80,$78,$6e,$66,$5b,$52,$46,$3b,$30,$24,$16,$0a,$fb,$ee,$de,$d0   ; 1_     f80,f78,f6e,f66,f5b,f52,f46,f3b,f30,f24,f16,f0a,efb,eee,ede,ed0 1_
+- db $c0,$b0,$9f,$8e,$7b,$6a,$57,$44,$30,$1c,$07,$f2,$dc,$c6,$ae,$98   ; 2_     ec0,eb0,e9f,e8e,e7b,e6a,e57,e44,e30,e1c,e07,df2,ddc,dc6,dae,d98 2_
+- db $80,$68,$4f,$36,$1b,$02,$e6,$cc,$b0,$93,$77,$5a,$3c,$1e,$ff,$e0   ; 3_     d80,d68,d4f,d36,d1b,d02,ce6,ccc,cb0,c93,c77,c5a,c3c,c1e,bff,be0 3_
+- db $c0,$a0,$7f,$5e,$3c,$1a,$f7,$d4,$b0,$8c,$67,$42,$1b,$f6,$cf,$a8   ; 4_     bc0,ba0,b7f,b5e,b3c,b1a,af7,ad4,ab0,a8c,a67,a42,a1b,9f6,9cf,9a8 4_
+- db $80,$58,$2e,$06,$dc,$b2,$87,$5c,$30,$04,$d7,$aa,$7b,$4e,$1f,$f0   ; 5_     980,958,92e,906,8dc,8b2,887,85c,830,804,7d7,7aa,77b,74e,71f,6f0 5_
+- db $c0,$90,$5f,$2e,$fc,$ca,$97,$64,$30,$fc,$c7,$92,$5b,$26,$ef,$b8   ; 6_     6c0,690,65f,62e,5fc,5ca,597,564,530,4fc,4c7,492,45b,426,3ef,3b8 6_
+- db $80,$48,$0f,$d6,$9c,$62,$27,$ec,$b0,$74,$37,$fa,$bc,$7e,$3f,$00   ; 7_     380,348,30f,2d6,29c,262,227,1ec,1b0,174,137, fa, bc, 7e, 3f, 00 7_
+- db $00,$00,$3f,$7e,$bc,$fa,$37,$74,$b0,$ec,$27,$62,$9c,$d6,$0f,$48   ; 8_      00, 00, 3f, 7e, bc, fa,137,174,1b0,1ec,227,262,29c,2d6,30f,348 8_
+- db $80,$b8,$ef,$26,$5b,$92,$c7,$fc,$30,$64,$97,$ca,$fc,$2e,$5f,$90   ; 9_     380,3b8,3ef,426,45b,492,4c7,4fc,530,564,597,5ca,5fc,62e,65f,690 9_
+- db $c0,$f0,$1f,$4e,$7b,$aa,$d7,$04,$30,$5c,$87,$b2,$dc,$06,$2e,$58   ; A_     6c0,6f0,71f,74e,77b,7aa,7d7,804,830,85c,887,8b2,8dc,906,92e,958 A_
+- db $80,$a8,$cf,$f6,$1b,$42,$67,$8c,$b0,$d4,$f7,$1a,$3c,$5e,$7f,$a0   ; B_     980,9a8,9cf,9f6,a1b,a42,a67,a8c,ab0,ad4,af7,b1a,b3c,b5e,b7f,ba0 B_
+- db $c0,$e0,$ff,$1e,$3c,$5a,$77,$93,$b0,$cc,$e6,$02,$1b,$36,$4f,$68   ; C_     bc0,be0,bff,c1e,c3c,c5a,c77,c93,cb0,ccc,ce6,d02,d1b,d36,d4f,d68 C_
+- db $80,$98,$ae,$c6,$dc,$f2,$07,$1c,$30,$44,$57,$6a,$7b,$8e,$9f,$b0   ; D_     d80,d98,dae,dc6,ddc,df2,e07,e1c,e30,e44,e57,e6a,e7b,e8e,e9f,eb0 D_
+- db $c0,$d0,$de,$ee,$fb,$0a,$16,$24,$30,$3b,$46,$52,$5b,$66,$6e,$78   ; E_     ec0,ed0,ede,eee,efb,f0a,f16,f24,f30,f3b,f46,f52,f5b,f66,f6e,f78 E_
+- db $80,$88,$8e,$96,$9c,$a2,$a6,$ac,$af,$b4,$b6,$ba,$bb,$be,$be,$c0   ; F_     f80,f88,f8e,f96,f9c,fa2,fa6,fac,faf,fb4,fb6,fba,fbb,fbe,fbe,fc0 F_
+- db $0f,$0f,$0f,$0f,$0f,$0f,$0f,$0f,$0f,$0f,$0f,$0f,$0f,$0f,$0f,$0f   ; 0_  
+- db $0f,$0f,$0f,$0f,$0f,$0f,$0f,$0f,$0f,$0f,$0f,$0f,$0e,$0e,$0e,$0e   ; 1_  
+- db $0e,$0e,$0e,$0e,$0e,$0e,$0e,$0e,$0e,$0e,$0e,$0d,$0d,$0d,$0d,$0d   ; 2_  
+- db $0d,$0d,$0d,$0d,$0d,$0d,$0c,$0c,$0c,$0c,$0c,$0c,$0c,$0c,$0b,$0b   ; 3_  
+- db $0b,$0b,$0b,$0b,$0b,$0b,$0a,$0a,$0a,$0a,$0a,$0a,$0a,$09,$09,$09   ; 4_  
+- db $09,$09,$09,$09,$08,$08,$08,$08,$08,$08,$07,$07,$07,$07,$07,$06   ; 5_  
+- db $06,$06,$06,$06,$05,$05,$05,$05,$05,$04,$04,$04,$04,$04,$03,$03   ; 6_  
+- db $03,$03,$03,$02,$02,$02,$02,$01,$01,$01,$01,$00,$00,$00,$00,$00   ; 7_  
+- db $00,$00,$00,$00,$00,$00,$01,$01,$01,$01,$02,$02,$02,$02,$03,$03   ; 8_  
+- db $03,$03,$03,$04,$04,$04,$04,$04,$05,$05,$05,$05,$05,$06,$06,$06   ; 9_  
+- db $06,$06,$07,$07,$07,$07,$07,$08,$08,$08,$08,$08,$08,$09,$09,$09   ; A_  
+- db $09,$09,$09,$09,$0a,$0a,$0a,$0a,$0a,$0a,$0a,$0b,$0b,$0b,$0b,$0b   ; B_  
+- db $0b,$0b,$0b,$0c,$0c,$0c,$0c,$0c,$0c,$0c,$0c,$0d,$0d,$0d,$0d,$0d   ; C_  
+- db $0d,$0d,$0d,$0d,$0d,$0d,$0e,$0e,$0e,$0e,$0e,$0e,$0e,$0e,$0e,$0e   ; D_  
+- db $0e,$0e,$0e,$0e,$0e,$0f,$0f,$0f,$0f,$0f,$0f,$0f,$0f,$0f,$0f,$0f   ; E_  
+- db $0f,$0f,$0f,$0f,$0f,$0f,$0f,$0f,$0f,$0f,$0f,$0f,$0f,$0f,$0f,$0f   ; F_  
+- Tab_ApB_lo:	; tab_plus[i] - $FC0
+- db $80,$00,$81,$02,$84,$06,$89,$0c,$90,$14,$99,$1e,$a4,$2a,$b1,$38   ; 0_     3080,3100,3181,3202,3284,3306,3389,340c,3490,3514,3599,361e,36a4,372a,37b1,3838 0_
+- db $bf,$48,$d1,$5a,$e3,$6e,$f9,$84,$10,$9c,$29,$b6,$44,$d2,$61,$f0   ; 1_     38bf,3948,39d1,3a5a,3ae3,3b6e,3bf9,3c84,3d10,3d9c,3e29,3eb6,3f44,3fd2,4061,40f0 1_
+- db $7f,$10,$a1,$32,$c4,$56,$e9,$7c,$10,$a4,$39,$ce,$63,$fa,$91,$28   ; 2_     417f,4210,42a1,4332,43c4,4456,44e9,457c,4610,46a4,4739,47ce,4863,48fa,4991,4a28 2_
+- db $bf,$58,$f1,$8a,$23,$be,$59,$f4,$90,$2c,$c8,$66,$03,$a2,$40,$e0   ; 3_     4abf,4b58,4bf1,4c8a,4d23,4dbe,4e59,4ef4,4f90,502c,50c8,5166,5203,52a2,5340,53e0 3_
+- db $7f,$1f,$c1,$61,$04,$a5,$49,$ec,$90,$33,$d9,$7d,$23,$c9,$71,$17   ; 4_     547f,551f,55c1,5661,5704,57a5,5849,58ec,5990,5a33,5ad9,5b7d,5c23,5cc9,5d71,5e17 4_
+- db $bf,$67,$11,$b9,$63,$0d,$b9,$63,$10,$bb,$69,$15,$c3,$71,$21,$cf   ; 5_     5ebf,5f67,6011,60b9,6163,620d,62b9,6363,6410,64bb,6569,6615,66c3,6771,6821,68cf 5_
+- db $7f,$2f,$e0,$91,$43,$f5,$a8,$5b,$10,$c4,$78,$2e,$e3,$9a,$51,$08   ; 6_     697f,6a2f,6ae0,6b91,6c43,6cf5,6da8,6e5b,6f10,6fc4,7078,712e,71e3,729a,7351,7408 6_
+- db $bf,$78,$30,$ea,$a4,$5e,$19,$d4,$8f,$4c,$09,$c6,$83,$42,$01,$c0   ; 7_     74bf,7578,7630,76ea,77a4,785e,7919,79d4,7a8f,7b4c,7c09,7cc6,7d83,7e42,7f01,7fc0 7_
+- db $80,$40,$01,$c2,$83,$46,$09,$cc,$8f,$54,$19,$de,$a4,$6a,$31,$f8   ; 8_     8080,8140,8201,82c2,8383,8446,8509,85cc,868f,8754,8819,88de,89a4,8a6a,8b31,8bf8 8_
+- db $c0,$88,$51,$1a,$e3,$ae,$79,$44,$0f,$dc,$a9,$76,$44,$12,$e1,$b0   ; 9_     8cc0,8d88,8e51,8f1a,8fe3,90ae,9179,9244,930f,93dc,94a9,9576,9644,9712,97e1,98b0 9_
+- db $80,$50,$20,$f2,$c4,$96,$68,$3c,$0f,$e4,$b8,$8e,$64,$3a,$11,$e8   ; A_     9980,9a50,9b20,9bf2,9cc4,9d96,9e68,9f3c,a00f,a0e4,a1b8,a28e,a364,a43a,a511,a5e8 A_
+- db $c0,$98,$70,$4a,$23,$fe,$d9,$b4,$8f,$6c,$48,$26,$04,$e2,$c0,$a0   ; B_     a6c0,a798,a870,a94a,aa23,aafe,abd9,acb4,ad8f,ae6c,af48,b026,b104,b1e2,b2c0,b3a0 B_
+- db $80,$60,$41,$22,$04,$e6,$c9,$ac,$8f,$74,$59,$3e,$23,$0a,$f1,$d8   ; C_     b480,b560,b641,b722,b804,b8e6,b9c9,baac,bb8f,bc74,bd59,be3e,bf23,c00a,c0f1,c1d8 C_
+- db $c0,$a8,$91,$7a,$64,$4e,$39,$24,$10,$fc,$e9,$d6,$c4,$b2,$a1,$90   ; D_     c2c0,c3a8,c491,c57a,c664,c74e,c839,c924,ca10,cafc,cbe9,ccd6,cdc4,ceb2,cfa1,d090 D_
+- db $80,$70,$61,$52,$44,$36,$29,$1c,$10,$04,$f9,$ee,$e4,$da,$d1,$c8   ; E_     d180,d270,d361,d452,d544,d636,d729,d81c,d910,da04,daf9,dbee,dce4,ddda,ded1,dfc8 E_
+- db $c0,$b8,$b1,$aa,$a4,$9e,$99,$94,$90,$8c,$89,$86,$84,$82,$81,$00   ; F_     e0c0,e1b8,e2b1,e3aa,e4a4,e59e,e699,e794,e890,e98c,ea89,eb86,ec84,ed82,ee81,  00 F_
+- db $30,$31,$31,$32,$32,$33,$33,$34,$34,$35,$35,$36,$36,$37,$37,$38   ; 0_  
+- db $38,$39,$39,$3a,$3a,$3b,$3b,$3c,$3d,$3d,$3e,$3e,$3f,$3f,$40,$40   ; 1_  
+- db $41,$42,$42,$43,$43,$44,$44,$45,$46,$46,$47,$47,$48,$48,$49,$4a   ; 2_  
+- db $4a,$4b,$4b,$4c,$4d,$4d,$4e,$4e,$4f,$50,$50,$51,$52,$52,$53,$53   ; 3_  
+- db $54,$55,$55,$56,$57,$57,$58,$58,$59,$5a,$5a,$5b,$5c,$5c,$5d,$5e   ; 4_  
+- db $5e,$5f,$60,$60,$61,$62,$62,$63,$64,$64,$65,$66,$66,$67,$68,$68   ; 5_  
+- db $69,$6a,$6a,$6b,$6c,$6c,$6d,$6e,$6f,$6f,$70,$71,$71,$72,$73,$74   ; 6_  
+- db $74,$75,$76,$76,$77,$78,$79,$79,$7a,$7b,$7c,$7c,$7d,$7e,$7f,$7f   ; 7_  
+- db $80,$81,$82,$82,$83,$84,$85,$85,$86,$87,$88,$88,$89,$8a,$8b,$8b   ; 8_  
+- db $8c,$8d,$8e,$8f,$8f,$90,$91,$92,$93,$93,$94,$95,$96,$97,$97,$98   ; 9_  
+- db $99,$9a,$9b,$9b,$9c,$9d,$9e,$9f,$a0,$a0,$a1,$a2,$a3,$a4,$a5,$a5   ; A_  
+- db $a6,$a7,$a8,$a9,$aa,$aa,$ab,$ac,$ad,$ae,$af,$b0,$b1,$b1,$b2,$b3   ; B_  
+- db $b4,$b5,$b6,$b7,$b8,$b8,$b9,$ba,$bb,$bc,$bd,$be,$bf,$c0,$c0,$c1   ; C_  
+- db $c2,$c3,$c4,$c5,$c6,$c7,$c8,$c9,$ca,$ca,$cb,$cc,$cd,$ce,$cf,$d0   ; D_  
+- db $d1,$d2,$d3,$d4,$d5,$d6,$d7,$d8,$d9,$da,$da,$db,$dc,$dd,$de,$df   ; E_  
+- db $e0,$e1,$e2,$e3,$e4,$e5,$e6,$e7,$e8,$e9,$ea,$eb,$ec,$ed,$ee,$00   ; F_  
+		ENDIF
+		End of INCLUDE
+	DEFS of 0 bytes with value 00
+6C00:		label EXP_TAB
+6C00:00000000	DEFB of 16 bytes
+6C04:00000001
+6C08:01020408
+6C0C:1124532E
+6C10:6C5A3A08	DEFB of 16 bytes
+6C14:10217F7F
+6C18:7F7F7F7F
+6C1C:7F7F7F7F
+6C20:7F7F7F7F	DEFB of 16 bytes
+6C24:7F7F7F7F
+6C28:7F7F7F7F
+6C2C:7F7F7F7F
+6C30:7F7F7F7F	DEFB of 16 bytes
+6C34:7F7F7F7F
+6C38:7F7F7F7F
+6C3C:7F7F7F7F
+6C40:7F7F7F7F	DEFB of 16 bytes
+6C44:7F7F7F7F
+6C48:7F7F7F7F
+6C4C:7F7F7F7F
+6C50:7F7F7F7F	DEFB of 16 bytes
+6C54:7F7F7F7F
+6C58:7F7F7F7F
+6C5C:7F7F7F7F
+6C60:7F7F7F7F	DEFB of 16 bytes
+6C64:7F7F7F7F
+6C68:7F7F7F7F
+6C6C:7F7F7F7F
+6C70:00000000	DEFB of 16 bytes
+6C74:00000000
+6C78:00000000
+6C7C:00000000
+6C80:00000000	DEFB of 16 bytes
+6C84:0000007F
+6C88:7E7C7870
+6C8C:62471B3C
+6C90:0B163072	DEFB of 16 bytes
+6C94:644B0000
+6C98:00000000
+6C9C:00000000
+6CA0:00000000	DEFB of 16 bytes
+6CA4:00000000
+6CA8:00000000
+6CAC:00000000
+6CB0:00000000	DEFB of 16 bytes
+6CB4:00000000
+6CB8:00000000
+6CBC:00000000
+6CC0:00000000	DEFB of 16 bytes
+6CC4:00000000
+6CC8:00000000
+6CCC:00000000
+6CD0:00000000	DEFB of 16 bytes
+6CD4:00000000
+6CD8:00000000
+6CDC:00000000
+6CE0:00000000	DEFB of 16 bytes
+6CE4:00000000
+6CE8:00000000
+6CEC:00000000
+6CF0:00000000	DEFB of 16 bytes
+6CF4:00000000
+6CF8:00000000
+6CFC:00000000
+6D00:7F7F7F7F	DEFB of 16 bytes
+6D04:7F7F7F7F
+6D08:7F7F7F7F
+6D0C:7F7F7F80
+6D10:81848A96	DEFB of 16 bytes
+6D14:ADDBFFFF
+6D18:FFFFFFFF
+6D1C:FFFFFFFF
+6D20:FFFFFFFF	DEFB of 16 bytes
+6D24:FFFFFFFF
+6D28:FFFFFFFF
+6D2C:FFFFFFFF
+6D30:FFFFFFFF	DEFB of 16 bytes
+6D34:FFFFFFFF
+6D38:FFFFFFFF
+6D3C:FFFFFFFF
+6D40:FFFFFFFF	DEFB of 16 bytes
+6D44:FFFFFFFF
+6D48:FFFFFFFF
+6D4C:FFFFFFFF
+6D50:FFFFFFFF	DEFB of 16 bytes
+6D54:FFFFFFFF
+6D58:FFFFFFFF
+6D5C:FFFFFFFF
+6D60:FFFFFFFF	DEFB of 16 bytes
+6D64:FFFFFFFF
+6D68:FFFFFFFF
+6D6C:FFFFFFFF
+6D70:7F7F7F7F	DEFB of 16 bytes
+6D74:7F7F7F7F
+6D78:7F7F7F7F
+6D7C:7F7F7F7F
+6D80:7F7F7F7F	DEFB of 16 bytes
+6D84:7F7F7F7E
+6D88:7E7E7E7E
+6D8C:7E7E7E7D
+6D90:7C797367	DEFB of 16 bytes
+6D94:50220000
+6D98:00000000
+6D9C:00000000
+6DA0:00000000	DEFB of 16 bytes
+6DA4:00000000
+6DA8:00000000
+6DAC:00000000
+6DB0:00000000	DEFB of 16 bytes
+6DB4:00000000
+6DB8:00000000
+6DBC:00000000
+6DC0:00000000	DEFB of 16 bytes
+6DC4:00000000
+6DC8:00000000
+6DCC:00000000
+6DD0:00000000	DEFB of 16 bytes
+6DD4:00000000
+6DD8:00000000
+6DDC:00000000
+6DE0:00000000	DEFB of 16 bytes
+6DE4:00000000
+6DE8:00000000
+6DEC:00000000
+6DF0:00000000	DEFB of 16 bytes
+6DF4:00000000
+6DF8:00000000
+6DFC:00000000
+		ENDIF
+		End of INCLUDE
 		INCLUDE fdiv.asm
 		IF (true)
 		INCLUDE fdiv_pow2.asm
@@ -1562,163 +1767,163 @@ PREDEL_POW2	EQU 0034
 -         RET                         ;  1:10
 		ENDIF
 		End of INCLUDE
-6C00:		label @FDIV_POW2
+6E00:		label @FDIV_POW2
 		IF (true)
-6C00:		label FDIV_POW2
+6E00:		label FDIV_POW2
 		ENDIF
-6C00:7D		LD A, L
-6C01:A9		XOR C
-6C02:6F		LD L, A
-6C03:78		LD A, B
-6C04:94		SUB H
-6C05:380C	JR C, 6C13
-6C07:C67F	ADD A, 7F
-6C09:67		LD H, A
-6C0A:D0		RET NC
-6C0B:		label FDIV_POW2_OVER
-6C0B:26FF	LD H, FF
-6C0D:7D		LD A, L
-6C0E:F67F	OR 7F
-6C10:6F		LD L, A
+6E00:7D		LD A, L
+6E01:A9		XOR C
+6E02:6F		LD L, A
+6E03:78		LD A, B
+6E04:94		SUB H
+6E05:380C	JR C, 6E13
+6E07:C67F	ADD A, 7F
+6E09:67		LD H, A
+6E0A:D0		RET NC
+6E0B:		label FDIV_POW2_OVER
+6E0B:26FF	LD H, FF
+6E0D:7D		LD A, L
+6E0E:F67F	OR 7F
+6E10:6F		LD L, A
 		IF (false)
 -         CALL    OVER_COL_WARNING    ;  3:17
 		ENDIF
 		IF (true)
-6C11:37		SCF
+6E11:37		SCF
 		ENDIF
-6C12:C9		RET
-6C13:		label FDIV_POW2_HL_GR
-6C13:C67F	ADD A, 7F
-6C15:67		LD H, A
-6C16:D8		RET C
-6C17:		label FDIV_POW2_UNDER
-6C17:2600	LD H, 00
-6C19:7D		LD A, L
-6C1A:E680	AND 80
-6C1C:6F		LD L, A
+6E12:C9		RET
+6E13:		label FDIV_POW2_HL_GR
+6E13:C67F	ADD A, 7F
+6E15:67		LD H, A
+6E16:D8		RET C
+6E17:		label FDIV_POW2_UNDER
+6E17:2600	LD H, 00
+6E19:7D		LD A, L
+6E1A:E680	AND 80
+6E1C:6F		LD L, A
 		IF (false)
 -         CALL    UNDER_COL_WARNING   ;  3:17
 		ENDIF
 		IF (true)
-6C1D:37		SCF
+6E1D:37		SCF
 		ENDIF
-6C1E:C9		RET
+6E1E:C9		RET
 		ENDIF
 		End of INCLUDE
 		IF (true)
-6C1F:		label FDIV_UNDERFLOW
-6C1F:7B		LD A, E
-6C20:A9		XOR C
-6C21:E680	AND 80
-6C23:62		LD H, D
-6C24:6F		LD L, A
-6C25:37		SCF
-6C26:C9		RET
+6E1F:		label FDIV_UNDERFLOW
+6E1F:7B		LD A, E
+6E20:A9		XOR C
+6E21:E680	AND 80
+6E23:62		LD H, D
+6E24:6F		LD L, A
+6E25:37		SCF
+6E26:C9		RET
 		ENDIF
-6C27:		label @FDIV
+6E27:		label @FDIV
 		IF (true)
-6C27:		label FDIV
+6E27:		label FDIV
 		ENDIF
-6C27:7D		LD A, L
-6C28:87		ADD A, A
-6C29:28D5	JR Z, 6C00
-6C2B:3EFD	LD A, FD
-6C2D:94		SUB H
-6C2E:2660	LD H, 60
-6C30:5E		LD E, (HL)
-6C31:57		LD D, A
-6C32:3006	JR NC, 6C3A
-6C34:80		ADD A, B
-6C35:47		LD B, A
-6C36:1600	LD D, 00
+6E27:7D		LD A, L
+6E28:87		ADD A, A
+6E29:28D5	JR Z, 6E00
+6E2B:3EFD	LD A, FD
+6E2D:94		SUB H
+6E2E:2660	LD H, 60
+6E30:5E		LD E, (HL)
+6E31:57		LD D, A
+6E32:3006	JR NC, 6E3A
+6E34:80		ADD A, B
+6E35:47		LD B, A
+6E36:1600	LD D, 00
 		IF (true)
-6C38:30E5	JR NC, 6C1F
+6E38:30E5	JR NC, 6E1F
 		INCLUDE fmul.asm
 		IF (true)
-6C3A:		label @FMUL
+6E3A:		label @FMUL
 		IF (true)
-6C3A:		label FMUL
+6E3A:		label FMUL
 		ENDIF
-6C3A:79		LD A, C
-6C3B:AB		XOR E
-6C3C:F67F	OR 7F
-6C3E:6F		LD L, A
-6C3F:7A		LD A, D
-6C40:80		ADD A, B
-6C41:3815	JR C, 6C58
-6C43:D67F	SUB 7F
-6C45:3015	JR NC, 6C5C
-6C47:3C		INC A
-6C48:2006	JR NZ, 6C50
-6C4A:14		INC D
-6C4B:CD3A6C	CALL 6C3A
-6C4E:25		DEC H
-6C4F:C8		RET Z
-6C50:		label FMULP_UNDERFLOW
-6C50:2600	LD H, 00
+6E3A:79		LD A, C
+6E3B:AB		XOR E
+6E3C:F67F	OR 7F
+6E3E:6F		LD L, A
+6E3F:7A		LD A, D
+6E40:80		ADD A, B
+6E41:3815	JR C, 6E58
+6E43:D67F	SUB 7F
+6E45:3015	JR NC, 6E5C
+6E47:3C		INC A
+6E48:2006	JR NZ, 6E50
+6E4A:14		INC D
+6E4B:CD3A6E	CALL 6E3A
+6E4E:25		DEC H
+6E4F:C8		RET Z
+6E50:		label FMULP_UNDERFLOW
+6E50:2600	LD H, 00
 		IF (false)
 -         CALL    UNDER_COL_WARNING   ;  3:17
 		ENDIF
-6C52:7D		LD A, L
-6C53:E680	AND 80
-6C55:6F		LD L, A
+6E52:7D		LD A, L
+6E53:E680	AND 80
+6E55:6F		LD L, A
 		IF (true)
-6C56:37		SCF
+6E56:37		SCF
 		ENDIF
-6C57:C9		RET
-6C58:		label FMUL_C1
-6C58:D67F	SUB 7F
-6C5A:3027	JR NC, 6C83
-6C5C:		label FMUL_NEXT
-6C5C:67		LD H, A
-6C5D:E5		PUSH HL
-6C5E:CBB9	RES 7, C
-6C60:CBBB	RES 7, E
-6C62:79		LD A, C
-6C63:83		ADD A, E
-6C64:5F		LD E, A
-6C65:1663	LD D, 63
-6C67:91		SUB C
-6C68:91		SUB C
-6C69:6F		LD L, A
-6C6A:2661	LD H, 61
-6C6C:1A		LD A, (DE)
-6C6D:86		ADD A, (HL)
-6C6E:4F		LD C, A
-6C6F:14		INC D
-6C70:1A		LD A, (DE)
-6C71:24		INC H
-6C72:8E		ADC A, (HL)
-6C73:F2876C	JP P, 6C87
-6C76:E1		POP HL
-6C77:24		INC H
-6C78:2809	JR Z, 6C83
-6C7A:A5		AND L
-6C7B:6F		LD L, A
-6C7C:79		LD A, C
-6C7D:C640	ADD A, 40
-6C7F:D0		RET NC
-6C80:2C		INC L
+6E57:C9		RET
+6E58:		label FMUL_C1
+6E58:D67F	SUB 7F
+6E5A:3027	JR NC, 6E83
+6E5C:		label FMUL_NEXT
+6E5C:67		LD H, A
+6E5D:E5		PUSH HL
+6E5E:CBB9	RES 7, C
+6E60:CBBB	RES 7, E
+6E62:79		LD A, C
+6E63:83		ADD A, E
+6E64:5F		LD E, A
+6E65:1663	LD D, 63
+6E67:91		SUB C
+6E68:91		SUB C
+6E69:6F		LD L, A
+6E6A:2661	LD H, 61
+6E6C:1A		LD A, (DE)
+6E6D:86		ADD A, (HL)
+6E6E:4F		LD C, A
+6E6F:14		INC D
+6E70:1A		LD A, (DE)
+6E71:24		INC H
+6E72:8E		ADC A, (HL)
+6E73:F2876E	JP P, 6E87
+6E76:E1		POP HL
+6E77:24		INC H
+6E78:2809	JR Z, 6E83
+6E7A:A5		AND L
+6E7B:6F		LD L, A
+6E7C:79		LD A, C
+6E7D:C640	ADD A, 40
+6E7F:D0		RET NC
+6E80:2C		INC L
 		IF (true)
-6C81:B7		OR A
+6E81:B7		OR A
 		ENDIF
-6C82:C9		RET
-6C83:		label FMULP_OVERFLOW
-6C83:26FF	LD H, FF
+6E82:C9		RET
+6E83:		label FMULP_OVERFLOW
+6E83:26FF	LD H, FF
 		IF (false)
 -         CALL    OVER_COL_WARNING    ;  3:17
 		ENDIF
 		IF (true)
-6C85:37		SCF
+6E85:37		SCF
 		ENDIF
-6C86:C9		RET
-6C87:		label FMULP_SAME_EXP
-6C87:CB11	RL C
-6C89:8F		ADC A, A
-6C8A:E1		POP HL
-6C8B:A5		AND L
-6C8C:6F		LD L, A
-6C8D:C9		RET
+6E86:C9		RET
+6E87:		label FMULP_SAME_EXP
+6E87:CB11	RL C
+6E89:8F		ADC A, A
+6E8A:E1		POP HL
+6E8B:A5		AND L
+6E8C:6F		LD L, A
+6E8D:C9		RET
 		INCLUDE color_flow_warning.asm
 		IF (false)
 -     BORDER      EQU     $229B         ; ROM border change permanent
@@ -1884,9 +2089,9 @@ PREDEL_POW2	EQU 0034
 		End of INCLUDE
 		INCLUDE fsub.asm
 		IF (true)
-6C8E:		label @FSUB
+6E8E:		label @FSUB
 		IF (true)
-6C8E:		label FSUB
+6E8E:		label FSUB
 		ENDIF
 		IF (false)
 -         LD      A, D                ;  1:4
@@ -1894,9 +2099,9 @@ PREDEL_POW2	EQU 0034
 -         LD      D, A                ;  1:4      DE = -DE
 		ENDIF
 		IF (true)
-6C8E:7B		LD A, E
-6C8F:EE80	XOR 80
-6C91:5F		LD E, A
+6E8E:7B		LD A, E
+6E8F:EE80	XOR 80
+6E91:5F		LD E, A
 		ENDIF
 		IF (false)
 -         .ERROR Unexpected value in SIGN_BIT!
@@ -1906,9 +2111,9 @@ PREDEL_POW2	EQU 0034
 		ELSE (true)
 		INCLUDE fadd.asm
 		IF (true)
-6C92:		label @FADD
+6E92:		label @FADD
 		IF (true)
-6C92:		label FADD
+6E92:		label FADD
 		ENDIF
 		IF (false)
 -         LD      A, H                ;  1:4
@@ -1916,9 +2121,9 @@ PREDEL_POW2	EQU 0034
 -         JP      m, FSUBP_FADD_OP_SGN;  3:10
 		ENDIF
 		IF (true)
-6C92:7D		LD A, L
-6C93:AB		XOR E
-6C94:FAE06C	JP M, 6CE0
+6E92:7D		LD A, L
+6E93:AB		XOR E
+6E94:FAE06E	JP M, 6EE0
 		ENDIF
 		IF (false)
 -         .ERROR Unexpected value in SIGN_BIT!
@@ -1928,59 +2133,59 @@ PREDEL_POW2	EQU 0034
 		ELSE (true)
 		INCLUDE faddp.asm
 		IF (true)
-6C97:		label @FADDP
+6E97:		label @FADDP
 		IF (true)
-6C97:		label FADDP
+6E97:		label FADDP
 		ENDIF
-6C97:7C		LD A, H
-6C98:92		SUB D
-6C99:2834	JR Z, 6CCF
-6C9B:3003	JR NC, 6CA0
-6C9D:EB		EX DE, HL
-6C9E:ED44	NEG
-6CA0:		label FADDP_HL_GR
-6CA0:FE09	CP 09
-6CA2:D0		RET NC
-6CA3:CBFB	SET 7, E
-6CA5:1D		DEC E
-6CA6:3D		DEC A
-6CA7:2805	JR Z, 6CAE
-6CA9:47		LD B, A
-6CAA:		label FADDP_LOOP
-6CAA:CB3B	SRL E
-6CAC:10FC	DJNZ 6CAA
-6CAE:		label FADDP_STOP
-6CAE:7D		LD A, L
-6CAF:87		ADD A, A
-6CB0:83		ADD A, E
-6CB1:300C	JR NC, 6CBF
-6CB3:C602	ADD A, 02
-6CB5:1F		RRA
-6CB6:		label FADDP_EXP_PLUS
-6CB6:CB15	RL L
-6CB8:1F		RRA
-6CB9:6F		LD L, A
+6E97:7C		LD A, H
+6E98:92		SUB D
+6E99:2834	JR Z, 6ECF
+6E9B:3003	JR NC, 6EA0
+6E9D:EB		EX DE, HL
+6E9E:ED44	NEG
+6EA0:		label FADDP_HL_GR
+6EA0:FE09	CP 09
+6EA2:D0		RET NC
+6EA3:CBFB	SET 7, E
+6EA5:1D		DEC E
+6EA6:3D		DEC A
+6EA7:2805	JR Z, 6EAE
+6EA9:47		LD B, A
+6EAA:		label FADDP_LOOP
+6EAA:CB3B	SRL E
+6EAC:10FC	DJNZ 6EAA
+6EAE:		label FADDP_STOP
+6EAE:7D		LD A, L
+6EAF:87		ADD A, A
+6EB0:83		ADD A, E
+6EB1:300C	JR NC, 6EBF
+6EB3:C602	ADD A, 02
+6EB5:1F		RRA
+6EB6:		label FADDP_EXP_PLUS
+6EB6:CB15	RL L
+6EB8:1F		RRA
+6EB9:6F		LD L, A
 		IF (true)
-6CBA:B7		OR A
+6EBA:B7		OR A
 		ENDIF
-6CBB:24		INC H
-6CBC:C0		RET NZ
-6CBD:1817	JR 6CD6
-6CBF:		label FADDP_SAME_EXP
+6EBB:24		INC H
+6EBC:C0		RET NZ
+6EBD:1817	JR 6ED6
+6EBF:		label FADDP_SAME_EXP
 		IF (true)
-6CBF:CB15	RL L
-6CC1:1F		RRA
-6CC2:6F		LD L, A
-6CC3:D0		RET NC
-6CC4:2C		INC L
-6CC5:AD		XOR L
-6CC6:F0		RET P
-6CC7:7D		LD A, L
-6CC8:EE80	XOR 80
-6CCA:6F		LD L, A
-6CCB:24		INC H
-6CCC:C0		RET NZ
-6CCD:1807	JR 6CD6
+6EBF:CB15	RL L
+6EC1:1F		RRA
+6EC2:6F		LD L, A
+6EC3:D0		RET NC
+6EC4:2C		INC L
+6EC5:AD		XOR L
+6EC6:F0		RET P
+6EC7:7D		LD A, L
+6EC8:EE80	XOR 80
+6ECA:6F		LD L, A
+6ECB:24		INC H
+6ECC:C0		RET NZ
+6ECD:1807	JR 6ED6
 		ELSE (false)
 -         INC     A                   ;  1:4      rounding
 -         JR      z, FADDP_EXP_PLUS   ;  2:12/7   A = 10 0000 0000 && carry = 0
@@ -1990,27 +2195,27 @@ PREDEL_POW2	EQU 0034
 -         OR      A                   ;  1:4      RET with reset carry
 -         RET                         ;  1:10
 		ENDIF
-6CCF:		label FADDP_EQ_EXP
-6CCF:7D		LD A, L
-6CD0:83		ADD A, E
-6CD1:1F		RRA
-6CD2:6F		LD L, A
+6ECF:		label FADDP_EQ_EXP
+6ECF:7D		LD A, L
+6ED0:83		ADD A, E
+6ED1:1F		RRA
+6ED2:6F		LD L, A
 		IF (true)
-6CD3:B7		OR A
+6ED3:B7		OR A
 		ENDIF
-6CD4:24		INC H
-6CD5:C0		RET NZ
-6CD6:		label FADDP_OVERFLOW
-6CD6:25		DEC H
-6CD7:F67F	OR 7F
-6CD9:6F		LD L, A
+6ED4:24		INC H
+6ED5:C0		RET NZ
+6ED6:		label FADDP_OVERFLOW
+6ED6:25		DEC H
+6ED7:F67F	OR 7F
+6ED9:6F		LD L, A
 		IF (false)
 -         CALL    OVER_COL_WARNING    ;  3:17
 		ENDIF
 		IF (true)
-6CDA:37		SCF
+6EDA:37		SCF
 		ENDIF
-6CDB:C9		RET
+6EDB:C9		RET
 		INCLUDE color_flow_warning.asm
 		IF (false)
 -     BORDER      EQU     $229B         ; ROM border change permanent
@@ -2090,110 +2295,110 @@ PREDEL_POW2	EQU 0034
 -         RET                         ;  1:10
 		ENDIF
 		End of INCLUDE
-6CDC:		label @FSUBP
+6EDC:		label @FSUBP
 		IF (true)
-6CDC:		label FSUBP
+6EDC:		label FSUBP
 		ENDIF
-6CDC:7B		LD A, E
-6CDD:EE80	XOR 80
-6CDF:5F		LD E, A
-6CE0:		label FSUBP_FADD_OP_SGN
-6CE0:7C		LD A, H
-6CE1:92		SUB D
-6CE2:283E	JR Z, 6D22
-6CE4:3003	JR NC, 6CE9
-6CE6:EB		EX DE, HL
-6CE7:ED44	NEG
-6CE9:		label FSUBP_HL_GR
-6CE9:FE09	CP 09
-6CEB:3052	JR NC, 6D3F
-6CED:47		LD B, A
-6CEE:7B		LD A, E
-6CEF:F680	OR 80
-6CF1:05		DEC B
-6CF2:2806	JR Z, 6CFA
-6CF4:		label FSUBP_LOOP
-6CF4:B7		OR A
-6CF5:1F		RRA
-6CF6:10FC	DJNZ 6CF4
-6CF8:CB10	RL B
-6CFA:		label FSUBP_NOLOOP
-6CFA:5F		LD E, A
-6CFB:7D		LD A, L
-6CFC:87		ADD A, A
-6CFD:93		SUB E
-6CFE:300F	JR NC, 6D0F
-6D00:54		LD D, H
-6D01:		label FSUBP_NORM
-6D01:25		DEC H
-6D02:87		ADD A, A
-6D03:30FC	JR NC, 6D01
-6D05:90		SUB B
-6D06:CB15	RL L
-6D08:1F		RRA
-6D09:6F		LD L, A
-6D0A:7A		LD A, D
-6D0B:94		SUB H
-6D0C:D0		RET NC
-6D0D:1828	JR 6D37
-6D0F:		label FSUBP_SAME_EXP
-6D0F:CB15	RL L
-6D11:1F		RRA
-6D12:6F		LD L, A
-6D13:8F		ADC A, A
+6EDC:7B		LD A, E
+6EDD:EE80	XOR 80
+6EDF:5F		LD E, A
+6EE0:		label FSUBP_FADD_OP_SGN
+6EE0:7C		LD A, H
+6EE1:92		SUB D
+6EE2:283E	JR Z, 6F22
+6EE4:3003	JR NC, 6EE9
+6EE6:EB		EX DE, HL
+6EE7:ED44	NEG
+6EE9:		label FSUBP_HL_GR
+6EE9:FE09	CP 09
+6EEB:3052	JR NC, 6F3F
+6EED:47		LD B, A
+6EEE:7B		LD A, E
+6EEF:F680	OR 80
+6EF1:05		DEC B
+6EF2:2806	JR Z, 6EFA
+6EF4:		label FSUBP_LOOP
+6EF4:B7		OR A
+6EF5:1F		RRA
+6EF6:10FC	DJNZ 6EF4
+6EF8:CB10	RL B
+6EFA:		label FSUBP_NOLOOP
+6EFA:5F		LD E, A
+6EFB:7D		LD A, L
+6EFC:87		ADD A, A
+6EFD:93		SUB E
+6EFE:300F	JR NC, 6F0F
+6F00:54		LD D, H
+6F01:		label FSUBP_NORM
+6F01:25		DEC H
+6F02:87		ADD A, A
+6F03:30FC	JR NC, 6F01
+6F05:90		SUB B
+6F06:CB15	RL L
+6F08:1F		RRA
+6F09:6F		LD L, A
+6F0A:7A		LD A, D
+6F0B:94		SUB H
+6F0C:D0		RET NC
+6F0D:1828	JR 6F37
+6F0F:		label FSUBP_SAME_EXP
+6F0F:CB15	RL L
+6F11:1F		RRA
+6F12:6F		LD L, A
+6F13:8F		ADC A, A
 		IF (true)
-6D14:B7		OR A
+6F14:B7		OR A
 		ENDIF
-6D15:C0		RET NZ
-6D16:05		DEC B
-6D17:C0		RET NZ
-6D18:7D		LD A, L
-6D19:F67F	OR 7F
-6D1B:6F		LD L, A
-6D1C:7C		LD A, H
-6D1D:25		DEC H
-6D1E:94		SUB H
-6D1F:D0		RET NC
-6D20:1815	JR 6D37
-6D22:		label FSUBP_EQ_EXP
-6D22:7D		LD A, L
-6D23:93		SUB E
-6D24:87		ADD A, A
-6D25:2810	JR Z, 6D37
-6D27:3803	JR C, 6D2C
-6D29:EB		EX DE, HL
-6D2A:ED44	NEG
-6D2C:		label FSUBP_EQ_LOOP
-6D2C:25		DEC H
-6D2D:87		ADD A, A
-6D2E:30FC	JR NC, 6D2C
-6D30:CB15	RL L
-6D32:1F		RRA
-6D33:6F		LD L, A
-6D34:7A		LD A, D
-6D35:94		SUB H
-6D36:D0		RET NC
-6D37:		label FSUBP_UNDERFLOW
-6D37:2600	LD H, 00
-6D39:7D		LD A, L
-6D3A:E680	AND 80
-6D3C:6F		LD L, A
+6F15:C0		RET NZ
+6F16:05		DEC B
+6F17:C0		RET NZ
+6F18:7D		LD A, L
+6F19:F67F	OR 7F
+6F1B:6F		LD L, A
+6F1C:7C		LD A, H
+6F1D:25		DEC H
+6F1E:94		SUB H
+6F1F:D0		RET NC
+6F20:1815	JR 6F37
+6F22:		label FSUBP_EQ_EXP
+6F22:7D		LD A, L
+6F23:93		SUB E
+6F24:87		ADD A, A
+6F25:2810	JR Z, 6F37
+6F27:3803	JR C, 6F2C
+6F29:EB		EX DE, HL
+6F2A:ED44	NEG
+6F2C:		label FSUBP_EQ_LOOP
+6F2C:25		DEC H
+6F2D:87		ADD A, A
+6F2E:30FC	JR NC, 6F2C
+6F30:CB15	RL L
+6F32:1F		RRA
+6F33:6F		LD L, A
+6F34:7A		LD A, D
+6F35:94		SUB H
+6F36:D0		RET NC
+6F37:		label FSUBP_UNDERFLOW
+6F37:2600	LD H, 00
+6F39:7D		LD A, L
+6F3A:E680	AND 80
+6F3C:6F		LD L, A
 		IF (false)
 -         CALL    UNDER_COL_WARNING   ;  3:17
 		ENDIF
 		IF (true)
-6D3D:37		SCF
+6F3D:37		SCF
 		ENDIF
-6D3E:C9		RET
-6D3F:		label FSUBP_TOOBIG
-6D3F:C0		RET NZ
-6D40:7D		LD A, L
+6F3E:C9		RET
+6F3F:		label FSUBP_TOOBIG
+6F3F:C0		RET NZ
+6F40:7D		LD A, L
 		IF (true)
-6D41:E67F	AND 7F
-6D43:C0		RET NZ
-6D44:7D		LD A, L
-6D45:F67F	OR 7F
-6D47:6F		LD L, A
+6F41:E67F	AND 7F
+6F43:C0		RET NZ
+6F44:7D		LD A, L
+6F45:F67F	OR 7F
+6F47:6F		LD L, A
 		ELSE (false)
 -         ADD     A, A                ;  1:4      sign out
 -         RET     nz                  ;  1:11/5   HL_mant > 1.0           => HL - DE = HL
@@ -2201,8 +2406,8 @@ PREDEL_POW2	EQU 0034
 -         RRA                         ;  1:4      sign in
 -         LD      L, A                ;  1:4
 		ENDIF
-6D48:25		DEC H
-6D49:C9		RET
+6F48:25		DEC H
+6F49:C9		RET
 		ENDIF
 		End of INCLUDE
 		ENDIF
@@ -2472,9 +2677,9 @@ PREDEL_POW2	EQU 0034
 		End of INCLUDE
 		INCLUDE fmod.asm
 		IF (true)
-6D4A:		label @FMOD
+6F4A:		label @FMOD
 		IF (true)
-6D4A:		label FMOD
+6F4A:		label FMOD
 		ENDIF
 		INCLUDE mcmpa.asm
 		IF (true)
@@ -2499,102 +2704,102 @@ IF SIGN_BIT > 0007
 -         LD      A, reg1_lo          ;  1:4
 		ELSE (true)
 LD A , reg1_hi 
-6D4A:7C		LD A, H
+6F4A:7C		LD A, H
 SUB reg2_hi 
-6D4B:90		SUB B
+6F4B:90		SUB B
 IF 0000 
 		IF (false)
 -         JP      nz, $+9             ;  3:10
 		ELSE (true)
 JR NZ , $ + 0008 
-6D4C:2006	JR NZ, 6D54
+6F4C:2006	JR NZ, 6F54
 ENDIF 
 		ENDIF
 LD A , reg1_lo 
-6D4E:7D		LD A, L
+6F4E:7D		LD A, L
 XOR reg2_lo 
-6D4F:A9		XOR C
+6F4F:A9		XOR C
 AND SIGN_MASK 
-6D50:E680	AND 80
+6F50:E680	AND 80
 XOR reg1_lo 
-6D52:AD		XOR L
+6F52:AD		XOR L
 ENDIF 
 		ENDIF
 SUB reg2_lo 
-6D53:91		SUB C
+6F53:91		SUB C
 ENDM 
 		ENDM
 End of MACRO MCMPA
-6D54:DA606D	JP C, 6D60
-6D57:60		LD H, B
-6D58:69		LD L, C
-6D59:C0		RET NZ
-6D5A:67		LD H, A
-6D5B:79		LD A, C
-6D5C:E680	AND 80
-6D5E:6F		LD L, A
-6D5F:C9		RET
-6D60:		label FMOD_BC_GR
-6D60:54		LD D, H
-6D61:60		LD H, B
-6D62:7D		LD A, L
-6D63:F680	OR 80
-6D65:5F		LD E, A
-6D66:79		LD A, C
-6D67:E680	AND 80
-6D69:6F		LD L, A
-6D6A:79		LD A, C
-6D6B:87		ADD A, A
-6D6C:4F		LD C, A
-6D6D:7A		LD A, D
-6D6E:94		SUB H
-6D6F:79		LD A, C
-6D70:2819	JR Z, 6D8B
-6D72:		label FMOD_SUB
-6D72:93		SUB E
-6D73:30FD	JR NC, 6D72
-6D75:		label FMOD_NORM
-6D75:24		INC H
-6D76:		label FMOD_NORM_LOOP
-6D76:25		DEC H
+6F54:DA606F	JP C, 6F60
+6F57:60		LD H, B
+6F58:69		LD L, C
+6F59:C0		RET NZ
+6F5A:67		LD H, A
+6F5B:79		LD A, C
+6F5C:E680	AND 80
+6F5E:6F		LD L, A
+6F5F:C9		RET
+6F60:		label FMOD_BC_GR
+6F60:54		LD D, H
+6F61:60		LD H, B
+6F62:7D		LD A, L
+6F63:F680	OR 80
+6F65:5F		LD E, A
+6F66:79		LD A, C
+6F67:E680	AND 80
+6F69:6F		LD L, A
+6F6A:79		LD A, C
+6F6B:87		ADD A, A
+6F6C:4F		LD C, A
+6F6D:7A		LD A, D
+6F6E:94		SUB H
+6F6F:79		LD A, C
+6F70:2819	JR Z, 6F8B
+6F72:		label FMOD_SUB
+6F72:93		SUB E
+6F73:30FD	JR NC, 6F72
+6F75:		label FMOD_NORM
+6F75:24		INC H
+6F76:		label FMOD_NORM_LOOP
+6F76:25		DEC H
 		IF (false)
 -         RET     z                   ;           
 		ELSE (true)
-6D77:281C	JR Z, 6D95
+6F77:281C	JR Z, 6F95
 		ENDIF
-6D79:87		ADD A, A
-6D7A:30FA	JR NC, 6D76
-6D7C:25		DEC H
-6D7D:4F		LD C, A
-6D7E:7A		LD A, D
-6D7F:BC		CP H
-6D80:79		LD A, C
-6D81:38EF	JR C, 6D72
-6D83:2806	JR Z, 6D8B
-6D85:		label FMOD_EXIT
-6D85:CB15	RL L
-6D87:1F		RRA
+6F79:87		ADD A, A
+6F7A:30FA	JR NC, 6F76
+6F7C:25		DEC H
+6F7D:4F		LD C, A
+6F7E:7A		LD A, D
+6F7F:BC		CP H
+6F80:79		LD A, C
+6F81:38EF	JR C, 6F72
+6F83:2806	JR Z, 6F8B
+6F85:		label FMOD_EXIT
+6F85:CB15	RL L
+6F87:1F		RRA
 		IF (true)
-6D88:B7		OR A
+6F88:B7		OR A
 		ENDIF
-6D89:6F		LD L, A
-6D8A:C9		RET
-6D8B:		label FMOD_SAME_EXP
-6D8B:CB23	SLA E
-6D8D:BB		CP E
-6D8E:38F5	JR C, 6D85
-6D90:93		SUB E
-6D91:20E2	JR NZ, 6D75
-6D93:67		LD H, A
-6D94:C9		RET
-6D95:		label FMOD_UNDERFLOW
+6F89:6F		LD L, A
+6F8A:C9		RET
+6F8B:		label FMOD_SAME_EXP
+6F8B:CB23	SLA E
+6F8D:BB		CP E
+6F8E:38F5	JR C, 6F85
+6F90:93		SUB E
+6F91:20E2	JR NZ, 6F75
+6F93:67		LD H, A
+6F94:C9		RET
+6F95:		label FMOD_UNDERFLOW
 		IF (false)
 -         CALL    UNDER_COL_WARNING   ;  3:17
 		ENDIF
 		IF (true)
-6D95:37		SCF
+6F95:37		SCF
 		ENDIF
-6D96:C9		RET
+6F96:C9		RET
 		INCLUDE color_flow_warning.asm
 		IF (false)
 -     BORDER      EQU     $229B         ; ROM border change permanent
@@ -2636,145 +2841,145 @@ End of MACRO MCMPA
 		End of INCLUDE
 		INCLUDE fpow2.asm
 		IF (true)
-6D97:		label @FPOW2
+6F97:		label @FPOW2
 		IF (true)
-6D97:		label FPOW2
+6F97:		label FPOW2
 		ENDIF
-6D97:CBBD	RES 7, L
-6D99:3E34	LD A, 34
-6D9B:BD		CP L
-6D9C:7C		LD A, H
-6D9D:8F		ADC A, A
-6D9E:2666	LD H, 66
-6DA0:6E		LD L, (HL)
-6DA1:3808	JR C, 6DAB
-6DA3:D67F	SUB 7F
-6DA5:67		LD H, A
-6DA6:D0		RET NC
-6DA7:		label FPOW2_UNDERFLOW
-6DA7:210000	LD HL, 0000
+6F97:CBBD	RES 7, L
+6F99:3E34	LD A, 34
+6F9B:BD		CP L
+6F9C:7C		LD A, H
+6F9D:8F		ADC A, A
+6F9E:2666	LD H, 66
+6FA0:6E		LD L, (HL)
+6FA1:3808	JR C, 6FAB
+6FA3:D67F	SUB 7F
+6FA5:67		LD H, A
+6FA6:D0		RET NC
+6FA7:		label FPOW2_UNDERFLOW
+6FA7:210000	LD HL, 0000
 		IF (false)
 -         CALL    UNDER_COL_WARNING   ;  3:17
 		ENDIF
-6DAA:C9		RET
-6DAB:		label FPOW2_HI
-6DAB:D67F	SUB 7F
-6DAD:67		LD H, A
+6FAA:C9		RET
+6FAB:		label FPOW2_HI
+6FAB:D67F	SUB 7F
+6FAD:67		LD H, A
 		IF (true)
-6DAE:3F		CCF
-6DAF:D0		RET NC
+6FAE:3F		CCF
+6FAF:D0		RET NC
 		ELSE (false)
 -         RET     c                   ;  1:11/5
 		ENDIF
-6DB0:		label FPOW2_OVERFLOW
-6DB0:217FFF	LD HL, FF7F
+6FB0:		label FPOW2_OVERFLOW
+6FB0:217FFF	LD HL, FF7F
 		IF (false)
 -         CALL    OVER_COL_WARNING    ;  3:17
 		ENDIF
 		IF (true)
-6DB3:37		SCF
+6FB3:37		SCF
 		ENDIF
-6DB4:C9		RET
+6FB4:C9		RET
 		IF (true)
-6DB5:		label FPOW2_USE_FMUL
-6DB5:C5		PUSH BC
-6DB6:D5		PUSH DE
-6DB7:44		LD B, H
-6DB8:4D		LD C, L
-6DB9:EB		EX DE, HL
-6DBA:CD3A6C	CALL 6C3A
-6DBD:D1		POP DE
-6DBE:C1		POP BC
-6DBF:C9		RET
+6FB5:		label FPOW2_USE_FMUL
+6FB5:C5		PUSH BC
+6FB6:D5		PUSH DE
+6FB7:44		LD B, H
+6FB8:4D		LD C, L
+6FB9:EB		EX DE, HL
+6FBA:CD3A6E	CALL 6E3A
+6FBD:D1		POP DE
+6FBE:C1		POP BC
+6FBF:C9		RET
 		ENDIF
 		ENDIF
 		End of INCLUDE
 		INCLUDE fsqrt.asm
 		IF (true)
-6DC0:		label @FSQRT
+6FC0:		label @FSQRT
 		IF (true)
-6DC0:		label FSQRT
+6FC0:		label FSQRT
 		ENDIF
-6DC0:CB25	SLA L
-6DC2:7C		LD A, H
-6DC3:C67F	ADD A, 7F
-6DC5:1F		RRA
-6DC6:CB1D	RR L
-6DC8:2665	LD H, 65
-6DCA:6E		LD L, (HL)
-6DCB:67		LD H, A
-6DCC:C9		RET
+6FC0:CB25	SLA L
+6FC2:7C		LD A, H
+6FC3:C67F	ADD A, 7F
+6FC5:1F		RRA
+6FC6:CB1D	RR L
+6FC8:2665	LD H, 65
+6FCA:6E		LD L, (HL)
+6FCB:67		LD H, A
+6FCC:C9		RET
 		ENDIF
 		End of INCLUDE
 		INCLUDE frac.asm
 		IF (true)
-6DCD:		label @FRAC
+6FCD:		label @FRAC
 		IF (true)
-6DCD:		label FRAC
+6FCD:		label FRAC
 		ENDIF
-6DCD:7C		LD A, H
-6DCE:FE86	CP 86
+6FCD:7C		LD A, H
+6FCE:FE86	CP 86
 		IF (false)
 -         JR      nc, FINT_ZERO       ;           Already integer
 		ELSE (true)
-6DD0:3018	JR NC, 6DEA
+6FD0:3018	JR NC, 6FEA
 		ENDIF
-6DD2:D67F	SUB 7F
-6DD4:D8		RET C
-6DD5:3C		INC A
-6DD6:47		LD B, A
-6DD7:7D		LD A, L
-6DD8:87		ADD A, A
-6DD9:		label FRAC_LOOP
-6DD9:25		DEC H
-6DDA:87		ADD A, A
-6DDB:10FC	DJNZ 6DD9
-6DDD:3806	JR C, 6DE5
+6FD2:D67F	SUB 7F
+6FD4:D8		RET C
+6FD5:3C		INC A
+6FD6:47		LD B, A
+6FD7:7D		LD A, L
+6FD8:87		ADD A, A
+6FD9:		label FRAC_LOOP
+6FD9:25		DEC H
+6FDA:87		ADD A, A
+6FDB:10FC	DJNZ 6FD9
+6FDD:3806	JR C, 6FE5
 		IF (false)
 -         JR      z, FINT_ZERO        ;
 		ELSE (true)
-6DDF:2809	JR Z, 6DEA
+6FDF:2809	JR Z, 6FEA
 		ENDIF
-6DE1:		label FRAC_LOOP2
-6DE1:25		DEC H
-6DE2:87		ADD A, A
-6DE3:30FC	JR NC, 6DE1
-6DE5:		label FRAC_SIGN
-6DE5:CB15	RL L
-6DE7:1F		RRA
-6DE8:6F		LD L, A
-6DE9:C9		RET
+6FE1:		label FRAC_LOOP2
+6FE1:25		DEC H
+6FE2:87		ADD A, A
+6FE3:30FC	JR NC, 6FE1
+6FE5:		label FRAC_SIGN
+6FE5:CB15	RL L
+6FE7:1F		RRA
+6FE8:6F		LD L, A
+6FE9:C9		RET
 		IF (true)
-6DEA:		label FRAC_ZERO
-6DEA:210000	LD HL, 0000
-6DED:C9		RET
+6FEA:		label FRAC_ZERO
+6FEA:210000	LD HL, 0000
+6FED:C9		RET
 		ENDIF
 		ENDIF
 		End of INCLUDE
 		INCLUDE fint.asm
 		IF (true)
-6DEE:		label @FINT
+6FEE:		label @FINT
 		IF (true)
-6DEE:		label FINT
+6FEE:		label FINT
 		ENDIF
-6DEE:7C		LD A, H
-6DEF:D67F	SUB 7F
+6FEE:7C		LD A, H
+6FEF:D67F	SUB 7F
 		IF (true)
-6DF1:38F7	JR C, 6DEA
+6FF1:38F7	JR C, 6FEA
 		ELSE (false)
 -         JR      c, FINT_ZERO        ;  2:12/7   Completely fractional
 		ENDIF
-6DF3:D607	SUB 07
-6DF5:D0		RET NC
-6DF6:ED44	NEG
-6DF8:47		LD B, A
-6DF9:3EFF	LD A, FF
-6DFB:		label FINT_LOOP
-6DFB:87		ADD A, A
-6DFC:10FD	DJNZ 6DFB
-6DFE:A5		AND L
-6DFF:6F		LD L, A
-6E00:C9		RET
+6FF3:D607	SUB 07
+6FF5:D0		RET NC
+6FF6:ED44	NEG
+6FF8:47		LD B, A
+6FF9:3EFF	LD A, FF
+6FFB:		label FINT_LOOP
+6FFB:87		ADD A, A
+6FFC:10FD	DJNZ 6FFB
+6FFE:A5		AND L
+6FFF:6F		LD L, A
+7000:C9		RET
 		IF (false)
 - FINT_ZERO:
 -         LD      HL, FPMIN           ; -0???
@@ -2784,41 +2989,41 @@ End of MACRO MCMPA
 		End of INCLUDE
 		INCLUDE fwld.asm
 		IF (true)
-6E01:		label @FWLD
+7001:		label @FWLD
 		IF (true)
-6E01:		label FWLD
+7001:		label FWLD
 		ENDIF
-6E01:7C		LD A, H
-6E02:B7		OR A
-6E03:2816	JR Z, 6E1B
-6E05:3E8F	LD A, 8F
-6E07:		label FWLD_NORM
-6E07:29		ADD HL, HL
-6E08:3D		DEC A
-6E09:D2076E	JP NC, 6E07
-6E0C:CB3C	SRL H
-6E0E:3F		CCF
-6E0F:CB1D	RR L
-6E11:6C		LD L, H
-6E12:67		LD H, A
-6E13:F8		RET M
-6E14:C8		RET Z
-6E15:2C		INC L
-6E16:F0		RET P
-6E17:24		INC H
-6E18:2E00	LD L, 00
-6E1A:C9		RET
-6E1B:		label FWLD_BYTE
-6E1B:B5		OR L
-6E1C:C8		RET Z
-6E1D:2687	LD H, 87
-6E1F:		label FWLD_BYTE_NORM
-6E1F:25		DEC H
-6E20:87		ADD A, A
-6E21:30FC	JR NC, 6E1F
-6E23:0F		RRCA
-6E24:6F		LD L, A
-6E25:C9		RET
+7001:7C		LD A, H
+7002:B7		OR A
+7003:2816	JR Z, 701B
+7005:3E8F	LD A, 8F
+7007:		label FWLD_NORM
+7007:29		ADD HL, HL
+7008:3D		DEC A
+7009:D20770	JP NC, 7007
+700C:CB3C	SRL H
+700E:3F		CCF
+700F:CB1D	RR L
+7011:6C		LD L, H
+7012:67		LD H, A
+7013:F8		RET M
+7014:C8		RET Z
+7015:2C		INC L
+7016:F0		RET P
+7017:24		INC H
+7018:2E00	LD L, 00
+701A:C9		RET
+701B:		label FWLD_BYTE
+701B:B5		OR L
+701C:C8		RET Z
+701D:2687	LD H, 87
+701F:		label FWLD_BYTE_NORM
+701F:25		DEC H
+7020:87		ADD A, A
+7021:30FC	JR NC, 701F
+7023:0F		RRCA
+7024:6F		LD L, A
+7025:C9		RET
 		ENDIF
 		End of INCLUDE
 		INCLUDE fwst.asm
@@ -2860,16 +3065,16 @@ End of MACRO MCMPA
 -         RET                         ;  1:10
 		ENDIF
 		End of INCLUDE
-6E26:		label @FWST
+7026:		label @FWST
 		IF (true)
-6E26:		label FWST
+7026:		label FWST
 		ENDIF
-6E26:CBFD	SET 7, L
-6E28:7C		LD A, H
-6E29:FE8F	CP 8F
-6E2B:301E	JR NC, 6E4B
-6E2D:D67E	SUB 7E
-6E2F:381F	JR C, 6E50
+7026:CBFD	SET 7, L
+7028:7C		LD A, H
+7029:FE8F	CP 8F
+702B:301E	JR NC, 704B
+702D:D67E	SUB 7E
+702F:381F	JR C, 7050
 		IF (false)
 -         LD      B, A                ;  1:4
 -         LD      A, L                ;  1:4
@@ -2886,84 +3091,84 @@ End of MACRO MCMPA
 -         INC     HL                  ;  1:6
 -         RET                         ;  1:10
 		ELSE (true)
-6E31:2600	LD H, 00
-6E33:47		LD B, A
-6E34:2807	JR Z, 6E3D
-6E36:D608	SUB 08
-6E38:300B	JR NC, 6E45
-6E3A:29		ADD HL, HL
-6E3B:10FD	DJNZ 6E3A
-6E3D:		label FWST_ROUNDING
-6E3D:7D		LD A, L
-6E3E:C67F	ADD A, 7F
-6E40:7C		LD A, H
-6E41:60		LD H, B
+7031:2600	LD H, 00
+7033:47		LD B, A
+7034:2807	JR Z, 703D
+7036:D608	SUB 08
+7038:300B	JR NC, 7045
+703A:29		ADD HL, HL
+703B:10FD	DJNZ 703A
+703D:		label FWST_ROUNDING
+703D:7D		LD A, L
+703E:C67F	ADD A, 7F
+7040:7C		LD A, H
+7041:60		LD H, B
 		IF (true)
-6E42:88		ADC A, B
-6E43:6F		LD L, A
+7042:88		ADC A, B
+7043:6F		LD L, A
 		ELSE (false)
 -         RET     nc                  ;  1:5/11
 -         INC     L                   ;  1:4
 		ENDIF
-6E44:C9		RET
-6E45:		label FWST_256PLUS
-6E45:C8		RET Z
-6E46:47		LD B, A
-6E47:29		ADD HL, HL
-6E48:10FD	DJNZ 6E47
-6E4A:C9		RET
+7044:C9		RET
+7045:		label FWST_256PLUS
+7045:C8		RET Z
+7046:47		LD B, A
+7047:29		ADD HL, HL
+7048:10FD	DJNZ 7047
+704A:C9		RET
 		ENDIF
-6E4B:		label FWST_OVERFLOW
+704B:		label FWST_OVERFLOW
 		IF (false)
 -         CALL    OVER_COL_WARNING    ;  3:17
 		ENDIF
-6E4B:21FFFF	LD HL, FFFF
+704B:21FFFF	LD HL, FFFF
 		IF (true)
-6E4E:37		SCF
+704E:37		SCF
 		ENDIF
-6E4F:C9		RET
-6E50:		label FWST_ZERO
+704F:C9		RET
+7050:		label FWST_ZERO
 		IF (true)
-6E50:AF		XOR A
-6E51:67		LD H, A
-6E52:6F		LD L, A
+7050:AF		XOR A
+7051:67		LD H, A
+7052:6F		LD L, A
 		ELSE (false)
 -         LD      HL, $0000           ;  3:10    
 		ENDIF
-6E53:C9		RET
+7053:C9		RET
 		ENDIF
 		End of INCLUDE
 		INCLUDE fbld.asm
 		IF (true)
-6E54:		label @FBLD
+7054:		label @FBLD
 		IF (true)
-6E54:		label FBLD
+7054:		label FBLD
 		ENDIF
 		IF (true)
 FBLD_D		EQU 0086
-6E54:1686	LD D, 86
-6E56:		label FBLD_X
-6E56:87		ADD A, A
-6E57:3806	JR C, 6E5F
+7054:1686	LD D, 86
+7056:		label FBLD_X
+7056:87		ADD A, A
+7057:3806	JR C, 705F
 		ELSE (false)
 -         FBLD_D  EQU     BIAS+8
 -         LD      D, FBLD_D           ;  2:7
 - FBLD_X:
 -         OR      A, A                ;  1:4
 		ENDIF
-6E59:2807	JR Z, 6E62
-6E5B:		label FBLD_LOOP
-6E5B:15		DEC D
-6E5C:87		ADD A, A
-6E5D:30FC	JR NC, 6E5B
-6E5F:		label FBLD_ALIGNED
-6E5F:0F		RRCA
-6E60:5F		LD E, A
-6E61:C9		RET
-6E62:		label FBLD_OUT_ZERO
-6E62:57		LD D, A
-6E63:5F		LD E, A
-6E64:C9		RET
+7059:2807	JR Z, 7062
+705B:		label FBLD_LOOP
+705B:15		DEC D
+705C:87		ADD A, A
+705D:30FC	JR NC, 705B
+705F:		label FBLD_ALIGNED
+705F:0F		RRCA
+7060:5F		LD E, A
+7061:C9		RET
+7062:		label FBLD_OUT_ZERO
+7062:57		LD D, A
+7063:5F		LD E, A
+7064:C9		RET
 		ENDIF
 		End of INCLUDE
 		INCLUDE fln.asm
@@ -3228,49 +3433,262 @@ FBLD_D		EQU 0086
 - 
 		ENDIF
 		End of INCLUDE
-6E65:		label @FLN
+7065:		label @FLN
 		IF (true)
-6E65:		label FLN
+7065:		label FLN
 		ENDIF
 		IF (true)
-6E65:7C		LD A, H
-6E66:D67D	SUB 7D
-6E68:CB1F	RR A
-6E6A:2816	JR Z, 6E82
+7065:7C		LD A, H
+7066:D67D	SUB 7D
+7068:CB1F	RR A
+706A:2816	JR Z, 7082
 		ENDIF
-6E6C:7D		LD A, L
-6E6D:6C		LD L, H
-6E6E:2669	LD H, 69
-6E70:56		LD D, (HL)
-6E71:25		DEC H
-6E72:5E		LD E, (HL)
-6E73:87		ADD A, A
-6E74:2815	JR Z, 6E8B
-6E76:25		DEC H
-6E77:6F		LD L, A
-6E78:7E		LD A, (HL)
-6E79:2C		INC L
-6E7A:66		LD H, (HL)
-6E7B:6F		LD L, A
-6E7C:7A		LD A, D
-6E7D:B3		OR E
-6E7E:C2926C	JP NZ, 6C92
-6E81:C9		RET
+706C:7D		LD A, L
+706D:6C		LD L, H
+706E:2669	LD H, 69
+7070:56		LD D, (HL)
+7071:25		DEC H
+7072:5E		LD E, (HL)
+7073:87		ADD A, A
+7074:2815	JR Z, 708B
+7076:25		DEC H
+7077:6F		LD L, A
+7078:7E		LD A, (HL)
+7079:2C		INC L
+707A:66		LD H, (HL)
+707B:6F		LD L, A
+707C:7A		LD A, D
+707D:B3		OR E
+707E:C2926E	JP NZ, 6E92
+7081:C9		RET
 		IF (true)
-6E82:		label FLN_FIX
-6E82:CE6A	ADC A, 6A
-6E84:67		LD H, A
-6E85:CB25	SLA L
-6E87:5E		LD E, (HL)
-6E88:2C		INC L
-6E89:56		LD D, (HL)
+7082:		label FLN_FIX
+7082:CE6A	ADC A, 6A
+7084:67		LD H, A
+7085:CB25	SLA L
+7087:5E		LD E, (HL)
+7088:2C		INC L
+7089:56		LD D, (HL)
 		IF (true)
-6E8A:B7		OR A
+708A:B7		OR A
 		ENDIF
 		ENDIF
-6E8B:		label FLN_NO_ADD
-6E8B:EB		EX DE, HL
-6E8C:C9		RET
+708B:		label FLN_NO_ADD
+708B:EB		EX DE, HL
+708C:C9		RET
 		ENDIF
 		End of INCLUDE
-Emiting raw binary from 6000 to 6E8C
+		INCLUDE fexp.asm
+		IF (true)
+		INCLUDE fmul.asm
+		IF (false)
+- @FMUL:
+-                    FMUL                ; *
+-         LD      A, C                ;  1:4
+-         XOR     E                   ;  1:4
+-         OR      $FF - SIGN_MASK     ;  2:7
+-         LD      L, A                ;  1:4          s111 1111
+-         LD      A, D                ;  1:4
+-         ADD     A, B                ;  1:4
+-         JR      c, FMUL_C1          ;  2:12/7
+-         SUB     BIAS                ;  2:7
+-         JR      nc, FMUL_NEXT       ;  2:12/7
+-         INC     A                   ;  1:4          $FF => $00?
+-         JR      nz, FMULP_UNDERFLOW ;  2:12/7       no chance        
+-         INC     D                   ;  1:4
+-         CALL    FMUL                ;  3:17         recursion
+-         DEC     H                   ;  1:4
+-         RET     z                   ;  1:11/5      
+- FMULP_UNDERFLOW:
+-         LD      H, $00              ;  1:4          HL = 0000 0000 s000 0000
+-         CALL    UNDER_COL_WARNING   ;  3:17
+-         LD      A, L                ;  1:4          s111 1111
+-         AND     SIGN_MASK           ;  2:7          
+-         LD      L, A                ;  1:4
+-         SCF                         ;  1:4          carry = error
+-         RET                         ;  1:10
+- FMUL_C1:
+-         SUB     BIAS                ;  2:7
+-         JR      nc, FMULP_OVERFLOW  ;  2:12/7        
+- FMUL_NEXT:
+-         LD      H, A                ;  1:4          new exponent
+-         PUSH    HL                  ;  1:11
+-         RES     7, C                ;  2:8
+-         RES     7, E                ;  2:8
+-         LD      A, C                ;  1:4
+-         ADD     A, E                ;  1:4
+-         LD      E, A                ;  1:4          E = A + B
+-         LD      D, Tab_ApB_lo/256   ;  2:7          (DE) = Tab_ApB_lo
+-         SUB     C                   ;  1:4
+-         SUB     C                   ;  1:4
+-         LD      L, A                ;  1:4          L = A - B
+-         LD      H, Tab_AmB_lo/256   ;  2:7
+-         LD      A, (DE)             ;  1:7
+-         ADD     A, (HL)             ;  1:7
+-         LD      C, A                ;  1:4
+-         INC     D                   ;  1:4
+-         LD      A, (DE)             ;  1:7
+-         INC     H                   ;  1:4
+-         ADC     A, (HL)             ;  1:7
+-         JP      p, FMULP_SAME_EXP   ;  3:10
+-         POP     HL                  ;  1:10
+-         INC     H                   ;  1:4          exp++
+-         JR      z, FMULP_OVERFLOW   ;  2:7/12
+-         AND     L                   ;  1:4
+-         LD      L, A                ;  1:4
+-         LD      A, C                ;  1:4
+-         ADD     A, $40              ;  2:7
+-         RET     nc                  ;  1:11/5       RET with reset carry
+-         INC     L                   ;  1:4          25%
+-         OR      A                   ;  1:4          RET with reset carry
+-         RET                         ;  1:10
+- FMULP_OVERFLOW:
+-         LD      H, $FF              ;  3:10
+-         CALL    OVER_COL_WARNING    ;  3:17
+-         SCF                         ;  1:4          carry = error
+-         RET                         ;  1:10
+- FMULP_SAME_EXP:                     ;               (ApB)+(AmB) >= $4000 => pricti: $0 (38.882446%)
+-         RL      C                   ;  2:8          
+-         ADC     A, A                ;  1:4
+-         POP     HL                  ;  1:10         AC = 1mmm mmmm mmmm mmm0
+-         AND     L                   ;  1:4          RET with reset carry
+-         LD      L, A                ;  1:4
+-         RET                         ;  1:10
+-     include "color_flow_warning.asm"
+-     BORDER      EQU     $229B         ; ROM border change permanent
+-   $229B  OUT    ($FE), A            ; The '#S/OUT/' instruction is then used to set the border colour.
+-   $229D  RLCA                       ; {The parameter is then multiplied by eight.
+-   $229E  RLCA                       ;
+-   $229F  RLCA                       ; }
+-   $22A0  BIT    5, A                ; Is the border colour a 'light' colour?
+-   $22A2  JR     nz, $22A6           ; Jump if so (the INK colour will be black).
+-   $22A4  XOR    $07                 ; Change the INK colour to white.
+- @label=BORDER_1
+-  *$22A6  LD     ($5C48), A          ; {Set the system variable (#SYSVAR(BORDCR)) as required
+-   $22A9  RET                        ; and return.}
+- CBLU     EQU    1
+- CMNG     EQU    3
+- CRED     EQU    2
+- CYEL     EQU    6
+- UNDER_COL_WARNING:
+-         PUSH    AF                  ;  1:11
+-         LD      A, CBLU + CMNG      ;  2:7      A = 4
+- FMUL_SELF_U:
+-         SUB     CBLU                ;  2:7      A = 3 or 1 
+-         LD      ($-1), A            ;  3:13
+-         CALL    BORDER              ;  3:17     change border colour
+-         POP     AF                  ;  1:10
+-         RET                         ;  1:10
+- OVER_COL_WARNING:
+-         PUSH    AF                  ;  1:11
+-         LD      A, CRED + CYEL      ;  2:7      A = 8
+- FMUL_SELF_O:
+-         SUB     CRED                ;  2:7      A = 6 or 2 
+-         LD      ($-1), A            ;  3:13
+-         CALL    BORDER              ;  3:17     change border colour
+-         POP     AF                  ;  1:10
+-         RET                         ;  1:10
+- 
+		ENDIF
+		End of INCLUDE
+		INCLUDE color_flow_warning.asm
+		IF (false)
+-     BORDER      EQU     $229B         ; ROM border change permanent
+-   $229B  OUT    ($FE), A            ; The '#S/OUT/' instruction is then used to set the border colour.
+-   $229D  RLCA                       ; {The parameter is then multiplied by eight.
+-   $229E  RLCA                       ;
+-   $229F  RLCA                       ; }
+-   $22A0  BIT    5, A                ; Is the border colour a 'light' colour?
+-   $22A2  JR     nz, $22A6           ; Jump if so (the INK colour will be black).
+-   $22A4  XOR    $07                 ; Change the INK colour to white.
+- @label=BORDER_1
+-  *$22A6  LD     ($5C48), A          ; {Set the system variable (#SYSVAR(BORDCR)) as required
+-   $22A9  RET                        ; and return.}
+- CBLU     EQU    1
+- CMNG     EQU    3
+- CRED     EQU    2
+- CYEL     EQU    6
+- UNDER_COL_WARNING:
+-         PUSH    AF                  ;  1:11
+-         LD      A, CBLU + CMNG      ;  2:7      A = 4
+- FMUL_SELF_U:
+-         SUB     CBLU                ;  2:7      A = 3 or 1 
+-         LD      ($-1), A            ;  3:13
+-         CALL    BORDER              ;  3:17     change border colour
+-         POP     AF                  ;  1:10
+-         RET                         ;  1:10
+- OVER_COL_WARNING:
+-         PUSH    AF                  ;  1:11
+-         LD      A, CRED + CYEL      ;  2:7      A = 8
+- FMUL_SELF_O:
+-         SUB     CRED                ;  2:7      A = 6 or 2 
+-         LD      ($-1), A            ;  3:13
+-         CALL    BORDER              ;  3:17     change border colour
+-         POP     AF                  ;  1:10
+-         RET                         ;  1:10
+		ENDIF
+		End of INCLUDE
+708D:		label @FEXP
+		IF (true)
+708D:		label FEXP
+		ENDIF
+708D:7C		LD A, H
+708E:FE77	CP 77
+7090:3828	JR C, 70BA
+7092:FE86	CP 86
+7094:3029	JR NC, 70BF
+7096:D670	SUB 70
+7098:67		LD H, A
+7099:7D		LD A, L
+709A:87		ADD A, A
+709B:6C		LD L, H
+709C:266C	LD H, 6C
+709E:3002	JR NC, 70A2
+70A0:CBFD	SET 7, L
+70A2:5E		LD E, (HL)
+70A3:E5		PUSH HL
+70A4:24		INC H
+70A5:56		LD D, (HL)
+70A6:		label FEXP_LOOP
+70A6:E1		POP HL
+70A7:		label FEXP_ZEROBIT
+70A7:2814	JR Z, 70BD
+70A9:2D		DEC L
+70AA:87		ADD A, A
+70AB:30FA	JR NC, 70A7
+70AD:4E		LD C, (HL)
+70AE:E5		PUSH HL
+70AF:24		INC H
+70B0:46		LD B, (HL)
+70B1:F5		PUSH AF
+70B2:CD3A6E	CALL 6E3A
+70B5:F1		POP AF
+70B6:EB		EX DE, HL
+70B7:C3A670	JP 70A6
+70BA:		label FEXP_ONE
+70BA:11007F	LD DE, 7F00
+70BD:		label FEXP_EXIT
+70BD:EB		EX DE, HL
+70BE:C9		RET
+70BF:		label FEXP_FLOW
+70BF:7D		LD A, L
+70C0:87		ADD A, A
+70C1:3805	JR C, 70C8
+70C3:		label FEXP_OVER
+		IF (false)
+-         CALL    OVER_COL_WARNING    ;
+		ENDIF
+		IF (true)
+70C3:37		SCF
+		ENDIF
+70C4:217FFF	LD HL, FF7F
+70C7:C9		RET
+70C8:		label FEXP_UNDER
+		IF (false)
+-         CALL    UNDER_COL_WARNING   ;
+		ENDIF
+70C8:210000	LD HL, 0000
+70CB:C9		RET
+		ENDIF
+		End of INCLUDE
+Emiting raw binary from 6000 to 70CB

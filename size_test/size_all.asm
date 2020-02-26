@@ -8,6 +8,7 @@
     INCLUDE "fsqrt.tab"
     INCLUDE "fpow2.tab"
     INCLUDE "fln.tab"
+    INCLUDE "fexp.tab"
     
 ; Subroutines
     INCLUDE "fdiv.asm"
@@ -23,4 +24,5 @@
     INCLUDE "fwst.asm"
     INCLUDE "fbld.asm"
     INCLUDE "fln.asm"
+    INCLUDE "fexp.asm"
 
