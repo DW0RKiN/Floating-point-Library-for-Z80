@@ -58,7 +58,7 @@ int main( int argc, const char* argv[] )
     
     
     unsigned short ba, bb, bc;
-    double fa, fb, fc;
+    double fa, fb, fc, ea = 0, eb = 0;
     char veta[1024];
     
     if ((argv[1][1] & 0xDF) == 'X' ) {
@@ -66,9 +66,10 @@ int main( int argc, const char* argv[] )
         fa = X_TO_DOUBLE( ba );
     } else {
         sscanf(argv[1], "%lf", &fa);          
-        ba = DOUBLE_TO_X_OPT( fa );        
+        ba = DOUBLE_TO_X_OPT( fa );
+        ea = 100 * (fa - X_TO_DOUBLE( ba )) / fa;
     }
-    
+    if ( ea != 0 ) printf("                                                                                 error: %g %%\033[99D", ea);    
     printf("A: "); PRINT_FP_TO_X(stdout, fa);
     
     if ( argc == 3 ) {
@@ -78,8 +79,10 @@ int main( int argc, const char* argv[] )
             fb = X_TO_DOUBLE( bb );
         } else {
             sscanf(argv[2], "%lf", &fb);          
-            bb = DOUBLE_TO_X_OPT( fb );        
+            bb = DOUBLE_TO_X_OPT( fb );
+            eb = 100 * (fb - X_TO_DOUBLE( bb )) / fb;
         }
+        if ( eb != 0 ) printf("                                                                                 error: %g %%\033[99D", eb);
         printf("B: "); PRINT_FP_TO_X(stdout, fb);
     }
     putchar('\n');  //----------------------------------------
