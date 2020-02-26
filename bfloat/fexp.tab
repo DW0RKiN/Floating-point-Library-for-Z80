@@ -1,0 +1,298 @@
+if not defined EXP_TAB
+
+    INCLUDE "fmul.tab"
+
+; Align to 256-byte page boundary
+DEFS    (($ + $FF) / $100) * $100 - $
+
+; e^((2^e)*m) = 
+; e^((2^e)*(m1+m0.5+m0.25+m0.125+m0.0.0625)) 
+; m1 => b1 = 1, m0.5 => b0.5 = 0 or 1, m0.25 => b0.25 = 0 or 1, ...
+; e^( b1*  (2^e) + b0.5*  (2^e-1) + b0.25*  (2^e-2) + b0.125*  (2^e-3) + b0.0625*  (2^e-4) + ... ) = 
+;     b1*e^(2^e) * b0.5*e^(2^e-1) * b0.25*e^(2^e-2) * b0.125*e^(2^e-3) * b0.0625*e^(2^e-4) * ... 
+
+EXP_TAB:
+; lo plus exp-$70
+;   _0  _1  _2  _3  _4  _5  _6  _7  _8  _9  _A  _B  _C  _D  _E  _F
+db $00,$00,$00,$00,$00,$00,$00,$01,$01,$02,$04,$08,$11,$24,$53,$2e   ; 0_     7f00,7f00,7f00,7f00,7f00,7f00,7f00,7f01,7f01,7f02,7f04,7f08,7f11,7f24,7f53,802e 7_
+db $6c,$5a,$3a,$08,$10,$21,$7f,$7f,$7f,$7f,$7f,$7f,$7f,$7f,$7f,$7f   ; 1_     816c,845a,8a3a,9608,ad10,db21,ff7f,ff7f,ff7f,ff7f,ff7f,ff7f,ff7f,ff7f,ff7f,ff7f 8_
+db $7f,$7f,$7f,$7f,$7f,$7f,$7f,$7f,$7f,$7f,$7f,$7f,$7f,$7f,$7f,$7f   ; 2_     ff7f,ff7f,ff7f,ff7f,ff7f,ff7f,ff7f,ff7f,ff7f,ff7f,ff7f,ff7f,ff7f,ff7f,ff7f,ff7f 9_
+db $7f,$7f,$7f,$7f,$7f,$7f,$7f,$7f,$7f,$7f,$7f,$7f,$7f,$7f,$7f,$7f   ; 3_     ff7f,ff7f,ff7f,ff7f,ff7f,ff7f,ff7f,ff7f,ff7f,ff7f,ff7f,ff7f,ff7f,ff7f,ff7f,ff7f A_
+db $7f,$7f,$7f,$7f,$7f,$7f,$7f,$7f,$7f,$7f,$7f,$7f,$7f,$7f,$7f,$7f   ; 4_     ff7f,ff7f,ff7f,ff7f,ff7f,ff7f,ff7f,ff7f,ff7f,ff7f,ff7f,ff7f,ff7f,ff7f,ff7f,ff7f B_
+db $7f,$7f,$7f,$7f,$7f,$7f,$7f,$7f,$7f,$7f,$7f,$7f,$7f,$7f,$7f,$7f   ; 5_     ff7f,ff7f,ff7f,ff7f,ff7f,ff7f,ff7f,ff7f,ff7f,ff7f,ff7f,ff7f,ff7f,ff7f,ff7f,ff7f C_
+db $7f,$7f,$7f,$7f,$7f,$7f,$7f,$7f,$7f,$7f,$7f,$7f,$7f,$7f,$7f,$7f   ; 6_     ff7f,ff7f,ff7f,ff7f,ff7f,ff7f,ff7f,ff7f,ff7f,ff7f,ff7f,ff7f,ff7f,ff7f,ff7f,ff7f D_
+; lo minus exp-$70+$80
+db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00   ; 7_     7f00,7f00,7f00,7f00,7f00,7f00,7f00,7f00,7f00,7f00,7f00,7f00,7f00,7f00,7f00,7f00 6_
+db $00,$00,$00,$00,$00,$00,$00,$7f,$7e,$7c,$78,$70,$62,$47,$1b,$3c   ; 8_     7f00,7f00,7f00,7f00,7f00,7f00,7f00,7e7f,7e7e,7e7c,7e78,7e70,7e62,7e47,7e1b,7d3c 7_
+db $0b,$16,$30,$72,$64,$4b,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00   ; 9_     7c0b,7916,7330,6772,5064,224b,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000 8_
+db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00   ; A_     0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000 9_
+db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00   ; B_     0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000 A_
+db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00   ; C_     0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000 B_
+db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00   ; D_     0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000 C_
+db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00   ; E_     0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000 D_
+db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00   ; F_     0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000,0000 E_
+; hi plus exp-$70
+;   _0  _1  _2  _3  _4  _5  _6  _7  _8  _9  _A  _B  _C  _D  _E  _F
+db $7f,$7f,$7f,$7f,$7f,$7f,$7f,$7f,$7f,$7f,$7f,$7f,$7f,$7f,$7f,$80   ; 0_  
+db $81,$84,$8a,$96,$ad,$db,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; 1_  
+db $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; 2_  
+db $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; 3_  
+db $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; 4_  
+db $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; 5_  
+db $ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff,$ff   ; 6_  
+; hi minus exp-$70
+db $7f,$7f,$7f,$7f,$7f,$7f,$7f,$7f,$7f,$7f,$7f,$7f,$7f,$7f,$7f,$7f   ; 7_ 
+db $7f,$7f,$7f,$7f,$7f,$7f,$7f,$7e,$7e,$7e,$7e,$7e,$7e,$7e,$7e,$7d   ; 8_  
+db $7c,$79,$73,$67,$50,$22,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00   ; 9_  
+db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00   ; A_  
+db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00   ; B_  
+db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00   ; C_  
+db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00   ; D_  
+db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00   ; E_  
+db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00   ; F_  
+
+endif
+
+; exp($7c5b) = $7f1f, e: -3, m: $005b, má být: $7f1f, jest: $7f1d, rozdíl: 2
+; exp($7c7b) = $7f24, e: -3, m: $007b, má být: $7f24, jest: $7f22, rozdíl: 2
+; exp($7d25) = $7f31, e: -2, m: $0025, má být: $7f31, jest: $7f2f, rozdíl: 2
+; exp($7d30) = $7f35, e: -2, m: $0030, má být: $7f35, jest: $7f33, rozdíl: 2
+; exp($7d31) = $7f35, e: -2, m: $0031, má být: $7f35, jest: $7f33, rozdíl: 2
+; exp($7d33) = $7f36, e: -2, m: $0033, má být: $7f36, jest: $7f34, rozdíl: 2
+; exp($7d34) = $7f36, e: -2, m: $0034, má být: $7f36, jest: $7f34, rozdíl: 2
+; exp($7d35) = $7f36, e: -2, m: $0035, má být: $7f36, jest: $7f34, rozdíl: 2
+; exp($7d36) = $7f37, e: -2, m: $0036, má být: $7f37, jest: $7f35, rozdíl: 2
+; exp($7d37) = $7f37, e: -2, m: $0037, má být: $7f37, jest: $7f35, rozdíl: 2
+; exp($7d39) = $7f38, e: -2, m: $0039, má být: $7f38, jest: $7f36, rozdíl: 2
+; exp($7d3c) = $7f39, e: -2, m: $003c, má být: $7f39, jest: $7f37, rozdíl: 2
+; exp($7d3d) = $7f39, e: -2, m: $003d, má být: $7f39, jest: $7f37, rozdíl: 2
+; exp($7d3e) = $7f3a, e: -2, m: $003e, má být: $7f3a, jest: $7f38, rozdíl: 2
+; exp($7d3f) = $7f3a, e: -2, m: $003f, má být: $7f3a, jest: $7f38, rozdíl: 2
+; exp($7d5e) = $7f45, e: -2, m: $005e, má být: $7f45, jest: $7f47, rozdíl: -2
+; exp($7e0b) = $7f5c, e: -1, m: $000b, má být: $7f5c, jest: $7f5e, rozdíl: -2
+; exp($7e56) = $8014, e: -1, m: $0056, má být: $8014, jest: $8012, rozdíl: 2
+; exp($7e58) = $8015, e: -1, m: $0058, má být: $8015, jest: $8013, rozdíl: 2
+; exp($7e5a) = $8016, e: -1, m: $005a, má být: $8016, jest: $8014, rozdíl: 2
+; exp($7e5b) = $8017, e: -1, m: $005b, má být: $8017, jest: $8015, rozdíl: 2
+; exp($7e5c) = $8017, e: -1, m: $005c, má být: $8017, jest: $8015, rozdíl: 2
+; exp($7e5d) = $8018, e: -1, m: $005d, má být: $8018, jest: $8016, rozdíl: 2
+; exp($7e5e) = $8018, e: -1, m: $005e, má být: $8018, jest: $8016, rozdíl: 2
+; exp($7e5f) = $8019, e: -1, m: $005f, má být: $8019, jest: $8017, rozdíl: 2
+; exp($7f5d) = $8134, e: 0, m: $005d, má být: $8134, jest: $8132, rozdíl: 2
+; exp($7f5f) = $8137, e: 0, m: $005f, má být: $8137, jest: $8135, rozdíl: 2
+; exp($7f61) = $813a, e: 0, m: $0061, má být: $813a, jest: $8138, rozdíl: 2
+; exp($7f63) = $813d, e: 0, m: $0063, má být: $813d, jest: $813b, rozdíl: 2
+; exp($7f68) = $8144, e: 0, m: $0068, má být: $8144, jest: $8142, rozdíl: 2
+; exp($7f69) = $8146, e: 0, m: $0069, má být: $8146, jest: $8144, rozdíl: 2
+; exp($7f6a) = $8147, e: 0, m: $006a, má být: $8147, jest: $8145, rozdíl: 2
+; exp($7f6b) = $8149, e: 0, m: $006b, má být: $8149, jest: $8147, rozdíl: 2
+; exp($7f6c) = $814a, e: 0, m: $006c, má být: $814a, jest: $8148, rozdíl: 2
+; exp($7f6d) = $814c, e: 0, m: $006d, má být: $814c, jest: $814a, rozdíl: 2
+; exp($7f6e) = $814d, e: 0, m: $006e, má být: $814d, jest: $814b, rozdíl: 2
+; exp($7f6f) = $814f, e: 0, m: $006f, má být: $814f, jest: $814d, rozdíl: 2
+; exp($7f70) = $8151, e: 0, m: $0070, má být: $8151, jest: $814f, rozdíl: 2
+; exp($7f72) = $8154, e: 0, m: $0072, má být: $8154, jest: $8152, rozdíl: 2
+; exp($7f73) = $8156, e: 0, m: $0073, má být: $8156, jest: $8154, rozdíl: 2
+; exp($7f74) = $8157, e: 0, m: $0074, má být: $8157, jest: $8155, rozdíl: 2
+; exp($7f75) = $8159, e: 0, m: $0075, má být: $8159, jest: $8157, rozdíl: 2
+; exp($7f76) = $815b, e: 0, m: $0076, má být: $815b, jest: $8158, rozdíl: 3
+; exp($7f77) = $815c, e: 0, m: $0077, má být: $815c, jest: $815a, rozdíl: 2
+; exp($7f78) = $815e, e: 0, m: $0078, má být: $815e, jest: $815c, rozdíl: 2
+; exp($7f79) = $8160, e: 0, m: $0079, má být: $8160, jest: $815e, rozdíl: 2
+; exp($7f7a) = $8162, e: 0, m: $007a, má být: $8162, jest: $815f, rozdíl: 3
+; exp($7f7b) = $8163, e: 0, m: $007b, má být: $8163, jest: $8161, rozdíl: 2
+; exp($7f7c) = $8165, e: 0, m: $007c, má být: $8165, jest: $8163, rozdíl: 2
+; exp($7f7d) = $8167, e: 0, m: $007d, má být: $8167, jest: $8165, rozdíl: 2
+; exp($7f7e) = $8169, e: 0, m: $007e, má být: $8169, jest: $8167, rozdíl: 2
+; exp($7f7f) = $816b, e: 0, m: $007f, má být: $816b, jest: $8169, rozdíl: 2
+; exp($8014) = $8222, e: 1, m: $0014, má být: $8222, jest: $8220, rozdíl: 2
+; exp($8015) = $8224, e: 1, m: $0015, má být: $8224, jest: $8222, rozdíl: 2
+; exp($8016) = $8227, e: 1, m: $0016, má být: $8227, jest: $8225, rozdíl: 2
+; exp($804c) = $8342, e: 1, m: $004c, má být: $8342, jest: $8340, rozdíl: 2
+; exp($804d) = $8345, e: 1, m: $004d, má být: $8345, jest: $8343, rozdíl: 2
+; exp($804e) = $8348, e: 1, m: $004e, má být: $8348, jest: $8346, rozdíl: 2
+; exp($804f) = $834b, e: 1, m: $004f, má být: $834b, jest: $8349, rozdíl: 2
+; exp($8051) = $8352, e: 1, m: $0051, má být: $8352, jest: $8350, rozdíl: 2
+; exp($8052) = $8355, e: 1, m: $0052, má být: $8355, jest: $8353, rozdíl: 2
+; exp($8053) = $8358, e: 1, m: $0053, má být: $8358, jest: $8356, rozdíl: 2
+; exp($8054) = $835c, e: 1, m: $0054, má být: $835c, jest: $835a, rozdíl: 2
+; exp($8055) = $835f, e: 1, m: $0055, má být: $835f, jest: $835d, rozdíl: 2
+; exp($8056) = $8363, e: 1, m: $0056, má být: $8363, jest: $8361, rozdíl: 2
+; exp($8058) = $836a, e: 1, m: $0058, má být: $836a, jest: $8368, rozdíl: 2
+; exp($805a) = $8371, e: 1, m: $005a, má být: $8371, jest: $836f, rozdíl: 2
+; exp($805b) = $8375, e: 1, m: $005b, má být: $8375, jest: $8373, rozdíl: 2
+; exp($805c) = $8379, e: 1, m: $005c, má být: $8379, jest: $8376, rozdíl: 3
+; exp($805d) = $837d, e: 1, m: $005d, má být: $837d, jest: $837a, rozdíl: 3
+; exp($805e) = $8400, e: 1, m: $005e, má být: $8400, jest: $837e, rozdíl: 2
+; exp($8067) = $8414, e: 1, m: $0067, má být: $8414, jest: $8412, rozdíl: 2
+; exp($8078) = $8441, e: 1, m: $0078, má být: $8441, jest: $843f, rozdíl: 2
+; exp($8079) = $8444, e: 1, m: $0079, má být: $8444, jest: $8442, rozdíl: 2
+; exp($807a) = $8447, e: 1, m: $007a, má být: $8447, jest: $8445, rozdíl: 2
+; exp($807b) = $844a, e: 1, m: $007b, má být: $844a, jest: $8448, rozdíl: 2
+; exp($807c) = $844d, e: 1, m: $007c, má být: $844d, jest: $844b, rozdíl: 2
+; exp($807d) = $8450, e: 1, m: $007d, má být: $8450, jest: $844e, rozdíl: 2
+; exp($807e) = $8454, e: 1, m: $007e, má být: $8454, jest: $8451, rozdíl: 3
+; exp($807f) = $8457, e: 1, m: $007f, má být: $8457, jest: $8454, rozdíl: 3
+; exp($812e) = $8666, e: 2, m: $002e, má být: $8666, jest: $8664, rozdíl: 2
+; exp($812f) = $866d, e: 2, m: $002f, má být: $866d, jest: $866b, rozdíl: 2
+; exp($813b) = $872d, e: 2, m: $003b, má být: $872d, jest: $872b, rozdíl: 2
+; exp($813f) = $8744, e: 2, m: $003f, má být: $8744, jest: $8742, rozdíl: 2
+; exp($8153) = $8837, e: 2, m: $0053, má být: $8837, jest: $8835, rozdíl: 2
+; exp($815b) = $886b, e: 2, m: $005b, má být: $886b, jest: $8869, rozdíl: 2
+; exp($817f) = $8a35, e: 2, m: $007f, má být: $8a35, jest: $8a33, rozdíl: 2
+; exp($8205) = $8a7f, e: 3, m: $0005, má být: $8a7f, jest: $8a7d, rozdíl: 2
+; exp($820d) = $8b52, e: 3, m: $000d, má být: $8b52, jest: $8b50, rozdíl: 2
+; exp($820f) = $8b6e, e: 3, m: $000f, má být: $8b6e, jest: $8b6c, rozdíl: 2
+; exp($8223) = $8d50, e: 3, m: $0023, má být: $8d50, jest: $8d4e, rozdíl: 2
+; exp($8224) = $8d5d, e: 3, m: $0024, má být: $8d5d, jest: $8d5b, rozdíl: 2
+; exp($8225) = $8d6b, e: 3, m: $0025, má být: $8d6b, jest: $8d69, rozdíl: 2
+; exp($8226) = $8d7a, e: 3, m: $0026, má být: $8d7a, jest: $8d78, rozdíl: 2
+; exp($822d) = $8e42, e: 3, m: $002d, má být: $8e42, jest: $8e40, rozdíl: 2
+; exp($822f) = $8e5c, e: 3, m: $002f, má být: $8e5c, jest: $8e5a, rozdíl: 2
+; exp($8230) = $8e6a, e: 3, m: $0030, má být: $8e6a, jest: $8e68, rozdíl: 2
+; exp($8231) = $8e79, e: 3, m: $0031, má být: $8e79, jest: $8e76, rozdíl: 3
+; exp($8232) = $8f05, e: 3, m: $0032, má být: $8f05, jest: $8f03, rozdíl: 2
+; exp($8233) = $8f0d, e: 3, m: $0033, má být: $8f0d, jest: $8f0b, rozdíl: 2
+; exp($8235) = $8f20, e: 3, m: $0035, má být: $8f20, jest: $8f1e, rozdíl: 2
+; exp($8238) = $8f41, e: 3, m: $0038, má být: $8f41, jest: $8f3f, rozdíl: 2
+; exp($8239) = $8f4d, e: 3, m: $0039, má být: $8f4d, jest: $8f4b, rozdíl: 2
+; exp($823a) = $8f5a, e: 3, m: $003a, má být: $8f5a, jest: $8f58, rozdíl: 2
+; exp($823b) = $8f69, e: 3, m: $003b, má být: $8f69, jest: $8f65, rozdíl: 4
+; exp($823c) = $8f78, e: 3, m: $003c, má být: $8f78, jest: $8f75, rozdíl: 3
+; exp($823d) = $9004, e: 3, m: $003d, má být: $9004, jest: $9002, rozdíl: 2
+; exp($8243) = $9040, e: 3, m: $0043, má být: $9040, jest: $903e, rozdíl: 2
+; exp($8244) = $904c, e: 3, m: $0044, má být: $904c, jest: $904a, rozdíl: 2
+; exp($8245) = $9059, e: 3, m: $0045, má být: $9059, jest: $9057, rozdíl: 2
+; exp($8246) = $9067, e: 3, m: $0046, má být: $9067, jest: $9065, rozdíl: 2
+; exp($8247) = $9076, e: 3, m: $0047, má být: $9076, jest: $9073, rozdíl: 3
+; exp($824b) = $911e, e: 3, m: $004b, má být: $911e, jest: $911c, rozdíl: 2
+; exp($824d) = $9133, e: 3, m: $004d, má být: $9133, jest: $9131, rozdíl: 2
+; exp($824e) = $913f, e: 3, m: $004e, má být: $913f, jest: $913d, rozdíl: 2
+; exp($824f) = $914b, e: 3, m: $004f, má být: $914b, jest: $9149, rozdíl: 2
+; exp($8251) = $9166, e: 3, m: $0051, má být: $9166, jest: $9164, rozdíl: 2
+; exp($8259) = $923e, e: 3, m: $0059, má být: $923e, jest: $923c, rozdíl: 2
+; exp($825c) = $9265, e: 3, m: $005c, má být: $9265, jest: $9263, rozdíl: 2
+; exp($825d) = $9273, e: 3, m: $005d, má být: $9273, jest: $9271, rozdíl: 2
+; exp($8263) = $9331, e: 3, m: $0063, má být: $9331, jest: $932f, rozdíl: 2
+; exp($8265) = $9349, e: 3, m: $0065, má být: $9349, jest: $9347, rozdíl: 2
+; exp($8266) = $9356, e: 3, m: $0066, má být: $9356, jest: $9354, rozdíl: 2
+; exp($8267) = $9363, e: 3, m: $0067, má být: $9363, jest: $9361, rozdíl: 2
+; exp($826e) = $9430, e: 3, m: $006e, má být: $9430, jest: $942e, rozdíl: 2
+; exp($826f) = $943b, e: 3, m: $006f, má být: $943b, jest: $9439, rozdíl: 2
+; exp($8270) = $9448, e: 3, m: $0070, má být: $9448, jest: $9446, rozdíl: 2
+; exp($8271) = $9454, e: 3, m: $0071, má být: $9454, jest: $9452, rozdíl: 2
+; exp($8272) = $9462, e: 3, m: $0072, má být: $9462, jest: $9460, rozdíl: 2
+; exp($8273) = $9471, e: 3, m: $0073, má být: $9471, jest: $946e, rozdíl: 3
+; exp($8274) = $9500, e: 3, m: $0074, má být: $9500, jest: $947e, rozdíl: 2
+; exp($8277) = $951b, e: 3, m: $0077, má být: $951b, jest: $9519, rozdíl: 2
+; exp($8279) = $952f, e: 3, m: $0079, má být: $952f, jest: $952d, rozdíl: 2
+; exp($827c) = $9553, e: 3, m: $007c, má být: $9553, jest: $9551, rozdíl: 2
+; exp($827d) = $9561, e: 3, m: $007d, má být: $9561, jest: $955e, rozdíl: 3
+; exp($827e) = $956f, e: 3, m: $007e, má být: $956f, jest: $956d, rozdíl: 2
+; exp($827f) = $957f, e: 3, m: $007f, má být: $957f, jest: $957c, rozdíl: 3
+; exp($834c) = $a35d, e: 4, m: $004c, má být: $a35d, jest: $a35f, rozdíl: -2
+; exp($834d) = $a37b, e: 4, m: $004d, má být: $a37b, jest: $a37d, rozdíl: -2
+; exp($841b) = $b670, e: 5, m: $001b, má být: $b670, jest: $b66e, rozdíl: 2
+; exp($8439) = $c154, e: 5, m: $0039, má být: $c154, jest: $c152, rozdíl: 2
+; exp($847b) = $d939, e: 5, m: $007b, má být: $d939, jest: $d937, rozdíl: 2
+; exp($851c) = $ef39, e: 6, m: $001c, má být: $ef39, jest: $ef37, rozdíl: 2
+; exp($851e) = $f07b, e: 6, m: $001e, má být: $f07b, jest: $f079, rozdíl: 2
+; exp($851f) = $f14f, e: 6, m: $001f, má být: $f14f, jest: $f14d, rozdíl: 2
+; exp($7be8) = $7e65, e: -4, m: $0068, má být: $7e65, jest: $7e63, rozdíl: 2
+; exp($7bf0) = $7e64, e: -4, m: $0070, má být: $7e64, jest: $7e62, rozdíl: 2
+; exp($7bf1) = $7e64, e: -4, m: $0071, má být: $7e64, jest: $7e62, rozdíl: 2
+; exp($7bf8) = $7e63, e: -4, m: $0078, má být: $7e63, jest: $7e61, rozdíl: 2
+; exp($7bf9) = $7e63, e: -4, m: $0079, má být: $7e63, jest: $7e61, rozdíl: 2
+; exp($7bfa) = $7e63, e: -4, m: $007a, má být: $7e63, jest: $7e61, rozdíl: 2
+; exp($7e99) = $7e0d, e: -1, m: $0019, má být: $7e0d, jest: $7e0b, rozdíl: 2
+; exp($7e9b) = $7e0c, e: -1, m: $001b, má být: $7e0c, jest: $7e0a, rozdíl: 2
+; exp($7e9d) = $7e0b, e: -1, m: $001d, má být: $7e0b, jest: $7e09, rozdíl: 2
+; exp($7e9f) = $7e0a, e: -1, m: $001f, má být: $7e0a, jest: $7e08, rozdíl: 2
+; exp($7eb7) = $7d7b, e: -1, m: $0037, má být: $7d7b, jest: $7d79, rozdíl: 2
+; exp($7eb8) = $7d7a, e: -1, m: $0038, má být: $7d7a, jest: $7d78, rozdíl: 2
+; exp($7eb9) = $7d79, e: -1, m: $0039, má být: $7d79, jest: $7d77, rozdíl: 2
+; exp($7eba) = $7d78, e: -1, m: $003a, má být: $7d78, jest: $7d76, rozdíl: 2
+; exp($7ebb) = $7d77, e: -1, m: $003b, má být: $7d77, jest: $7d75, rozdíl: 2
+; exp($7ebc) = $7d76, e: -1, m: $003c, má být: $7d76, jest: $7d74, rozdíl: 2
+; exp($7ebd) = $7d75, e: -1, m: $003d, má být: $7d75, jest: $7d73, rozdíl: 2
+; exp($7ebe) = $7d74, e: -1, m: $003e, má být: $7d74, jest: $7d72, rozdíl: 2
+; exp($7ebf) = $7d73, e: -1, m: $003f, má být: $7d73, jest: $7d71, rozdíl: 2
+; exp($7eca) = $7d69, e: -1, m: $004a, má být: $7d69, jest: $7d67, rozdíl: 2
+; exp($7ecb) = $7d68, e: -1, m: $004b, má být: $7d68, jest: $7d66, rozdíl: 2
+; exp($7ecc) = $7d67, e: -1, m: $004c, má být: $7d67, jest: $7d65, rozdíl: 2
+; exp($7ecd) = $7d66, e: -1, m: $004d, má být: $7d66, jest: $7d64, rozdíl: 2
+; exp($7ece) = $7d65, e: -1, m: $004e, má být: $7d65, jest: $7d63, rozdíl: 2
+; exp($7ecf) = $7d64, e: -1, m: $004f, má být: $7d64, jest: $7d62, rozdíl: 2
+; exp($7ed3) = $7d61, e: -1, m: $0053, má být: $7d61, jest: $7d5f, rozdíl: 2
+; exp($7ed4) = $7d60, e: -1, m: $0054, má být: $7d60, jest: $7d5e, rozdíl: 2
+; exp($7ed5) = $7d5f, e: -1, m: $0055, má být: $7d5f, jest: $7d5d, rozdíl: 2
+; exp($7ed6) = $7d5e, e: -1, m: $0056, má být: $7d5e, jest: $7d5c, rozdíl: 2
+; exp($7ed7) = $7d5d, e: -1, m: $0057, má být: $7d5d, jest: $7d5b, rozdíl: 2
+; exp($7edb) = $7d5a, e: -1, m: $005b, má být: $7d5a, jest: $7d58, rozdíl: 2
+; exp($7f8e) = $7d29, e: 0, m: $000e, má být: $7d29, jest: $7d27, rozdíl: 2
+; exp($7f8f) = $7d28, e: 0, m: $000f, má být: $7d28, jest: $7d26, rozdíl: 2
+; exp($7fbb) = $7c6e, e: 0, m: $003b, má být: $7c6e, jest: $7c6c, rozdíl: 2
+; exp($7fbc) = $7c6c, e: 0, m: $003c, má být: $7c6c, jest: $7c6a, rozdíl: 2
+; exp($7fbd) = $7c6a, e: 0, m: $003d, má být: $7c6a, jest: $7c68, rozdíl: 2
+; exp($7fbe) = $7c68, e: 0, m: $003e, má být: $7c68, jest: $7c66, rozdíl: 2
+; exp($7fbf) = $7c66, e: 0, m: $003f, má být: $7c66, jest: $7c64, rozdíl: 2
+; exp($7fdc) = $7c38, e: 0, m: $005c, má být: $7c38, jest: $7c36, rozdíl: 2
+; exp($7fde) = $7c35, e: 0, m: $005e, má být: $7c35, jest: $7c33, rozdíl: 2
+; exp($7fe6) = $7c2a, e: 0, m: $0066, má být: $7c2a, jest: $7c28, rozdíl: 2
+; exp($7fea) = $7c25, e: 0, m: $006a, má být: $7c25, jest: $7c23, rozdíl: 2
+; exp($7fee) = $7c20, e: 0, m: $006e, má být: $7c20, jest: $7c1e, rozdíl: 2
+; exp($7ff8) = $7c14, e: 0, m: $0078, má být: $7c14, jest: $7c12, rozdíl: 2
+; exp($7ffc) = $7c0f, e: 0, m: $007c, má být: $7c0f, jest: $7c0d, rozdíl: 2
+; exp($7ffd) = $7c0e, e: 0, m: $007d, má být: $7c0e, jest: $7c0c, rozdíl: 2
+; exp($7ffe) = $7c0d, e: 0, m: $007e, má být: $7c0d, jest: $7c0b, rozdíl: 2
+; exp($7fff) = $7c0c, e: 0, m: $007f, má být: $7c0c, jest: $7c0a, rozdíl: 2
+; exp($80f7) = $792d, e: 1, m: $0077, má být: $792d, jest: $792b, rozdíl: 2
+; exp($80fc) = $7920, e: 1, m: $007c, má být: $7920, jest: $791e, rozdíl: 2
+; exp($80fe) = $791b, e: 1, m: $007e, má být: $791b, jest: $7919, rozdíl: 2
+; exp($8186) = $7879, e: 2, m: $0006, má být: $7879, jest: $7877, rozdíl: 2
+; exp($8187) = $7871, e: 2, m: $0007, má být: $7871, jest: $786f, rozdíl: 2
+; exp($818a) = $785c, e: 2, m: $000a, má být: $785c, jest: $785a, rozdíl: 2
+; exp($818b) = $7855, e: 2, m: $000b, má být: $7855, jest: $7853, rozdíl: 2
+; exp($819e) = $776b, e: 2, m: $001e, má být: $776b, jest: $7769, rozdíl: 2
+; exp($819f) = $7764, e: 2, m: $001f, má být: $7764, jest: $7762, rozdíl: 2
+; exp($81aa) = $7722, e: 2, m: $002a, má být: $7722, jest: $7720, rozdíl: 2
+; exp($81ab) = $771d, e: 2, m: $002b, má být: $771d, jest: $771b, rozdíl: 2
+; exp($81b2) = $767c, e: 2, m: $0032, má být: $767c, jest: $7679, rozdíl: 3
+; exp($81b3) = $7674, e: 2, m: $0033, má být: $7674, jest: $7671, rozdíl: 3
+; exp($81b6) = $765e, e: 2, m: $0036, má být: $765e, jest: $765c, rozdíl: 2
+; exp($81b7) = $7657, e: 2, m: $0037, má být: $7657, jest: $7655, rozdíl: 2
+; exp($81b8) = $7651, e: 2, m: $0038, má být: $7651, jest: $764f, rozdíl: 2
+; exp($81ba) = $7644, e: 2, m: $003a, má být: $7644, jest: $7642, rozdíl: 2
+; exp($81bb) = $763e, e: 2, m: $003b, má být: $763e, jest: $763c, rozdíl: 2
+; exp($81df) = $7477, e: 2, m: $005f, má být: $7477, jest: $7475, rozdíl: 2
+; exp($81fb) = $734e, e: 2, m: $007b, má být: $734e, jest: $734c, rozdíl: 2
+; exp($829c) = $7075, e: 3, m: $001c, má být: $7075, jest: $7073, rozdíl: 2
+; exp($829d) = $7066, e: 3, m: $001d, má být: $7066, jest: $7064, rozdíl: 2
+; exp($82bd) = $6d79, e: 3, m: $003d, má být: $6d79, jest: $6d77, rozdíl: 2
+; exp($82c9) = $6c6b, e: 3, m: $0049, má být: $6c6b, jest: $6c69, rozdíl: 2
+; exp($82d3) = $6b7c, e: 3, m: $0053, má být: $6b7c, jest: $6b79, rozdíl: 3
+; exp($82d5) = $6b5e, e: 3, m: $0055, má být: $6b5e, jest: $6b5c, rozdíl: 2
+; exp($82d6) = $6b51, e: 3, m: $0056, má být: $6b51, jest: $6b4f, rozdíl: 2
+; exp($82d7) = $6b44, e: 3, m: $0057, má být: $6b44, jest: $6b42, rozdíl: 2
+; exp($82dd) = $6b07, e: 3, m: $005d, má být: $6b07, jest: $6b05, rozdíl: 2
+; exp($82de) = $6a7d, e: 3, m: $005e, má být: $6a7d, jest: $6a7b, rozdíl: 2
+; exp($82df) = $6a6e, e: 3, m: $005f, má být: $6a6e, jest: $6a6b, rozdíl: 3
+; exp($839c) = $626a, e: 4, m: $001c, má být: $626a, jest: $6268, rozdíl: 2
+; exp($839e) = $6236, e: 4, m: $001e, má být: $6236, jest: $6234, rozdíl: 2
+; exp($839f) = $6221, e: 4, m: $001f, má být: $6221, jest: $621f, rozdíl: 2
+; exp($83ef) = $536f, e: 4, m: $006f, má být: $536f, jest: $536d, rozdíl: 2
+; exp($83fa) = $5171, e: 4, m: $007a, má být: $5171, jest: $5173, rozdíl: -2
+; exp($83fb) = $5155, e: 4, m: $007b, má být: $5155, jest: $5157, rozdíl: -2
+; exp($8486) = $4e4c, e: 5, m: $0006, má být: $4e4c, jest: $4e4a, rozdíl: 2
+; exp($8487) = $4e1f, e: 5, m: $0007, má být: $4e1f, jest: $4e1d, rozdíl: 2
+; exp($8499) = $4761, e: 5, m: $0019, má být: $4761, jest: $4763, rozdíl: -2
+; exp($84b7) = $3c7f, e: 5, m: $0037, má být: $3c7f, jest: $3c7d, rozdíl: 2
+; exp($84c8) = $3669, e: 5, m: $0048, má být: $3669, jest: $366b, rozdíl: -2
+; exp($84e7) = $2b4e, e: 5, m: $0067, má být: $2b4e, jest: $2b4c, rozdíl: 2
+; exp($84f3) = $2724, e: 5, m: $0073, má být: $2724, jest: $2722, rozdíl: 2
+; exp($84f5) = $2647, e: 5, m: $0075, má být: $2647, jest: $2645, rozdíl: 2
+; exp($84f7) = $2571, e: 5, m: $0077, má být: $2571, jest: $256f, rozdíl: 2
+
+; rozdíl: má být mínus jest, nemohu se splést...
+; nepřesnost: 1574 (2.401733 %)
+;       chyb: 239 (0.364685 %)
