@@ -205,7 +205,7 @@ More information in *.dat files.
 |             ± 1             |  29.93%  |  24.07%  |  25.09%  |                                        |
 |             ± 2             |   0.30%  |   0.05%  |   0.05%  |  only when input exponent = -1         |
 |             ± 3             |   0.19%  |   0.03%  |   0.03%  |  only when input exponent = -1         |
-|      min..-4 + 4..max       |   0.48%  |   0.07%  |   0.05%  |  only when input exponent = -1         |
+|          min..max           |   0.48%  |   0.07%  |   0.05%  |  only when input exponent = -1         |
 |             min             |    -59   |    -10   |      4   |  correctly-result                      |
 |             max             |      6   |      7   |      7   |  correctly-result                      |
 |             ± more          | accurate | accurate | accurate |                                        |
