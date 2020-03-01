@@ -224,7 +224,6 @@ More information in *.dat files.
     e^(ln(2)) = e^0.6931471805599453094172321 = 2
     2^(log₂(e)) = 2^1.4426950408889634073599247 = e
     e^x = 2^(x*1.4426950408889634073599247)
-    Learn more about algorithms (natural) exponential function http://guihaire.com/code/?p=1107
 
 |         Other        | binary16 |  danagy  |  bfloat  |  comment                               |
 | :------------------: | :------: | :------: | :------: | :---                                   |
@@ -242,3 +241,25 @@ When A < B:
 `(A + B) - B = A - error` where the error is equal to the lost bits of the mantissa number A after the operation (A + B).
 
 `(A + B) - B = 0` if the number B is too large and the number A lost all mantissa bits after the operation (A + B). This means A + B = B.
+
+
+## External links
+
+80-bits, 32-bit and 24-bit float formats
+https://github.com/Zeda/z80float
+
+24-bit float format
+https://github.com/RoaldFre/z80fltptlib
+
+16-bit float format (seee eeee mmmm mmmm)
+https://github.com/nagydani/lpfp
+
+16-bit float format (seee eemm mmmm mmmm)
+https://github.com/artyom-beilis/float16
+
+Learn more about algorithms (natural) exponential function 
+http://guihaire.com/code/?p=1107
+
+http://z80-heaven.wikidot.com/floating-point
+
+http://mathonweb.com/help_ebook/html/algorithms.htm
