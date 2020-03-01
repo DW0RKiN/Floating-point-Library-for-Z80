@@ -126,7 +126,7 @@ In binary16 floating-point format, the `fexp.tab` (natural exponential function 
 
     call  fdot          ; dot product BC = (HL) * (DE)      ( A = dimensions, HL += 2*A, DE += 2*A )
     call  fdot_rec      ; dot product BC = (HL) * (DE)      ( A = dim., use recursion, HL and DE = ?? )
-    call  flen          ; HL = (HL)^2 + (HL+2)^2 + ...      ( B = dimensions ≥ 1, square norm of a vector )
+    call  flen          ; HL = (HL)^2 + ... + (HL+2*B-2)^2  ( B = dim. ≥ 1, square norm of a vector )
 
     MACROS (must be included before first use):
 
