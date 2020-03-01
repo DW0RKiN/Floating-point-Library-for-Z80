@@ -194,40 +194,43 @@ other
 
 More information in *.dat files.
 
-|        `FDIV`        | binary16 |  danagy  |  bfloat  |  comment                               |
-| :------------------: | :------: | :------: | :------: | :------------------------------------- |
-|         ± 1          |  20.56%  |  20.11%  |  19.16%  |  BC / HL counted as BC * (1 / HL)      |
-|         ± more       | accurate | accurate | accurate |                                        |
+|`FDIV`</br>------------------| binary16 |  danagy  |  bfloat  |  comment                               |
+| :-------------------------: | :------: | :------: | :------: | :------------------------------------- |
+|             ± 1             |  20.56%  |  20.11%  |  19.16%  |  BC / HL counted as BC * (1 / HL)      |
+|             ± more          | accurate | accurate | accurate |                                        |
 
 
-|`FLN`</br>fix_ln EQU 0| binary16 |  danagy  |  bfloat  |  comment                               |
-| :------------------: | :------: | :------: | :------: | :------------------------------------- |
-|         ± 1          |  29.93%  |  24.07%  |  25.09%  |                                        |
-|         ± 2          |   0.30%  |   0.05%  |   0.05%  |  only when input exponent = -1         |
-|         ± 3          |   0.19%  |   0.03%  |   0.03%  |  only when input exponent = -1         |
-|         ± more       |   0.48%  |   0.07%  |   0.05%  |  only when input exponent = -1         |
-|       min .. max     | -59 .. 6 | -10 .. 7 |  4 .. 7  |  correctly-result .. correctly-result  |
+|    `FLN`   </br>fix_ln EQU 0| binary16 |  danagy  |  bfloat  |  comment                               |
+| :-------------------------: | :------: | :------: | :------: | :------------------------------------- |
+|             ± 1             |  29.93%  |  24.07%  |  25.09%  |                                        |
+|             ± 2             |   0.30%  |   0.05%  |   0.05%  |  only when input exponent = -1         |
+|             ± 3             |   0.19%  |   0.03%  |   0.03%  |  only when input exponent = -1         |
+|      min..-4 + 4..max       |   0.48%  |   0.07%  |   0.05%  |  only when input exponent = -1         |
+|             min             |    -59   |    -10   |      4   |  correctly-result                      |
+|             max             |      6   |      7   |      7   |  correctly-result                      |
+|             ± more          | accurate | accurate | accurate |                                        |
 
 
-|`FLN`</br>fix_ln EQU 1| binary16 |  danagy  |  bfloat  |  comment                               |
-| :------------------: | :------: | :------: | :------: | :------------------------------------- |
-|         ± 1          |  28.53%  |  23.90%  |  24.60%  |  Input with exponent -1, is corrected. |
-|         ± more       | accurate | accurate | accurate |                                        |
+|    `FLN`   </br>fix_ln EQU 1| binary16 |  danagy  |  bfloat  |  comment                               |
+| :-------------------------: | :------: | :------: | :------: | :------------------------------------- |
+|             ± 1             |  28.53%  |  23.90%  |  24.60%  |  Input with exponent -1, is corrected. |
+|             ± more          | accurate | accurate | accurate |                                        |
 
 
-|        `FEXP`        | binary16 |  danagy  |  bfloat  |  comment                               |
-| :------------------: | :------: | :------: | :------: | :------------------------------------- |
-|         ± 1          |  16.73%  |   4.52%  |   2.40%  |                                        |
-|         ± 2          |   0.91%  |   0.56%  |   0.34%  |                                        |
-|         ± 3          |   0.05%  |   0.05%  |   0.02%  |                                        |
+|`FEXP`</br>------------------| binary16 |  danagy  |  bfloat  |  comment                               |
+| :-------------------------: | :------: | :------: | :------: | :------------------------------------- |
+|             ± 1             |  16.73%  |   4.52%  |   2.40%  |                                        |
+|             ± 2             |   0.91%  |   0.56%  |   0.34%  |                                        |
+|             ± 3             |   0.05%  |   0.05%  |   0.02%  |                                        |
+|             ± more          | accurate | accurate | accurate |                                        |
 
     e^(ln(2)) = e^0.6931471805599453094172321 = 2
     2^(log₂(e)) = 2^1.4426950408889634073599247 = e
     e^x = 2^(x*1.4426950408889634073599247)
 
-|         Other        | binary16 |  danagy  |  bfloat  |  comment                               |
-| :------------------: | :------: | :------: | :------: | :---                                   |
-|                      | accurate | accurate | accurate |                                        |
+| Other</br>------------------| binary16 |  danagy  |  bfloat  |  comment                               |
+| :-------------------------: | :------: | :------: | :------: | :---                                   |
+|                             | accurate | accurate | accurate |                                        |
 
 
 Warning: Add and subtract operations are implemented accurately, which means that the error is less than half the least significant bit. However, these two operations are the source of the most inaccurate. The width of the mantissa is limited, so a smaller number will lose some or all of the mantissa.
