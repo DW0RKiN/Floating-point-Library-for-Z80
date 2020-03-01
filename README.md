@@ -72,7 +72,7 @@ Without support for infinity, zero, and NaN.
 Rounding of lost bits is (no matter what the sign):
 
     if ( lost_bits <= ± least_significant_bit / 2 ) Result = Result;
-    if ( lost_bits >  ± least significant bit / 2 ) Result = Result ± least_significant_bit;
+    if ( lost_bits >  ± least_significant_bit / 2 ) Result = Result ± least_significant_bit;
 
     mmmm 0000 .. mmmm 1000 => mmmm + 0
     mmmm 1001 .. mmmm 1111 => mmmm + 1
