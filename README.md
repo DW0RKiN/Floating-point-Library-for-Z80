@@ -103,7 +103,7 @@ In binary16 floating-point format, the `fexp.tab` (natural exponential function 
     call  fdiv          ; HL = BC / HL                      ( needs to include fdiv.tab )
     call  fmod          ; HL = BC % HL
     call  fsqdif        ; HL = HL^2 - DE^2 = (HL - DE) * (HL + DE)
-    
+
     call  fln           ; HL = ln(abs(HL))                  ( needs to include fln.tab )
     call  fexp          ; HL = e^HL                         ( needs to include fexp.tab )
     call  fpow2         ; HL = HL * HL                      ( needs to include fpow2.tab)
@@ -123,11 +123,11 @@ In binary16 floating-point format, the `fexp.tab` (natural exponential function 
     call  fcmp          ; set flag for HL - DE
     call  fcmpa         ; set flag for abs(HL) - abs(DE)
     call  fcmps         ; set flag for HL - DE              ( HL and DE have the same signs )
-    
+
     call  fdot          ; dot product BC = (HL) * (DE)      ( A = dimensions, HL += 2*A, DE += 2*A )
     call  fdot_rec      ; dot product BC = (HL) * (DE)      ( A = dim., use recursion, HL and DE = ?? )
     call  flen          ; HL = (HL)^2 + (HL+2)^2 + ...      ( B = dimensions ≥ 1, square norm of a vector )
-    
+
     MACROS (must be included before first use):
 
     mtst  H, L          ; set flag for (HL - 0)
@@ -151,7 +151,7 @@ other
     call  print_hex_DE  ; printf("$%04X", DE);              ( print_hex.asm )
     call  print_hex_BC  ; printf("$%04X", BC);              ( print_hex.asm )
     call  print_hex_DE  ; printf("$%04X", DE);              ( print_hex.asm )
-    
+
     push  DE
     call  print_hex_stack ; printf("$%04X", POP);           ( print_hex.asm )
 
