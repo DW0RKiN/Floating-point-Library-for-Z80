@@ -178,7 +178,7 @@ More information in *.dat files.
 |         ± 2          |   0.30%  |   0.05%  |   0.05%  |  When input exponent = -1              |
 |         ± 3          |   0.19%  |   0.03%  |   0.03%  |  When input exponent = -1              |
 |         ± more       |   0.48%  |   0.07%  |   0.05%  |  When input exponent = -1              |
-|       min, max       | -59, 6   | -10, 7   |   4, 7   |  Correctly - Result                    |
+|       min .. max     | -59 .. 6 | -10 .. 7 |  4 .. 7  |  correctly-result .. correctly-result  |
 
 
 | `FLN` `fix_ln EQU 1` | binary16 |  danagy  |  bfloat  |  comment                               |
