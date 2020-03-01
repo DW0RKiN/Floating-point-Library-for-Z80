@@ -71,6 +71,9 @@ Without support for infinity, zero, and NaN.
 
 Rounding of lost bits is (no matter what the sign):
 
+    if ( lost_bits <= ± least_significant_bit / 2 ) Result = Result;
+    if ( lost_bits >  ± least significant bit / 2 ) Result = Result ± least_significant_bit;
+
     mmmm 0000 .. mmmm 1000 => mmmm + 0
     mmmm 1001 .. mmmm 1111 => mmmm + 1
     
@@ -83,8 +86,85 @@ They must be aligned to the address divisible by 256.
 The natural logarithmic auxiliary tables (`fln.tab`) do not have a size divisible by 256. It is best to include them last.
 The natural exponential function auxiliary tables (`fexp.tab`) do not have a size divisible by 256. It is best to include them last.
 
+### Supported math functions and operations
 
-**Inaccuracy of least significant bit** in floating point functions(operations). More information in *.dat files.
+    call  fadd          ; HL = HL + DE
+    call  faddp         ; HL = HL + DE                      ( HL and DE have the same signs )
+    call  fsub          ; HL = HL - DE
+    call  fsubp         ; HL = HL - DE                      ( HL and DE have the same signs )
+
+    call  fmul          ; HL = BC * DE                      ( needs to include fmul.tab )
+    call  fdiv          ; HL = BC / HL                      ( needs to include fdiv.tab )
+    call  fmod          ; HL = BC % HL
+
+    call  fln           ; HL = ln(abs(HL))                  ( needs to include fln.tab )
+    call  fexp          ; HL = e^HL                         ( needs to include fexp.tab )
+    call  fpow2         ; HL = HL * HL                      ( needs to include fpow2.tab)
+    call  fsqrt         ; HL = abs(HL) ^ 0.5                ( needs to include fsqrt.tab )
+
+    call  frac          ; HL = HL % 1                       ( -0 => +0 (FMMIN => FPMIN ) )
+    call  fint          ; HL = truncate(HL) * 1.0 
+                        ;    = HL - ( HL % 1 )
+
+    call  fwld          ; HL = unsigned word HL * 1.0
+    call  fwst          ; HL = (unsigned word) 0.5 + abs(HL)
+    call  fbld          ; DE = unsigned char A * 1.0
+    
+    call  fcmp          ; set flag for HL - DE
+    call  fcmpa         ; set flag for abs(HL) - abs(DE)
+    call  fcmps         ; set flag for HL - DE              ( HL and DE have the same signs )
+
+    Macros (must be included before first use):
+
+    mtst  H, L          ; set flag for (HL - 0)
+                        ; if ( result == ±MIN ) set zero flag, 
+                        ; if ( result <= -MIN ) set carry flag
+                        
+    mcmpa H, L, D, E    ; set flag for abs(HL) - abs(DE)
+    mcmps H, L, D, E    ; set flag for HL - DE              ( HL and DE have the same signs )
+    mneg  H, L          ; HL = -HL
+    mabs  H, L          ; HL = abs(HL)
+    mge0  H, L          ; if (HL >= 0) set zero;
+    msor  H, L, D, E    ; (BIT 7, A) = HL_sign or DE_sign
+    mmul2 H, L          ; HL = HL * 2
+    mdiv2 H, L          ; HL = HL / 2
+
+### Size in bytes
+
+     color_flow_warning  EQU     0
+     carry_flow_warning  EQU     1
+
+                          binary16  danagy    bfloat    use
+                          --------  --------  --------  --------
+     fadd+fsub:           369       177       188       
+     fadd:                365       173       184       
+     fsub:                369       177       188       
+
+     fmul+fdiv:           10453     1931      1422      fmul.tab + fdiv.tab
+     fmul:                8322      1629      1108      fmul.tab
+     fdiv:                10453     1931      1422      fdiv.tab (include itself fmul.tab)
+
+     fln (fix_ln EQU 0):  2511      966       976       fln.tab
+     fln (fix_ln EQU 1):  3551      1489      1504      fln.tab
+     fexp:                8525      2201      1683      fexp.tab (include itself fmul.tab)
+
+     fmod:                118       69        77        
+
+     fpow2:               8333      279       158       fpow2.tab
+     fsqrt:               4120      527       269       fsqrt.tab
+
+     frac:                55        31        33        
+     fint:                38        23        23        
+
+     fwld:                57        32        37        
+     fwst:                53        49        46        
+     fbld:                18        16        17        
+
+     all:                 18873     5029      4300 
+
+### Inaccuracy of least significant bit in floating point functions (operations). 
+
+More information in *.dat files.
 
 |        `FDIV`        | binary16 |  danagy  |  bfloat  |  comment                               |
 | :------------------: | :------: | :------: | :------: | :------------------------------------- |
@@ -121,75 +201,3 @@ The natural exponential function auxiliary tables (`fexp.tab`) do not have a siz
 |         Other        | binary16 |  danagy  |  bfloat  |  comment                               |
 | :------------------: | :------: | :------: | :------: | :---                                   |
 |                      | accurate | accurate | accurate |                                        |
-
-
-    call  fadd          ; HL = HL + DE
-    call  faddp         ; HL = HL + DE, HL and DE have the same signs
-    call  fsub          ; HL = HL - DE
-    call  fsubp         ; HL = HL - DE, HL and DE have the same signs
-
-    call  fmul          ; HL = BC * DE
-    call  fdiv          ; HL = BC / HL
-    call  fmod          ; HL = BC % HL
-
-    call  fln           ; HL = ln(abs(HL))
-    call  fexp          ; HL = e^HL
-    call  fpow2         ; HL = HL * HL
-    call  fsqrt         ; HL = abs(HL) ^ 0.5
-
-    call  frac          ; HL = HL % 1, -MIN => +MIN
-    call  fint          ; HL = truncate(HL) * 1.0 = HL - ( HL % 1 )
-
-    call  fwld          ; HL = unsigned word HL * 1.0
-    call  fwst          ; HL = (unsigned word) abs(HL)
-    call  fbld          ; DE = unsigned char A * 1.0
-    
-    call  fcmp          ; set flag for HL - DE
-    call  fcmpa         ; set flag for abs(HL) - abs(DE)
-    call  fcmps         ; set flag for HL - DE, HL and DE have the same signs
-
-    Macros (must be included before first use):
-
-    mtst  H, L          ; set flag for (HL - 0), +-MIN => set zero flag, (HL <= -MIN) => set carry flag   
-    mcmpa H, L, D, E    ; set flag for abs(HL) - abs(DE)
-    mcmps H, L, D, E    ; set flag for HL - DE, HL and DE have the same signs
-    mneg  H, L          ; HL = -HL
-    mabs  H, L          ; HL = abs(HL)
-    mge0  H, L          ; if (HL >= 0) set zero;
-    msor  H, L, D, E    ; (BIT 7, A) = HL_sign or DE_sign
-    mmul2 H, L          ; HL = HL * 2
-    mdiv2 H, L          ; HL = HL / 2
-
-
-Size in bytes
-
-     color_flow_warning  EQU     0
-     carry_flow_warning  EQU     1
-
-                          binary16  danagy    bfloat    use
-                          --------  --------  --------  --------
-     fadd+fsub:           369       177       188       
-     fadd:                365       173       184       
-     fsub:                369       177       188       
-
-     fmul+fdiv:           10453     1931      1422      fmul.tab + fdiv.tab
-     fmul:                8322      1629      1108      fmul.tab
-     fdiv:                10453     1931      1422      fdiv.tab (include itself fmul.tab)
-
-     fln (fix_ln EQU 0):  2511      966       976       fln.tab
-     fln (fix_ln EQU 1):  3551      1489      1504      fln.tab
-     fexp:                8525      2201      1683      fexp.tab (include itself fmul.tab)
-
-     fmod:                118       69        77        
-
-     fpow2:               8333      279       158       fpow2.tab
-     fsqrt:               4120      527       269       fsqrt.tab
-
-     frac:                55        31        33        
-     fint:                38        23        23        
-
-     fwld:                57        32        37        
-     fwst:                53        49        46        
-     fbld:                18        16        17        
-
-     all:                 18873     5029      4300 
