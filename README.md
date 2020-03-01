@@ -77,14 +77,17 @@ Rounding of lost bits is (no matter what the sign):
     mmmm 0000 .. mmmm 1000 => mmmm + 0
     mmmm 1001 .. mmmm 1111 => mmmm + 1
 
-finit.asm should be included as the first file.
+`finit.asm` must be included manually BEFORE first use, ideally as the first file. It contains only definitions of constants and does not store anything in memory.
 
-If a math operation needs to include another operation, it will do it itself.
-But data files ( *.tab ) must be included manually!
-They must be aligned to the address divisible by 256.
+Macro files must also be included BEFORE first use. Ideally behind finit.asm. Even those that will not be used because they contain only definitions.
 
-The natural logarithmic auxiliary tables (`fln.tab`) do not have a size divisible by 256. It is best to include them last.
-The natural exponential function auxiliary tables (`fexp.tab`) do not have a size divisible by 256. It is best to include them last.
+For example, if you need to use a DIV operation, you must include the fdiv.asm file anywhere. The DIV math operation needs to use MUL internally, so it includes the fmul.asm file itself. The library is designed for the fastest calculations, so it uses pre-calculated tables for division and multiplication. These must be completely divisible at 256 addresses. So the fdiv.tab file must also be included manually. The fmul.tab file will be included automatically in fdiv.tab.
+
+In short: if you need to use an `operation`, manually include the file `foperation.asm`, possibly `foperation.tab`.
+
+In binary16 floating-point format, the `fln.tab` (natural logarithmic auxiliary tables, part LN2_EXP) is not divisible by 256. It is best to include them last.
+
+In binary16 floating-point format, the `fexp.tab` (natural exponential function auxiliary tables) is not divisible by 256. It is best to include them last.
 
 ### Supported math functions and operations
 
@@ -102,7 +105,7 @@ The natural exponential function auxiliary tables (`fexp.tab`) do not have a siz
     call  fpow2         ; HL = HL * HL                      ( needs to include fpow2.tab)
     call  fsqrt         ; HL = abs(HL) ^ 0.5                ( needs to include fsqrt.tab )
 
-    call  frac          ; HL = HL % 1                       ( -0 => +0 (FMMIN => FPMIN ) )
+    call  frac          ; HL = HL % 1                       ( -0 => +0 (FMMIN => FPMIN) )
     call  fint          ; HL = truncate(HL) * 1.0
                         ;    = HL - ( HL % 1 )
 
