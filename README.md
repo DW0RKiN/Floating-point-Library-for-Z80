@@ -209,3 +209,16 @@ More information in *.dat files.
 |         Other        | binary16 |  danagy  |  bfloat  |  comment                               |
 | :------------------: | :------: | :------: | :------: | :---                                   |
 |                      | accurate | accurate | accurate |                                        |
+
+
+Warning: Add and subtract operations are implemented accurately, which means that the error is less than half the least significant bit. However, these two operations are the source of the most inaccurate. The width of the mantissa is limited, so a smaller number will lose some or all of the mantissa.
+
+`(A + B) - B = A` only applies if A >= B
+
+When A < B:
+
+`(A + B) - B = A` if the lost lowest bits of the mantissa number A after operation (A + B) were zero.
+
+`(A + B) - B = A - error` where the error is equal to the lost bits of the mantissa number A after the operation (A + B).
+
+`(A + B) - B = 0` if the number B is too large and the whole mantissa of the number A is lost after the operation (A + B). This means A + B = B.
