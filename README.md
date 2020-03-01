@@ -145,7 +145,7 @@ In binary16 floating-point format, the `fexp.tab` (natural exponential function 
 
 other
 
-    call  print_text    ; printf("%s", POP);                ( look at PRINT_GROUNDI in ./Demo/demo.asm )
+    call  print_text    ; printf("%s", POP);                ( look at PRINT_GROUNDI in ./Demo/print.asm )
     call  print_bin     ; printf("+(2^+exp)*1.mant issa", HL);
     call  print_hex     ; printf("$%04X", HL);
     call  print_hex_DE  ; printf("$%04X", DE);              ( print_hex.asm )
