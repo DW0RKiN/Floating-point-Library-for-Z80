@@ -117,14 +117,14 @@ The natural exponential function auxiliary tables (`fexp.tab`) do not have a siz
     Macros (must be included before first use):
 
     mtst  H, L          ; set flag for (HL - 0)
-                        ; if ( result == ±MIN ) set zero flag, 
+                        ; if ( result == ±MIN ) set zero flag 
                         ; if ( result <= -MIN ) set carry flag
                         
     mcmpa H, L, D, E    ; set flag for abs(HL) - abs(DE)
     mcmps H, L, D, E    ; set flag for HL - DE              ( HL and DE have the same signs )
     mneg  H, L          ; HL = -HL
     mabs  H, L          ; HL = abs(HL)
-    mge0  H, L          ; if (HL >= 0) set zero;
+    mge0  H, L          ; if (HL >= 0) set zero flag;
     msor  H, L, D, E    ; (BIT 7, A) = HL_sign or DE_sign
     mmul2 H, L          ; HL = HL * 2
     mdiv2 H, L          ; HL = HL / 2
