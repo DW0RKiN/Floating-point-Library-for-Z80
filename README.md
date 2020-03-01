@@ -8,7 +8,7 @@ https://en.wikipedia.org/wiki/Bfloat16_floating-point_format
 
 ![Ray tracing using bfloat](https://github.com/DW0RKiN/Floating-point-Library-for-Z80/blob/master/bfloat.png)
 
-    FEDC BA98 7654 3210                  
+    FEDC BA98 7654 3210
     eeee eeee Smmm mmmm
 
     S (bit[7]):     Sign bit
@@ -23,13 +23,13 @@ floating-point number = (-1)^S * 2^(eeee eeee - BIAS) * ( 128 + mmm mmmm) / 128
 
 Sign position is moved from the original.
 
-## danagy 
+## danagy
 
 https://github.com/nagydani/lpfp
 
 ![Ray tracing using danagy](https://github.com/DW0RKiN/Floating-point-Library-for-Z80/blob/master/danagy.png)
 
-    FEDC BA98 7654 3210                  
+    FEDC BA98 7654 3210
     Seee eeee mmmm mmmm
 
     S (bit[F]):     Sign bit
@@ -49,7 +49,7 @@ https://en.wikipedia.org/wiki/Half-precision_floating-point_format
 
 ![Ray tracing using binary16](https://github.com/DW0RKiN/Floating-point-Library-for-Z80/blob/master/binary16.png)
 
-    FEDC BA98 7654 3210                  
+    FEDC BA98 7654 3210
     Seee eemm mmmm mmmm
 
     S (bit[F]):     Sign bit
@@ -60,7 +60,7 @@ https://en.wikipedia.org/wiki/Half-precision_floating-point_format
     MIN = 2^-15 * 1 = 0.000030517578125
     MAX = 2^+16 * 1.9990234375 = 131008
 
-floating-point number = (-1)^S * 2^(ee eee - BIAS) * ( 1024 + mm mmmm mmmm) / 1024 
+floating-point number = (-1)^S * 2^(ee eee - BIAS) * ( 1024 + mm mmmm mmmm) / 1024
 
 ## applies to everything
 
@@ -76,11 +76,11 @@ Rounding of lost bits is (no matter what the sign):
 
     mmmm 0000 .. mmmm 1000 => mmmm + 0
     mmmm 1001 .. mmmm 1111 => mmmm + 1
-    
+
 finit.asm should be included as the first file.
 
 If a math operation needs to include another operation, it will do it itself.
-But data files ( *.tab ) must be included manually! 
+But data files ( *.tab ) must be included manually!
 They must be aligned to the address divisible by 256.
 
 The natural logarithmic auxiliary tables (`fln.tab`) do not have a size divisible by 256. It is best to include them last.
@@ -103,13 +103,13 @@ The natural exponential function auxiliary tables (`fexp.tab`) do not have a siz
     call  fsqrt         ; HL = abs(HL) ^ 0.5                ( needs to include fsqrt.tab )
 
     call  frac          ; HL = HL % 1                       ( -0 => +0 (FMMIN => FPMIN ) )
-    call  fint          ; HL = truncate(HL) * 1.0 
+    call  fint          ; HL = truncate(HL) * 1.0
                         ;    = HL - ( HL % 1 )
 
     call  fwld          ; HL = unsigned word HL * 1.0
     call  fwst          ; HL = (unsigned word) 0.5 + abs(HL)
     call  fbld          ; DE = unsigned char A * 1.0
-    
+
     call  fcmp          ; set flag for HL - DE
     call  fcmpa         ; set flag for abs(HL) - abs(DE)
     call  fcmps         ; set flag for HL - DE              ( HL and DE have the same signs )
@@ -117,9 +117,9 @@ The natural exponential function auxiliary tables (`fexp.tab`) do not have a siz
     Macros (must be included before first use):
 
     mtst  H, L          ; set flag for (HL - 0)
-                        ; if ( result == ±MIN ) set zero flag 
-                        ; if ( result <= -MIN ) set carry flag
-                        
+                        ; if ( result == ±MIN ) set zero flag;
+                        ; if ( result <= -MIN ) set carry flag;
+
     mcmpa H, L, D, E    ; set flag for abs(HL) - abs(DE)
     mcmps H, L, D, E    ; set flag for HL - DE              ( HL and DE have the same signs )
     mneg  H, L          ; HL = -HL
@@ -136,9 +136,9 @@ The natural exponential function auxiliary tables (`fexp.tab`) do not have a siz
 
                           binary16  danagy    bfloat    use
                           --------  --------  --------  --------
-     fadd+fsub:           369       177       188       
-     fadd:                365       173       184       
-     fsub:                369       177       188       
+     fadd+fsub:           369       177       188
+     fadd:                365       173       184
+     fsub:                369       177       188
 
      fmul+fdiv:           10453     1931      1422      fmul.tab + fdiv.tab
      fmul:                8322      1629      1108      fmul.tab
@@ -148,27 +148,27 @@ The natural exponential function auxiliary tables (`fexp.tab`) do not have a siz
      fln (fix_ln EQU 1):  3551      1489      1504      fln.tab
      fexp:                8525      2201      1683      fexp.tab (include itself fmul.tab)
 
-     fmod:                118       69        77        
+     fmod:                118       69        77
 
      fpow2:               8333      279       158       fpow2.tab
      fsqrt:               4120      527       269       fsqrt.tab
 
-     frac:                55        31        33        
-     fint:                38        23        23        
+     frac:                55        31        33
+     fint:                38        23        23
 
-     fwld:                57        32        37        
-     fwst:                53        49        46        
-     fbld:                18        16        17        
+     fwld:                57        32        37
+     fwst:                53        49        46
+     fbld:                18        16        17
 
-     all:                 18873     5029      4300 
+     all:                 18873     5029      4300
 
-### Inaccuracy of least significant bit in floating point functions (operations). 
+### Inaccuracy of least significant bit in floating point functions (operations).
 
 More information in *.dat files.
 
 |        `FDIV`        | binary16 |  danagy  |  bfloat  |  comment                               |
 | :------------------: | :------: | :------: | :------: | :------------------------------------- |
-|         ± 1          |  20.56%  |  20.11%  |  19.16%  |  BC / HL counted as BC * (1 / HL)      | 
+|         ± 1          |  20.56%  |  20.11%  |  19.16%  |  BC / HL counted as BC * (1 / HL)      |
 |         ± more       | accurate | accurate | accurate |                                        |
 
 
