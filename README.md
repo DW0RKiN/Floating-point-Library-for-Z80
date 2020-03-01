@@ -241,4 +241,4 @@ When A < B:
 
 `(A + B) - B = A - error` where the error is equal to the lost bits of the mantissa number A after the operation (A + B).
 
-`(A + B) - B = 0` if the number B is too large and the whole mantissa of the number A is lost after the operation (A + B). This means A + B = B.
+`(A + B) - B = 0` if the number B is too large and the number A lost all mantissa bits after the operation (A + B). This means A + B = B.
