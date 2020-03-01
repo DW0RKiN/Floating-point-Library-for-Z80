@@ -260,6 +260,8 @@ https://github.com/artyom-beilis/float16
 Learn more about algorithms (natural) exponential function 
 http://guihaire.com/code/?p=1107
 
-http://z80-heaven.wikidot.com/floating-point
+http://www.andreadrian.de/oldcpu/Z80_number_cruncher.html
 
 http://mathonweb.com/help_ebook/html/algorithms.htm
+
+http://z80-heaven.wikidot.com/floating-point
