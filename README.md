@@ -125,7 +125,7 @@ In binary16 floating-point format, the `fexp.tab` (natural exponential function 
     call  fcmps         ; set flag for HL - DE              ( HL and DE have the same signs )
     
     call  fdot          ; dot product BC = (HL) * (DE)      ( A = dimensions, HL += 2*A, DE += 2*A )
-    call  fdot_rec      ; dot product BC = (HL) * (DE)      ( A = dimensions, use recursion, changes HL, DE differently )
+    call  fdot_rec      ; dot product BC = (HL) * (DE)      ( A = dim., use recursion, HL and DE = ?? )
     call  flen          ; HL = (HL)^2 + (HL+2)^2 + ...      ( B >= 1 = dimensions, Square norm of a vector )
     
     MACROS (must be included before first use):
@@ -145,7 +145,7 @@ In binary16 floating-point format, the `fexp.tab` (natural exponential function 
 
 other
 
-    call  print_text    ; printf("%s", POP);                ( view ./Demo/demo.asm for use, for example PRINT_GROUNDI )
+    call  print_text    ; printf("%s", POP);                ( look at PRINT_GROUNDI in ./Demo/demo.asm )
     call  print_bin     ; printf("+(2^+exp)*1.mant issa", HL);
     call  print_hex     ; printf("$%04X", HL);
     call  print_hex_DE  ; printf("$%04X", DE);              ( print_hex.asm )
