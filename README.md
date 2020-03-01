@@ -23,6 +23,7 @@ floating-point number = (-1)^S * 2^(eeee eeee - BIAS) * ( 128 + mmm mmmm) / 128
 
 Sign position is moved from the original.
 
+
 ## danagy
 
 https://github.com/nagydani/lpfp
@@ -62,6 +63,7 @@ https://en.wikipedia.org/wiki/Half-precision_floating-point_format
 
 floating-point number = (-1)^S * 2^(ee eee - BIAS) * ( 1024 + mm mmmm mmmm) / 1024
 
+
 ## applies to everything
 
 Without support for infinity, zero, and NaN.
@@ -88,6 +90,7 @@ In short: if you need to use an `operation`, manually include the file `foperati
 In binary16 floating-point format, the `fln.tab` (natural logarithmic auxiliary tables, part LN2_EXP) is not divisible by 256. It is best to include them last.
 
 In binary16 floating-point format, the `fexp.tab` (natural exponential function auxiliary tables) is not divisible by 256. It is best to include them last.
+
 
 ### Supported math functions and operations
 
@@ -132,6 +135,7 @@ In binary16 floating-point format, the `fexp.tab` (natural exponential function 
     mmul2 H, L          ; HL = HL * 2
     mdiv2 H, L          ; HL = HL / 2
 
+
 ### Size in bytes
 
      color_flow_warning  EQU     0
@@ -164,6 +168,7 @@ In binary16 floating-point format, the `fexp.tab` (natural exponential function 
      fbld:                18        16        17
 
      all:                 18873     5029      4300
+
 
 ### Inaccuracy of least significant bit in floating point functions (operations).
 
