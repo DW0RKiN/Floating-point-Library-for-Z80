@@ -200,7 +200,7 @@ More information in *.dat files.
 |         ± more       | accurate | accurate | accurate |                                        |
 
 
-| `FLN` `fix_ln EQU 0` | binary16 |  danagy  |  bfloat  |  comment                               |
+|`FLN`</br>fix_ln EQU 0| binary16 |  danagy  |  bfloat  |  comment                               |
 | :------------------: | :------: | :------: | :------: | :------------------------------------- |
 |         ± 1          |  29.93%  |  24.07%  |  25.09%  |                                        |
 |         ± 2          |   0.30%  |   0.05%  |   0.05%  |  only when input exponent = -1         |
@@ -209,7 +209,7 @@ More information in *.dat files.
 |       min .. max     | -59 .. 6 | -10 .. 7 |  4 .. 7  |  correctly-result .. correctly-result  |
 
 
-| `FLN` `fix_ln EQU 1` | binary16 |  danagy  |  bfloat  |  comment                               |
+|`FLN`</br>fix_ln EQU 1| binary16 |  danagy  |  bfloat  |  comment                               |
 | :------------------: | :------: | :------: | :------: | :------------------------------------- |
 |         ± 1          |  28.53%  |  23.90%  |  24.60%  |  Input with exponent -1, is corrected. |
 |         ± more       | accurate | accurate | accurate |                                        |
@@ -265,3 +265,5 @@ http://www.andreadrian.de/oldcpu/Z80_number_cruncher.html
 http://mathonweb.com/help_ebook/html/algorithms.htm
 
 http://z80-heaven.wikidot.com/floating-point
+
+https://en.wikipedia.org/wiki/Logarithmic_number_system
