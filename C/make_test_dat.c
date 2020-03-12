@@ -33,6 +33,7 @@
     #define TABLE_MUL           (32*256)        // MUL      8192
     #define TABLE_SQRT          (16*256)        // FSQRT    4096
     #define TABLE_LN            (9*256)         // LN       2112
+    #define TABLE_SIN           (8*256)         // SIN      2048
 
     #define SPACE           30000
 
@@ -234,8 +235,8 @@ int main( int argc, const char* argv[] )
             input1[pos] = rand_all();
         da = X_TO_DOUBLE(input1[pos]);
         dc = fmod(da, 1.0);
-        if ( dc == 0  && (rand() & 0x3f) != 0 && pos >= 4+MANT_SIZE  ) continue;
-        if ( da == dc && (rand() & 0x3f) != 0 && pos >= 4+MANT_SIZE  ) continue;
+        if ( dc == 0  && (rand() & 0xff) != 0 && pos >= 4+MANT_SIZE  ) continue;
+        if ( da == dc && (rand() & 0xff) != 0 && pos >= 4+MANT_SIZE  ) continue;
         
         output[pos] = DOUBLE_TO_X_OPT( dc );
         if ( check_duplicate( pos, input1, output )) continue;        
@@ -282,6 +283,22 @@ int main( int argc, const char* argv[] )
         ukonci_radek(output[pos]);
         pos++;
         if ( pos > (SPACE-TABLE_SQRT)/4 ) break;
+#elif defined  FSIN
+        #warning FSIN
+    // fsin()
+        input1[pos] = rand_all();
+        da = X_TO_DOUBLE(input1[pos]);
+        if ( da > +1.5707963267948966192313217 ) continue;
+        if ( da < -1.5707963267948966192313217 ) continue;
+        dc = sin(da);
+        output[pos] = DOUBLE_TO_X_OPT( dc );
+        if ( input1[pos] == output[pos] && ( rand() & 0x3f ) != 0 ) continue;
+        if ( check_duplicate( pos, input1, output )) continue;
+        printf("dw $%04x, $%04x\t\t; sin(%+.3e) = %+.3e", input1[pos], output[pos], da, dc);
+        if ( input1[pos] == output[pos] ) printf(" shoda");
+        ukonci_radek(output[pos]);
+        pos++;
+        if ( pos > (SPACE-TABLE_SIN)/4 ) break;
 #elif defined  FLN
         #warning FLN
     // ln()
