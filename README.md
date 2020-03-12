@@ -108,6 +108,8 @@ In binary16 floating-point format, the `fexp.tab` (natural exponential function 
     call  fexp          ; HL = e^HL                         ( needs to include fexp.tab )
     call  fpow2         ; HL = HL * HL                      ( needs to include fpow2.tab)
     call  fsqrt         ; HL = abs(HL) ^ 0.5                ( needs to include fsqrt.tab )
+    call  fsin          ; HL = sin(HL)                      ( needs to include fsin.tab, HL < ±π/2 )
+    
 
     call  frac          ; HL = HL % 1                       ( -0 => +0 (FMMIN => FPMIN) )
     call  fint          ; HL = truncate(HL) * 1.0
@@ -163,9 +165,9 @@ other
 
                           binary16  danagy    bfloat    use
                           --------  --------  --------  --------
-     fadd+fsub:           369       177       188
-     fadd:                365       173       184
-     fsub:                369       177       188
+     fadd+fsub:           369       177       188       
+     fadd:                365       173       184       
+     fsub:                369       177       188       
 
      fmul+fdiv:           10453     1931      1422      fmul.tab + fdiv.tab
      fmul:                8322      1629      1108      fmul.tab
@@ -174,20 +176,21 @@ other
      fln (fix_ln EQU 0):  2511      966       976       fln.tab
      fln (fix_ln EQU 1):  3551      1489      1504      fln.tab
      fexp:                8525      2201      1683      fexp.tab (include itself fmul.tab)
+     fsin:                2176      1         1         unfinished     
 
-     fmod:                118       69        77
+     fmod:                118       69        77        
 
      fpow2:               8333      279       158       fpow2.tab
      fsqrt:               4120      527       269       fsqrt.tab
 
-     frac:                55        31        33
-     fint:                38        23        23
+     frac:                55        31        33        
+     fint:                38        23        23        
 
-     fwld:                57        32        37
-     fwst:                53        49        46
-     fbld:                18        16        17
+     fwld:                57        32        37        
+     fwst:                53        49        46        
+     fbld:                18        16        17        
 
-     all:                 18873     5029      4300
+     all:                 18873     5029      4300 
 
 
 ### Inaccuracy of least significant bit in floating point functions (operations).
@@ -227,6 +230,12 @@ More information in *.dat files.
     e^(ln(2)) = e^0.6931471805599453094172321 = 2
     2^(log₂(e)) = 2^1.4426950408889634073599247 = e
     e^x = 2^(x*1.4426950408889634073599247)
+
+|`FSIN`</br>------------------| binary16 |  danagy  |  bfloat  |  comment                               |
+| :-------------------------: | :------: | :------: | :------: | :------------------------------------- |
+|             ± 1             |   0.26%  |   x.xx%  |   x.xx%  | unfinished                             |
+|             ± 2             |   0.03%  |   x.xx%  |   x.xx%  | unfinished                             |
+|             ± more          | accurate | accurate | accurate |                                        |
 
 | Other</br>------------------| binary16 |  danagy  |  bfloat  |  comment                               |
 | :-------------------------: | :------: | :------: | :------: | :---                                   |
