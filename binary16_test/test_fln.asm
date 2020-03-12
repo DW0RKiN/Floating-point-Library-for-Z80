@@ -1,4 +1,4 @@
-; pasmo -I ../danagy -d test_fln.asm 24576.bin > test.asm ; grep "BREAKPOINT" test.asm
+; pasmo -I ../binary16 -d test_fln.asm 24576.bin > test.asm ; grep "BREAKPOINT" test.asm
 ; randomize usr 57344
 
     INCLUDE "finit.asm"
