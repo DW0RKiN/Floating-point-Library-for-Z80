@@ -4,7 +4,7 @@
 printf "                          binary16  danagy    bfloat    use\n"
 printf "                          --------  --------  --------  --------\n"
 
-for b in fadd+fsub fadd fsub s fmul+fdiv fmul fdiv s fln fln_fix fexp s fmod s fpow2 fsqrt s frac fint s fwld fwst fbld s all
+for b in fadd+fsub fadd fsub s fmul+fdiv fmul fdiv s fln fln_fix fexp fsin s fmod s fpow2 fsqrt s frac fint s fwld fwst fbld s all
 do
 
     test ${b} = "s" && printf "\n" && continue
