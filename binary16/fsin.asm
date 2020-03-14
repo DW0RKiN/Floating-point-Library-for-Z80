@@ -38,6 +38,9 @@ endif
         SUB     L                   ;  1:4
         RET     nc                  ;  1:5/11
 FSIN_2A2B:
+    if carry_flow_warning
+        OR      A                   ;  1:4          reset carry
+    endif
         DEC     HL                  ;  1:6
         RET                         ;  1:10
 FSIN_2C33:
