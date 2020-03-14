@@ -176,7 +176,7 @@ other
      fln (fix_ln EQU 0):  2511      966       976       fln.tab
      fln (fix_ln EQU 1):  3551      1489      1504      fln.tab
      fexp:                8525      2201      1683      fexp.tab (include itself fmul.tab)
-     fsin:                2176      1         1         unfinished     
+     fsin:                2177      832       1         
 
      fmod:                118       69        77        
 
@@ -190,7 +190,7 @@ other
      fwst:                53        49        46        
      fbld:                18        16        17        
 
-     all:                 18873     5029      4300 
+     all:                 20921     5797      4300
 
 
 ### Inaccuracy of least significant bit in floating point functions (operations).
@@ -233,8 +233,8 @@ More information in *.dat files.
 
 |`FSIN`</br>------------------| binary16 |  danagy  |  bfloat  |  comment                               |
 | :-------------------------: | :------: | :------: | :------: | :------------------------------------- |
-|             ± 1             |   0.26%  |   x.xx%  |   x.xx%  | unfinished                             |
-|             ± 2             |   0.03%  |   x.xx%  |   x.xx%  | unfinished                             |
+|             ± 1             |   0.26%  | accurate |   x.xx%  | bfloat unfinished                      |
+|             ± 2             |   0.03%  | accurate |   x.xx%  | bfloat unfinished                      |
 |             ± more          | accurate | accurate | accurate |                                        |
 
 | Other</br>------------------| binary16 |  danagy  |  bfloat  |  comment                               |

@@ -3,6 +3,7 @@
     fix_ln              EQU     1
         
 ; Lookup tables
+    INCLUDE "fsin.tab"
     INCLUDE "fdiv.tab"
     INCLUDE "fmul.tab"
     INCLUDE "fsqrt.tab"

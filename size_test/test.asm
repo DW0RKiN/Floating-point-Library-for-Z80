@@ -583,6 +583,12 @@ TEXT_ADR	EQU E000
 		ORG 6000
 		End of INCLUDE
 fix_ln		EQU 0001
+		INCLUDE fsin.tab
+		IF (true)
+	DEFS of 0 bytes with value 00
+6000:		label SIN_TAB
+		ENDIF
+		End of INCLUDE
 		INCLUDE fdiv.tab
 		IF (true)
 	DEFS of 0 bytes with value 00
