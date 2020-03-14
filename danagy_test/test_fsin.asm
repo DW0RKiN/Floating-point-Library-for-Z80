@@ -1,32 +1,35 @@
-; pasmo -I ../danagy -d test_fwst.asm 24576.bin > test.asm ; grep "BREAKPOINT" test.asm
+; pasmo -I ../danagy -d test_fln.asm 24576.bin > test.asm ; grep "BREAKPOINT" test.asm
 ; randomize usr 57344
 
     INCLUDE "finit.asm"
 
     color_flow_warning  EQU     1
     carry_flow_warning  EQU     1
+    fix_ln              EQU     1
+    
     DATA_ADR            EQU     $6000       ; 24576
     TEXT_ADR            EQU     $E000       ; 57344
 
     ORG     DATA_ADR
 
-    dw FP256, $0100 ; 0x8700
-    dw FP5, $0005
-    dw FP64, $0040
-    
-    dw  $5000,   $FFFF
-    dw  $5001,   $FFFF
-    INCLUDE "test_fwst.dat"
+    dw FPMIN, FPMIN		; sin(0) = 0
+; red
+; azure
+; green
+; yellow
+
+    INCLUDE "test_fsin.dat"
 
     dw $BABE, $DEAD                 ; Stop MARK
 
 ; Subroutines
-    INCLUDE "fwst.asm"
+    INCLUDE "fsin.asm"
     INCLUDE "fequals.asm"
     INCLUDE "print_txt.asm"
     INCLUDE "print_hex.asm"
 
 ; Lookup tables
+    INCLUDE "fsin.tab"
     
     if ( $ > TEXT_ADR ) 
         .ERROR "Prilis dlouha data!"        
@@ -60,7 +63,7 @@ BREAKPOINT:
 ; br 0xE011
 
         PUSH    HL        
-        CALL    FWST                ; HL => (int) HL
+        CALL    FSIN                ; HL = sin(HL)
         
         POP     BC
 ;     kontrola
@@ -121,10 +124,10 @@ PRINT_DATA:
 
         CALL    PRINT_TXT
         
-        defb    INK, COL_WHITE, '(int) $'
+        defb    INK, COL_WHITE, 'sin($'
 DATA_1:
         defs     4
-        defb    ' = $'
+        defb    ') = $'
 DATA_3:
         defs     4
         defb    ' ? ', INK
