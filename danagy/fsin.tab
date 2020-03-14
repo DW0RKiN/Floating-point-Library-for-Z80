@@ -1,0 +1,73 @@
+if not defined SIN_TAB_3D3E
+
+; Align to 256-byte page boundary
+DEFS    (($ + $FF) / $100) * $100 - $
+
+
+; X = $3d00..$3eff
+; Y = ((X & $fffc)-$3d00) >> 1 = $00..$fe
+; if ( (X & $ff) <= SIN_LO[Y] ) { sin(X) = X + $ff00 + SIN_LO[Y+1] }
+; if ( (X & $ff) >  SIN_LO[Y] ) { sin(X) = X + $ff00 + SIN_LO[Y+3] }
+SIN_TAB_3D3E:
+;   _0  _1  _2  _3  _4  _5  _6  _7  _8  _9  _A  _B  _C  _D  _E  _F
+db $03,$ff,$07,$ff,$0b,$ff,$0f,$ff,$13,$ff,$17,$ff,$1b,$ff,$1f,$ff  ; 0_  003,0ff,007,0ff,00b,0ff,00f,0ff,013,0ff,017,0ff,01b,0ff,01f,0ff 0_
+db $23,$ff,$27,$ff,$2b,$ff,$2f,$ff,$33,$ff,$37,$ff,$3b,$ff,$3f,$ff  ; 1_  023,0ff,027,0ff,02b,0ff,02f,0ff,033,0ff,037,0ff,03b,0ff,03f,0ff 1_
+db $43,$ff,$47,$ff,$4b,$ff,$4f,$ff,$53,$fe,$57,$fe,$5b,$fe,$5f,$fe  ; 2_  043,0ff,047,0ff,04b,0ff,04f,0ff,053,0fe,057,0fe,05b,0fe,05f,0fe 2_
+db $63,$fe,$67,$fe,$6b,$fe,$6f,$fe,$73,$fe,$77,$fe,$7b,$fe,$7f,$fe  ; 3_  063,0fe,067,0fe,06b,0fe,06f,0fe,073,0fe,077,0fe,07b,0fe,07f,0fe 3_
+db $83,$fe,$87,$fe,$8b,$fe,$8d,$fe,$93,$fd,$97,$fd,$9b,$fd,$9f,$fd  ; 4_  083,0fe,087,0fe,08b,0fe,08d,0fe,093,0fd,097,0fd,09b,0fd,09f,0fd 4_
+db $a3,$fd,$a7,$fd,$ab,$fd,$af,$fd,$b3,$fd,$b7,$fd,$bb,$fd,$bd,$fd  ; 5_  0a3,0fd,0a7,0fd,0ab,0fd,0af,0fd,0b3,0fd,0b7,0fd,0bb,0fd,0bd,0fd 5_
+db $c3,$fc,$c7,$fc,$cb,$fc,$cf,$fc,$d3,$fc,$d7,$fc,$db,$fc,$df,$fc  ; 6_  0c3,0fc,0c7,0fc,0cb,0fc,0cf,0fc,0d3,0fc,0d7,0fc,0db,0fc,0df,0fc 6_
+db $e3,$fc,$e4,$fc,$eb,$fb,$ef,$fb,$f3,$fb,$f7,$fb,$fb,$fb,$ff,$fb  ; 7_  0e3,0fc,0e4,0fc,0eb,0fb,0ef,0fb,0f3,0fb,0f7,0fb,0fb,0fb,0ff,0fb 7_
+db $01,$fc,$07,$fd,$0b,$fd,$0f,$fd,$13,$fd,$17,$fd,$18,$fd,$1f,$fc  ; 8_  001,0fc,007,0fd,00b,0fd,00f,0fd,013,0fd,017,0fd,018,0fd,01f,0fc 8_
+db $23,$fc,$27,$fc,$2b,$fc,$2f,$fc,$31,$fc,$37,$fb,$3b,$fb,$3f,$fb  ; 9_  023,0fc,027,0fc,02b,0fc,02f,0fc,031,0fc,037,0fb,03b,0fb,03f,0fb 9_
+db $43,$fb,$46,$fb,$4b,$fa,$4f,$fa,$53,$fa,$57,$fa,$59,$fa,$5f,$f9  ; A_  043,0fb,046,0fb,04b,0fa,04f,0fa,053,0fa,057,0fa,059,0fa,05f,0f9 A_
+db $63,$f9,$67,$f9,$6a,$f9,$6f,$f8,$73,$f8,$77,$f8,$79,$f8,$7f,$f7  ; B_  063,0f9,067,0f9,06a,0f9,06f,0f8,073,0f8,077,0f8,079,0f8,07f,0f7 B_
+db $83,$f7,$87,$f7,$8b,$f6,$8f,$f6,$93,$f6,$95,$f6,$9b,$f5,$9f,$f5  ; C_  083,0f7,087,0f7,08b,0f6,08f,0f6,093,0f6,095,0f6,09b,0f5,09f,0f5 C_
+db $a1,$f5,$a7,$f4,$ab,$f4,$ad,$f4,$b3,$f3,$b7,$f3,$b8,$f3,$bf,$f2  ; D_  0a1,0f5,0a7,0f4,0ab,0f4,0ad,0f4,0b3,0f3,0b7,0f3,0b8,0f3,0bf,0f2 D_
+db $c3,$f2,$c7,$f1,$cb,$f1,$cd,$f1,$d3,$f0,$d7,$f0,$db,$ef,$df,$ef  ; E_  0c3,0f2,0c7,0f1,0cb,0f1,0cd,0f1,0d3,0f0,0d7,0f0,0db,0ef,0df,0ef E_
+db $e1,$ef,$e7,$ee,$ea,$ee,$ef,$ed,$f2,$ed,$f7,$ec,$fb,$ec,$ff,$eb  ; F_  0e1,0ef,0e7,0ee,0ea,0ee,0ef,0ed,0f2,0ed,0f7,0ec,0fb,0ec,0ff,0eb F_
+
+; sin($3e00) = $3dfb, e: -2, m: $0000, má být: $3dfb, jest: $3dfc, rozdíl: -1
+
+; hi = $ff
+SIN_TAB_3F:
+;   _0  _1  _2  _3  _4  _5  _6  _7  _8  _9  _A  _B  _C  _D  _E  _F
+db $eb,$ec,$ec,$ed,$ee,$ef,$ef,$f0,$f1,$f2,$f2,$f3,$f4,$f4,$f4,$f4  ; 0_  ffeb,ffec,ffec,ffed,ffee,ffef,ffef,fff0,fff1,fff2,fff2,fff3,fff4,fff4,fff4,fff4 0_
+db $f3,$f3,$f3,$f3,$f3,$f3,$f3,$f2,$f2,$f2,$f2,$f2,$f2,$f2,$f1,$f1  ; 1_  fff3,fff3,fff3,fff3,fff3,fff3,fff3,fff2,fff2,fff2,fff2,fff2,fff2,fff2,fff1,fff1 1_
+db $f1,$f1,$f1,$f1,$f0,$f0,$f0,$f0,$f0,$f0,$ef,$ef,$ef,$ef,$ef,$ef  ; 2_  fff1,fff1,fff1,fff1,fff0,fff0,fff0,fff0,fff0,fff0,ffef,ffef,ffef,ffef,ffef,ffef 2_
+db $ee,$ee,$ee,$ee,$ee,$ee,$ed,$ed,$ed,$ed,$ed,$ed,$ec,$ec,$ec,$ec  ; 3_  ffee,ffee,ffee,ffee,ffee,ffee,ffed,ffed,ffed,ffed,ffed,ffed,ffec,ffec,ffec,ffec 3_
+db $ec,$eb,$eb,$eb,$eb,$eb,$ea,$ea,$ea,$ea,$ea,$e9,$e9,$e9,$e9,$e9  ; 4_  ffec,ffeb,ffeb,ffeb,ffeb,ffeb,ffea,ffea,ffea,ffea,ffea,ffe9,ffe9,ffe9,ffe9,ffe9 4_
+db $e8,$e8,$e8,$e8,$e8,$e7,$e7,$e7,$e7,$e6,$e6,$e6,$e6,$e6,$e5,$e5  ; 5_  ffe8,ffe8,ffe8,ffe8,ffe8,ffe7,ffe7,ffe7,ffe7,ffe6,ffe6,ffe6,ffe6,ffe6,ffe5,ffe5 5_
+db $e5,$e5,$e4,$e4,$e4,$e4,$e4,$e3,$e3,$e3,$e3,$e2,$e2,$e2,$e2,$e1  ; 6_  ffe5,ffe5,ffe4,ffe4,ffe4,ffe4,ffe4,ffe3,ffe3,ffe3,ffe3,ffe2,ffe2,ffe2,ffe2,ffe1 6_
+db $e1,$e1,$e1,$e0,$e0,$e0,$e0,$df,$df,$df,$df,$de,$de,$de,$de,$dd  ; 7_  ffe1,ffe1,ffe1,ffe0,ffe0,ffe0,ffe0,ffdf,ffdf,ffdf,ffdf,ffde,ffde,ffde,ffde,ffdd 7_
+db $dd,$dd,$dc,$dc,$dc,$dc,$db,$db,$db,$db,$da,$da,$da,$d9,$d9,$d9  ; 8_  ffdd,ffdd,ffdc,ffdc,ffdc,ffdc,ffdb,ffdb,ffdb,ffdb,ffda,ffda,ffda,ffd9,ffd9,ffd9 8_
+db $d9,$d8,$d8,$d8,$d7,$d7,$d7,$d6,$d6,$d6,$d6,$d5,$d5,$d5,$d4,$d4  ; 9_  ffd9,ffd8,ffd8,ffd8,ffd7,ffd7,ffd7,ffd6,ffd6,ffd6,ffd6,ffd5,ffd5,ffd5,ffd4,ffd4 9_
+db $d4,$d3,$d3,$d3,$d2,$d2,$d2,$d1,$d1,$d1,$d1,$d0,$d0,$d0,$cf,$cf  ; A_  ffd4,ffd3,ffd3,ffd3,ffd2,ffd2,ffd2,ffd1,ffd1,ffd1,ffd1,ffd0,ffd0,ffd0,ffcf,ffcf A_
+db $cf,$ce,$ce,$ce,$cd,$cd,$cc,$cc,$cc,$cb,$cb,$cb,$ca,$ca,$ca,$c9  ; B_  ffcf,ffce,ffce,ffce,ffcd,ffcd,ffcc,ffcc,ffcc,ffcb,ffcb,ffcb,ffca,ffca,ffca,ffc9 B_
+db $c9,$c9,$c8,$c8,$c8,$c7,$c7,$c6,$c6,$c6,$c5,$c5,$c5,$c4,$c4,$c3  ; C_  ffc9,ffc9,ffc8,ffc8,ffc8,ffc7,ffc7,ffc6,ffc6,ffc6,ffc5,ffc5,ffc5,ffc4,ffc4,ffc3 C_
+db $c3,$c3,$c2,$c2,$c1,$c1,$c1,$c0,$c0,$c0,$bf,$bf,$be,$be,$be,$bd  ; D_  ffc3,ffc3,ffc2,ffc2,ffc1,ffc1,ffc1,ffc0,ffc0,ffc0,ffbf,ffbf,ffbe,ffbe,ffbe,ffbd D_
+db $bd,$bc,$bc,$bb,$bb,$bb,$ba,$ba,$b9,$b9,$b9,$b8,$b8,$b7,$b7,$b6  ; E_  ffbd,ffbc,ffbc,ffbb,ffbb,ffbb,ffba,ffba,ffb9,ffb9,ffb9,ffb8,ffb8,ffb7,ffb7,ffb6 E_
+db $b6,$b6,$b5,$b5,$b4,$b4,$b3,$b3,$b2,$b2,$b2,$b1,$b1,$b0,$b0,$af  ; F_  ffb6,ffb6,ffb5,ffb5,ffb4,ffb4,ffb3,ffb3,ffb2,ffb2,ffb2,ffb1,ffb1,ffb0,ffb0,ffaf F_
+; hi = $ff
+SIN_TAB_40:
+;   _0  _1  _2  _3  _4  _5  _6  _7  _8  _9  _A  _B  _C  _D  _E  _F
+db $af,$af,$af,$af,$af,$af,$af,$af,$af,$af,$af,$af,$af,$af,$af,$af  ; 0_  ffaf,ffaf,ffaf,ffaf,ffaf,ffaf,ffaf,ffaf,ffaf,ffaf,ffaf,ffaf,ffaf,ffaf,ffaf,ffaf 0_
+db $af,$af,$af,$af,$af,$af,$af,$af,$af,$af,$af,$af,$ae,$ae,$ae,$ae  ; 1_  ffaf,ffaf,ffaf,ffaf,ffaf,ffaf,ffaf,ffaf,ffaf,ffaf,ffaf,ffaf,ffae,ffae,ffae,ffae 1_
+db $ae,$ae,$ae,$ae,$ad,$ad,$ad,$ad,$ad,$ac,$ac,$ac,$ac,$ac,$ab,$ab  ; 2_  ffae,ffae,ffae,ffae,ffad,ffad,ffad,ffad,ffad,ffac,ffac,ffac,ffac,ffac,ffab,ffab 2_
+db $ab,$ab,$aa,$aa,$aa,$a9,$a9,$a9,$a9,$a8,$a8,$a8,$a7,$a7,$a7,$a6  ; 3_  ffab,ffab,ffaa,ffaa,ffaa,ffa9,ffa9,ffa9,ffa9,ffa8,ffa8,ffa8,ffa7,ffa7,ffa7,ffa6 3_
+db $a6,$a6,$a5,$a5,$a4,$a4,$a4,$a3,$a3,$a2,$a2,$a1,$a1,$a0,$a0,$a0  ; 4_  ffa6,ffa6,ffa5,ffa5,ffa4,ffa4,ffa4,ffa3,ffa3,ffa2,ffa2,ffa1,ffa1,ffa0,ffa0,ffa0 4_
+db $9f,$9f,$9e,$9e,$9d,$9c,$9c,$9b,$9b,$9a,$9a,$99,$99,$98,$97,$97  ; 5_  ff9f,ff9f,ff9e,ff9e,ff9d,ff9c,ff9c,ff9b,ff9b,ff9a,ff9a,ff99,ff99,ff98,ff97,ff97 5_
+db $96,$96,$95,$94,$94,$93,$92,$92,$91,$90,$90,$8f,$8e,$8e,$8d,$8c  ; 6_  ff96,ff96,ff95,ff94,ff94,ff93,ff92,ff92,ff91,ff90,ff90,ff8f,ff8e,ff8e,ff8d,ff8c 6_
+db $8b,$8b,$8a,$89,$88,$88,$87,$86,$85,$85,$84,$83,$82,$81,$80,$80  ; 7_  ff8b,ff8b,ff8a,ff89,ff88,ff88,ff87,ff86,ff85,ff85,ff84,ff83,ff82,ff81,ff80,ff80 7_
+db $7f,$7e,$7d,$7c,$7b,$7a,$79,$79,$78,$77,$76,$75,$74,$73,$72,$71  ; 8_  ff7f,ff7e,ff7d,ff7c,ff7b,ff7a,ff79,ff79,ff78,ff77,ff76,ff75,ff74,ff73,ff72,ff71 8_
+db $70,$6f,$6e,$6d,$6c,$6b,$6a,$69,$68,$67,$66,$65,$64,$63,$61,$60  ; 9_  ff70,ff6f,ff6e,ff6d,ff6c,ff6b,ff6a,ff69,ff68,ff67,ff66,ff65,ff64,ff63,ff61,ff60 9_
+db $5f,$5e,$5d,$5c,$5b,$5a,$58,$57,$56,$55,$54,$53,$51,$50,$4f,$4e  ; A_  ff5f,ff5e,ff5d,ff5c,ff5b,ff5a,ff58,ff57,ff56,ff55,ff54,ff53,ff51,ff50,ff4f,ff4e A_
+db $4d,$4b,$4a,$49,$48,$46,$45,$44,$42,$41,$40,$3e,$3d,$3c,$3a,$39  ; B_  ff4d,ff4b,ff4a,ff49,ff48,ff46,ff45,ff44,ff42,ff41,ff40,ff3e,ff3d,ff3c,ff3a,ff39 B_
+db $38,$36,$35,$34,$32,$31,$30,$2e,$2d,$2b,$2a,$28,$27,$26,$24,$23  ; C_  ff38,ff36,ff35,ff34,ff32,ff31,ff30,ff2e,ff2d,ff2b,ff2a,ff28,ff27,ff26,ff24,ff23 C_
+db $21,$20,$1e,$1d,$1b,$1a,$18,$17,$15,$14,$12,$10,$0f,$0d,$0c,$0a  ; D_  ff21,ff20,ff1e,ff1d,ff1b,ff1a,ff18,ff17,ff15,ff14,ff12,ff10,ff0f,ff0d,ff0c,ff0a D_
+db $08,$07,$05,$04,$02,$00,$ff,$fd,$fb,$fa,$f8,$f6,$f5,$f3,$f1,$f0  ; E_  ff08,ff07,ff05,ff04,ff02,ff00,feff,fefd,fefb,fefa,fef8,fef6,fef5,fef3,fef1,fef0 E_
+db $ee,$ec,$eb,$e9,$e7,$e5,$e4,$e2,$e0,$de,$dc,$db,$d9,$d7,$d5,$d3  ; F_  feee,feec,feeb,fee9,fee7,fee5,fee4,fee2,fee0,fede,fedc,fedb,fed9,fed7,fed5,fed3 F_
+
+endif
+
+
