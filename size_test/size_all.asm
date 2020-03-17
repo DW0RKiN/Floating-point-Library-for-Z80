@@ -26,4 +26,5 @@
     INCLUDE "fbld.asm"
     INCLUDE "fln.asm"
     INCLUDE "fexp.asm"
+    INCLUDE "fsin.asm"
 

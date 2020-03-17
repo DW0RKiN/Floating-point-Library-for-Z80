@@ -36,6 +36,7 @@ do
     test ${b} = "fln" && printf "${b}.tab"
     test ${b} = "fln_fix" && printf "fln.tab"
     test ${b} = "fexp" && printf "${b}.tab (include itself fmul.tab)"
+    test ${b} = "fsin" && printf "${b}.tab"
     
     test ${b} = "fpow2" && printf "${b}.tab"
     test ${b} = "fsqrt" && printf "${b}.tab"
