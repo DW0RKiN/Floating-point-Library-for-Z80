@@ -64,7 +64,7 @@ BREAKPOINT:
 
         PUSH    HL        
         CALL    FSIN                ; HL = sin(HL)
-        
+
         POP     BC
 ;     kontrola
         LD      BC, (RESULT)
