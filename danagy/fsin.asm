@@ -28,29 +28,26 @@ endif
         DEC      L                  ;  1:4
         RET                         ;  1:10
 FSIN_3D3E:
-        JR      z, FSIN_3D          ;  2:12/7
-        INC     L                   ;  1:4
-        DEC     L                   ;  1:4
-        JP      nz, FSIN_3D         ;  3:10
-        DEC     H                   ;  1:4          HL = $3E00 => $3DFB
-        LD      L, $FB              ;  2:7
-        RET                         ;  1:10        
-FSIN_3D:
-        XOR     L                   ;  1:4
-        AND     $03                 ;  2:7
-        XOR     L                   ;  1:4
-        RRCA                        ;  1:4          elll lll0
         LD      D, SIN_TAB_3D3E/256 ;  2:7
+        RRA                         ;  1:4
+        LD      A, L                ;  1:4
+        RRA                         ;  1:4
         LD      E, A                ;  1:4
-        EX      DE, HL              ;  1:4
-        LD      A, (HL)             ;  1:7
-        CP      E                   ;  1:4        
-        INC     L                   ;  1:4
-        JR      nc, $+4             ;  2:11/7
-        INC     L                   ;  1:6
-        INC     L                   ;  1:4
-        LD      L, (HL)             ;  1:7
-        LD      H, $FF              ;  2:7
+        LD      A, (DE)             ;  1:7
+        JR      c, $+6              ;  2:12/7        
+        RRA                         ;  1:4
+        RRA                         ;  1:4
+        RRA                         ;  1:4
+        RRA                         ;  1:4
+        OR      $F0                 ;  2:7
+        RL      E                   ;  2:8
+        
+        JR      nc, FSIN_OK         ;  2:12/7
+        JP      p, FSIN_OK          ;  3:10
+        SUB     $08                 ;  2:7
+FSIN_OK:
+        LD      E, A                ;  1:4
+        LD      D, $FF              ;  2:7
         ADD     HL, DE              ;  1:11
     if carry_flow_warning
         OR      A                   ;  1:4          reset carry
