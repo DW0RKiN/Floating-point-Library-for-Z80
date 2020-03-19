@@ -176,7 +176,7 @@ other
      fln (fix_ln EQU 0):  2511      966       976       fln.tab
      fln (fix_ln EQU 1):  3551      1489      1504      fln.tab
      fexp:                8525      2201      1683      fexp.tab (include itself fmul.tab)
-     fsin:                2177      832       544       fsin.tab
+     fsin:                2177      829       544       fsin.tab
 
      fmod:                118       69        77        
 
@@ -190,7 +190,7 @@ other
      fwst:                53        49        46        
      fbld:                18        16        17        
 
-     all:                 21050     5861      4844  
+     all:                 21050     5858      4844   
 
 
 ### Inaccuracy of least significant bit in floating point functions (operations).
