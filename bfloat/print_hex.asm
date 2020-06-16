@@ -1,50 +1,38 @@
 if not defined PRINT_HEX
 
-; In: A
-; Out: ((A & $F0) >> 4 ) => '0'..'9','A'..'F'
-; HL++
-PRINT_HEX_HI:        
-        RRA
-        RRA
-        RRA
-        RRA
+
+;  Input: number in HL, DE address output string 
+; Output: Print Hex HL
+; Pollutes: A, DE += 4
+WRITE_HEX:
+        LD      A, H                ;  1:4
+        CALL    WRITE_HEX_A         ;  3:17
+        LD      A, L                ;  1:4
         ; fall
 
-; In: A = number, DE = adr
+;  In: A
+; Out: 00 .. FF
+;      DE += 2
+WRITE_HEX_A:
+        PUSH    AF                  ;  1:11
+        RRA                         ;  1:4
+        RRA                         ;  1:4
+        RRA                         ;  1:4
+        RRA                         ;  1:4
+        CALL    WRITE_HEX_LO        ;  3:17
+        POP     AF                  ;  1:10
+        ; fall
+
+;  In: A = number, DE = adr
 ; Out: (A & $0F) => '0'..'9','A'..'F'
-; DE++
-PRINT_HEX_LO: 
-; '0'..'9' = $30..$39
-; 'A'..'F' = $41..$46
-; 'a'..'f' = $61..$66
+;      DE++
+WRITE_HEX_LO: 
         OR      $F0                 ;  2:7      reset H flag
         DAA                         ;  1:4      $F0..$F9 + $60 => $50..$59; $FA..$FF + $66 => $60..$65
         ADD     A, $A0              ;  2:7      $F0..$F9, $100..$105
         ADC     A, $40              ;  2:7      $30..$39, $41..$46   = '0'..'9', 'A'..'F'
         LD      (DE), A             ;  1:7
         INC     DE                  ;  1:6
-        RET
-
-
-;  Input: number in HL, DE address output string 
-; Output: Print Hex HL
-; Pollutes: DE += 4
-WRITE_HEX:
-        PUSH    AF                  ;  1:11
-        
-        LD      A, H                ;  1:4
-        CALL    PRINT_HEX_HI        ;  3:17
-
-        LD      A, H                ;  1:4
-        CALL    PRINT_HEX_LO        ;  3:17
-
-        LD      A, L                ;  1:4
-        CALL    PRINT_HEX_HI        ;  3:17
-        
-        LD      A, L                ;  1:4
-        CALL    PRINT_HEX_LO        ;  3:17
-
-        POP     AF                  ;  1:10
         RET                         ;  1:10
 
         
