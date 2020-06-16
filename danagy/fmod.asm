@@ -28,70 +28,70 @@ endif
         JR      c, FMOD_HL_GR       ;  2:12/7
 
 FMOD_SUB:                           ;           BC_mantis - HL_mantis
-        SUB     L                   ;
-        JR      z, FMOD_FPMIN       ;           FPMIN
-        JR      nc, FMOD_NORM       ;
+        SUB     L                   ;  1:4
+        JR      z, FMOD_FPMIN       ;  2:7/11   FPMIN
+        JR      nc, FMOD_NORM       ;  2:7/11
         
 ; FMOD_ADD_HALF:           
-        DEC     E                   ;            
-        JP      m, FMOD_STOP        ;
+        DEC     E                   ;  1:4       
+        JP      m, FMOD_STOP        ;  3:10
         
-        ADD     A, A                ;
-        JR      nc, FMOD_X          ;
-        ADD     A, L                ;
-        JR      c, FMOD_SUB         ;
+        ADD     A, A                ;  1:4
+        JR      nc, FMOD_X          ;  2:7/11
+        ADD     A, L                ;  1:4
+        JR      c, FMOD_SUB         ;  2:7/11
         DB      $06                 ;           LD B, $85
 FMOD_X:
-        ADD     A, L                ;
+        ADD     A, L                ;  1:4
         
 FMOD_NORM:
-        ADD     A, A                ;
-        DEC     E                   ;            
-        JR      nc, FMOD_NORM       ;
+        ADD     A, A                ;  1:4
+        DEC     E                   ;  1:4       
+        JR      nc, FMOD_NORM       ;  2:7/11
         
-        JP      p, FMOD_SUB         ;           E >= 0
+        JP      p, FMOD_SUB         ;  3:10     E >= 0
 
-        LD      L, A                ;
-        LD      A, H                ;
-        ADD     A, E                ;
-        XOR     D                   ;
-        LD      H, A                ;
-        XOR     D                   ;
-        RET     p                   ;
+        LD      L, A                ;  1:4
+        LD      A, H                ;  1:4
+        ADD     A, E                ;  1:4
+        XOR     D                   ;  1:4
+        LD      H, A                ;  1:4
+        XOR     D                   ;  1:4
+        RET     p                   ;  1:5/11
 ;       fall
 
 ; Input: D = sign only        
 FMOD_UNDERFLOW:
-        LD      H, D                ;
-        LD      L, $00              ;
+        LD      H, D                ;  1:4
+        LD      L, $00              ;  2:7
     if color_flow_warning
         CALL    UNDER_COL_WARNING   ;  3:17
     endif
     if carry_flow_warning
         SCF                         ;  1:4      carry = error
     endif        
-        RET                         ;
+        RET                         ;  1:10
         
 FMOD_STOP:
-        ADD     A, L                ;
-        LD      L, A                ;
-        LD      A, H                ;
-        XOR     D                   ;
-        LD      H, A                ;
-        RET                         ;
+        ADD     A, L                ;  1:4
+        LD      L, A                ;  1:4
+        LD      A, H                ;  1:4
+        XOR     D                   ;  1:4
+        LD      H, A                ;  1:4
+        RET                         ;  1:10
         
 FMOD_HL_GR:
     if carry_flow_warning
-        OR      A                   ;
+        OR      A                   ;  1:4
     endif
-        LD      H, B                ;   
-        LD      L, C                ;
-        RET                         ;   
+        LD      H, B                ;  1:4
+        LD      L, C                ;  1:4
+        RET                         ;  1:10
 
 FMOD_FPMIN:                         ;           RET with reset carry
-        LD      L, $00              ;
-        LD      H, D                ;
-        RET                         ;
+        LD      L, $00              ;  2:7
+        LD      H, D                ;  1:4
+        RET                         ;  1:10
 
     include "color_flow_warning.asm"
 
